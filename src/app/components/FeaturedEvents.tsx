@@ -12,29 +12,19 @@ type FeaturedEventsProps = {
 
 type CategoryType = "All" | Event["type"];
 
-const categories: CategoryType[] = [
-  "All",
-  "workshop",
-  "competition",
-  "cultural",
-  "research",
-  "symposium",
+const categories = [
+  { id: "workshop", name: "Hội thảo" },
+  { id: "competition", name: "Cuộc thi" },
+  { id: "cultural", name: "Văn hóa" },
+  { id: "research", name: "Nghiên cứu" },
+  { id: "symposium", name: "Hội nghị" },
 ];
 
-const categoryLabels: Record<CategoryType, string> = {
-  All: "Tất cả",
-  workshop: "Hội thảo",
-  competition: "Cuộc thi",
-  cultural: "Văn hóa",
-  research: "Nghiên cứu",
-  symposium: "Hội nghị",
-};
-
 export function FeaturedEvents({ events }: FeaturedEventsProps) {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>("All");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const filteredEvents =
-    selectedCategory === "All"
+    selectedCategory === null
       ? events
       : events.filter((event) => event.type === selectedCategory);
 
@@ -55,9 +45,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
           {/* Category Tabs */}
           <CategoryTabs
             categories={categories}
-            labels={categoryLabels}
-            selected={selectedCategory}
-            onChange={setSelectedCategory}
+            onSelect={setSelectedCategory}
             className="mt-8"
           />
         </div>

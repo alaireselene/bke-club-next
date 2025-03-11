@@ -11,12 +11,14 @@ interface CategoryTabsProps {
   categories: Category[];
   onSelect: (categoryId: string | null) => void;
   defaultSelected?: string | null;
+  className?: string;
 }
 
 export function CategoryTabs({
   categories,
   onSelect,
   defaultSelected = null,
+  className = "",
 }: CategoryTabsProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     defaultSelected
@@ -28,7 +30,7 @@ export function CategoryTabs({
   };
 
   return (
-    <nav className="mb-8">
+    <nav className={`mb-8 ${className}`}>
       <div className="flex flex-wrap gap-2">
         <button
           className={`btn btn-sm ${

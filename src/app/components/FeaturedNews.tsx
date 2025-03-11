@@ -11,21 +11,13 @@ type FeaturedNewsProps = {
 
 type CategoryType = "All" | Post["category"];
 
-const categories: CategoryType[] = [
-  "All",
-  "news",
-  "announcement",
-  "research",
-  "achievement",
+const categories: { id: string; name: string }[] = [
+  { id: "All", name: "Tất cả" },
+  { id: "news", name: "Tin tức" },
+  { id: "announcement", name: "Thông báo" },
+  { id: "research", name: "Nghiên cứu" },
+  { id: "achievement", name: "Thành tựu" },
 ];
-
-const categoryLabels: Record<CategoryType, string> = {
-  All: "Tất cả",
-  news: "Tin tức",
-  announcement: "Thông báo",
-  research: "Nghiên cứu",
-  achievement: "Thành tựu",
-};
 
 export function FeaturedNews({ posts }: FeaturedNewsProps) {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>("All");
@@ -47,12 +39,12 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
             Các thông tin mới nhất từ Mạng lưới
           </p>
 
-          {/* Category Tabs */}
           <CategoryTabs
             categories={categories}
-            labels={categoryLabels}
-            selected={selectedCategory}
-            onChange={setSelectedCategory}
+            defaultSelected="All"
+            onSelect={(categoryId) =>
+              setSelectedCategory(categoryId as CategoryType)
+            }
             className="mt-8"
           />
         </div>
@@ -62,14 +54,38 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
             {/* Hero Article */}
             {heroPost && (
               <div className="lg:col-span-7">
-                <NewsCard post={heroPost} isHero />
+                <NewsCard
+                  key={heroPost.id}
+                  slug={`${heroPost.id}`}
+                  title={heroPost.title}
+                  summary={heroPost.summary || ""}
+                  category={heroPost.category}
+                  categoryName={
+                    categories.find((c) => c.id === heroPost.category)?.name ||
+                    heroPost.category
+                  }
+                  publishedAt={heroPost.createdAt.toISOString()}
+                  image={heroPost.featuredImageUrl || undefined}
+                />
               </div>
             )}
 
             {/* Small Articles Grid */}
             <div className="grid gap-6 lg:col-span-5 lg:grid-cols-2">
               {smallPosts.map((post) => (
-                <NewsCard key={post.id} post={post} />
+                <NewsCard
+                  key={post.id}
+                  slug={`${post.id}`}
+                  title={post.title}
+                  summary={post.summary || ""}
+                  category={post.category}
+                  categoryName={
+                    categories.find((c) => c.id === post.category)?.name ||
+                    post.category
+                  }
+                  publishedAt={post.createdAt.toISOString()}
+                  image={post.featuredImageUrl || undefined}
+                />
               ))}
             </div>
           </div>
