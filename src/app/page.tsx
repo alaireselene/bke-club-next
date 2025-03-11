@@ -1,103 +1,101 @@
-import Image from "next/image";
+import { Metadata } from "next";
+import { db } from "@/db";
+import { event, post } from "@/db/schema";
+import { desc, sql } from "drizzle-orm";
+import { Hero } from "@/app/components/Hero";
+import { FeaturedNews } from "@/app/components/FeaturedNews";
+import { FeaturedEvents } from "@/app/components/FeaturedEvents";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Trang chủ | HUST Research Clubs Network",
+  description:
+    "Mạng lưới kết nối các CLB sinh viên nghiên cứu, thúc đẩy sáng tạo và đổi mới tại Đại học Bách khoa Hà Nội",
+  openGraph: {
+    title: "HUST Research Clubs Network",
+    description: "Kết nối, Thúc đẩy, Đổi mới",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "HUST Research Clubs Network",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HUST Research Clubs Network",
+    description: "Kết nối, Thúc đẩy, Đổi mới",
+    images: ["/opengraph-image"],
+  },
+};
+
+async function getHomePageData() {
+  const [clubCount, memberCount, projectCount, eventCount] = await Promise.all([
+    // Get club count
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(sql`club`)
+      .then((res) => res[0].count),
+
+    // Get member count (from user_in_club)
+    db
+      .select({ count: sql<number>`count(distinct userId)` })
+      .from(sql`user_in_club`)
+      .then((res) => res[0].count),
+
+    // Get project count (from research where status = 'active')
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(sql`research`)
+      .where(sql`status = 'active'`)
+      .then((res) => res[0].count),
+
+    // Get upcoming event count
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(event)
+      .where(sql`startDate > current_timestamp`)
+      .then((res) => res[0].count),
+  ]);
+
+  // Get featured posts (latest 5)
+  const featuredPosts = await db
+    .select()
+    .from(post)
+    .orderBy(desc(post.createdAt))
+    .limit(5);
+
+  // Get upcoming events (next 5)
+  const upcomingEvents = await db
+    .select()
+    .from(event)
+    .where(sql`startDate > current_timestamp`)
+    .orderBy(event.startDate)
+    .limit(5);
+
+  const stats = [
+    { label: "Câu lạc bộ" as const, value: clubCount.toString() },
+    { label: "Thành viên" as const, value: memberCount.toString() },
+    { label: "Dự án" as const, value: projectCount.toString() },
+    { label: "Sự kiện" as const, value: eventCount.toString() },
+  ];
+
+  return {
+    stats,
+    featuredPosts,
+    upcomingEvents,
+  };
+}
+
+export default async function HomePage() {
+  const { stats, featuredPosts, upcomingEvents } = await getHomePageData();
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <main>
+      <Hero stats={stats} />
+      <FeaturedNews posts={featuredPosts} />
+      <FeaturedEvents events={upcomingEvents} />
+    </main>
   );
 }

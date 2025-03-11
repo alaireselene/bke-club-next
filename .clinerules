@@ -1,0 +1,130 @@
+# Student Research Clubs Network Portal - Guidelines
+
+## Overview
+
+- Purpose: Centralized platform for HUST research club activities, events, and resources
+- Core Features: Dynamic homepage, news, D3.js network visualization, schedules, resource sharing, Vietnamese support, CMS, member/club management
+
+## Design
+
+- Theme: Modern academic with traditional elements
+- Colors: Cardinal Red (#CE1628), Navy Blue (#003366), Sunflower Yellow (#F3C108), Charcoal Gray (#232020)
+- Typography: Sans-serif (main), serif (academic), geometric sans (innovation)
+- Layout: Grid-based, clean cards, minimalist icons with traditional accents, network visualization
+
+## Tech Stack
+
+- Core: Next.js 19, TypeScript 5.x, React Server Components
+- Cloud: Vercel, Turso (SQLite), S3 (storage), Cloudinary (images)
+- Styling: Tailwind CSS 4.x, DaisyUI, lucide-react icons
+- Database: DrizzleKit + Drizzle ORM
+- Security: Auth.js, Argon2id, Zod
+- Content: TipTap, DOMPurify
+- Visualization: D3.js v7
+
+## Development Approach
+
+- Progressive: Build in stages, pause after key components for review
+- Scope: Implement only what's requested; clarify ambiguity with minimal viable solutions
+- Communication: Summarize completed work, classify changes (Small/Medium/Large), outline plans for Large changes
+
+## Architecture
+
+- Patterns: Repository (data), Service (logic), Factory (objects), Observer (updates), Strategy (algorithms), Adapter (integration), Facade (simplicity)
+- Principles: YAGNI (avoid unnecessary features), KISS (keep solutions simple)
+
+## Business Logic
+
+- CMS: Admin-only CRUD for all entities (users, clubs, events, resources, posts, etc.) via a WordPress-like interface
+- Clubs: Manual creation/update of clubs and member roles (president, advisor, member) in `user_in_club`
+- Resources: Admin uploads documents/presentations/videos/links to `resource`, stored in S3, accessible to all
+- Events: Admin creates/updates events in `event`, tied to clubs, no recurring or external calendar sync
+- Visualization: D3.js displays static club/member connections from Turso (`club`, `user_in_club`), no real-time updates
+- Access: Admin-only content management; users view content without edit rights
+
+## Next.js Patterns
+
+- Data Fetching: Use Server Components for initial data, Client Components for interactivity
+- Route Handlers: Implement API endpoints in app/api directory
+- Server Actions: Use form actions for mutations
+- Caching: Leverage Next.js cache and revalidation strategies
+- Components: Build with Server/Client component pattern
+- State Management: Use React Context and hooks for complex state
+- Middleware: Implement auth and routing logic
+
+## Complex Implementation Tactics
+
+- Break Down Components: Split large features (e.g., CMS forms, D3.js visualization) into smaller, reusable components (max 200 lines each)
+- Layered Logic: Separate UI, business logic, and data access into distinct files (e.g., `cms.service.ts`, `club.repo.ts`)
+- Incremental Builds: Implement complex features (e.g., network visualization) in stages—start with static data, add interactivity later
+- Facade Pattern: Use a single entry point (e.g., `cmsFacade`) to simplify interactions with multiple subsystems
+- Type Safety: Leverage TypeScript interfaces (e.g., `Club`, `Event`) from schema to catch errors early
+- Mock Data: Test complex logic (e.g., visualization) with static JSON before integrating Turso queries
+- Documentation: Add inline comments for complex flows (e.g., admin CRUD), keep external docs minimal
+- Refactor Early: Simplify over-engineered code during review checkpoints, adhering to KISS
+
+## Code Guidelines
+
+- Use TypeScript with strict typing
+- Follow Next.js app router conventions
+- Keep components <200 lines
+- Apply SOLID principles and DI
+- Write self-documenting code with usage examples
+- Separate business logic from UI
+- Follow YAGNI and KISS to avoid over-engineering
+
+## Styling
+
+- Use Tailwind utilities with DaisyUI components
+- Design mobile-first, responsive, dark mode
+- Maintain consistent palette and spacing
+- Theme Lucide icons
+
+## Security
+
+- Session auth with Auth.js (30-day expiry, 15-day renewal)
+- Hash passwords with Argon2
+- Implement role-based access (admin-only CMS)
+- Sanitize and validate content
+
+## Database
+
+- Use schema in app/db/schema.ts
+- Write type-safe queries with Drizzle
+- Optimize for visualization (e.g., `club`, `user_in_club`)
+
+## Storage
+
+- Store resources in S3
+- Deliver images via Cloudinary
+- Enforce secure uploads/access (admin-only)
+
+## UI Components
+
+- Build with DaisyUI components
+- Ensure accessibility (ARIA)
+- Integrate TipTap for rich text in CMS
+
+## Quality & Testing
+
+- Deliver testable increments
+- Unit test business logic (e.g., CRUD operations)
+- Integration test APIs
+- Verify auth flows
+- Note edge cases (e.g., duplicate slugs) and suggest tests
+
+## Performance
+
+- Minimize bundle size with code splitting
+- Optimize data fetching/caching
+- Use React Suspense for loading states
+- Implement streaming and progressive hydration
+
+## Vietnamese Support
+
+- Use Vietnamese date/time formats
+
+## Club Networking
+
+- Structure: President, Advisors, Members (via `user_in_club`)
+- Activities: Workshops, competitions, research (via `event`, `research`)
