@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, ChevronDown } from "lucide-react";
+import { Search } from "lucide-react";
 import type { School } from "@/db/schema";
 
 interface SearchFilterProps {

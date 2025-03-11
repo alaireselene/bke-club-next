@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Event } from "@/db/schema";
 import { EventCard } from "./ui/EventCard";
 import { CategoryTabs } from "./ui/CategoryTabs";
+import Link from "next/link";
 
 type FeaturedEventsProps = {
   events: Event[];
@@ -84,9 +85,9 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
         )}
 
         <div className="mt-16 text-center">
-          <a href="/events" className="btn btn-primary btn-lg">
+          <Link href="/events" className="btn btn-primary btn-lg">
             Xem tất cả sự kiện
-          </a>
+          </Link>
         </div>
       </div>
     </section>
