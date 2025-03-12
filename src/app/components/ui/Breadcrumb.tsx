@@ -40,32 +40,42 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
       }));
   }, [pathname, items]);
 
-  if (segments.length === 0) {
+  if (segments.length === 0 && !items) {
     return null;
   }
 
   return (
-    <nav className={`mb-4 ${className}`} aria-label="Breadcrumb">
-      <ol className="flex items-center space-x-2 text-sm">
-        <li>
+    <nav className={`${className}`} aria-label="Breadcrumb">
+      <ol className="flex flex-wrap items-center text-sm [&>li:last-child]:after:hidden">
+        <li
+          className="inline-flex items-center relative after:absolute after:-right-4 after:top-1/2 after:-translate-y-px after:h-px after:w-8 after:bg-gradient-to-r after:from-white/30 after:to-transparent"
+          style={{
+            animation: "fadeIn 0.5s ease-out forwards",
+            opacity: 0,
+          }}
+        >
           <Link
             href="/"
-            className="text-base-content/60 hover:text-primary transition-colors"
+            className="group inline-flex items-center px-2 py-0.5 rounded-lg hover:bg-white/10 transition-colors duration-200"
             aria-label="Home"
           >
-            <Home className="inline-block h-5 w-5 stroke-current" />
+            <Home className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
           </Link>
         </li>
 
-        <li>
-          <ChevronRight className="h-5 w-5 text-base-content/40" />
-        </li>
-
         {segments.map((segment, index) => (
-          <li key={segment.href} className="flex items-center">
+          <li
+            key={segment.href}
+            className="flex items-center relative after:absolute after:-right-4 after:top-1/2 after:-translate-y-px after:h-px after:w-8 after:bg-gradient-to-r after:from-white/30 after:to-transparent"
+            style={{
+              animation: "fadeIn 0.5s ease-out forwards",
+              animationDelay: `${500 + index * 100}ms`,
+              opacity: 0,
+            }}
+          >
             {index === segments.length - 1 ? (
               <span
-                className="font-medium text-base-content"
+                className="px-2 py-0.5 bg-white/10 rounded-lg font-medium backdrop-blur-sm"
                 aria-current="page"
               >
                 {segment.text}
@@ -74,11 +84,13 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
               <>
                 <Link
                   href={segment.href}
-                  className="text-base-content/60 hover:text-primary transition-colors"
+                  className="group px-2 py-0.5 rounded-lg hover:bg-white/10 transition-colors duration-200"
                 >
-                  {segment.text}
+                  <span className="group-hover:scale-[1.02] transition-transform duration-200">
+                    {segment.text}
+                  </span>
                 </Link>
-                <ChevronRight className="h-5 w-5 text-base-content/40 ml-2" />
+                <ChevronRight className="h-4 w-4 opacity-60 ml-2" />
               </>
             )}
           </li>

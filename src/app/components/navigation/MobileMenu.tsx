@@ -23,7 +23,7 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
       } transition-transform duration-200 ease-in-out`}
     >
       <div
-        className="bg-opacity-75 absolute inset-0 bg-slate-600 transition-opacity"
+        className="bg-opacity-75 absolute inset-0 bg-cardinal-800 transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -33,11 +33,11 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
         aria-modal="true"
         aria-label="Mobile menu"
       >
-        <div className="flex h-20 items-center justify-between border-b border-slate-200 px-4">
-          <div className="text-lg font-medium text-slate-900">Menu</div>
+        <div className="flex h-20 items-center justify-between border-b border-cardinal-600 px-4">
+          <div className="text-lg font-medium text-cardinal-600">Menu</div>
           <button
             onClick={onClose}
-            className="focus:ring-cardinal-600 hover:text-cardinal-600 rounded-md p-2 text-slate-600 hover:bg-slate-50 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+            className="focus:ring-cardinal-600 hover:text-cardinal-600 rounded-md p-2 text-cardinal-600 hover:bg-cardinal-50 focus:ring-2 focus:ring-offset-2 focus:outline-none"
             aria-label="Close menu"
           >
             <Menu className="h-6 w-6" />
@@ -53,8 +53,8 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
               <Link
                 key={href}
                 href={href}
-                className={`hover:text-cardinal-600 block rounded-md px-3 py-2 text-base font-medium text-slate-700 transition-colors hover:bg-slate-50 ${
-                  pathname === href ? "text-cardinal-600 bg-slate-50" : ""
+                className={`hover:text-cardinal-600 block rounded-md px-3 py-2 text-base font-medium text-cardinal-700 transition-colors hover:bg-cardinal-50 ${
+                  pathname === href ? "text-cardinal-600 bg-cardinal-50" : ""
                 }`}
                 aria-current={pathname === href ? "page" : undefined}
                 onClick={onClose}
@@ -63,18 +63,20 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
               </Link>
             ))}
 
-            <div className="my-4 border-t border-slate-200" />
+            <div className="my-4 border-t border-cardinal-200" />
 
             {/* About Section */}
             <div className="mb-2">
-              <div className="px-3 py-2 text-base font-medium text-slate-700">
+              <div className="px-3 py-2 text-base font-medium text-cardinal-700">
                 Giới thiệu
               </div>
               <div className="ml-4">
                 <Link
                   href="/about"
-                  className={`hover:text-cardinal-600 block py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 ${
-                    pathname === "/about" ? "text-cardinal-600 bg-slate-50" : ""
+                  className={`hover:text-cardinal-600 block py-2 text-sm font-medium text-cardinal-600 hover:bg-cardinal-50 ${
+                    pathname === "/about"
+                      ? "text-cardinal-600 bg-cardinal-50"
+                      : ""
                   }`}
                   onClick={onClose}
                 >
@@ -82,9 +84,9 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
                 </Link>
                 <Link
                   href="/about/structure"
-                  className={`hover:text-cardinal-600 block py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 ${
+                  className={`hover:text-cardinal-600 block py-2 text-sm font-medium text-cardinal-600 hover:bg-cardinal-50 ${
                     pathname === "/about/structure"
-                      ? "text-cardinal-600 bg-slate-50"
+                      ? "text-cardinal-600 bg-cardinal-50"
                       : ""
                   }`}
                   onClick={onClose}
@@ -96,18 +98,18 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
 
             {/* Network Section */}
             <div className="my-2">
-              <div className="px-3 py-2 text-base font-medium text-slate-700">
+              <div className="px-3 py-2 text-base font-medium text-cardinal-700">
                 Mạng lưới
               </div>
               {schools.map((school) => (
                 <div key={school.id} className="mb-3 ml-4">
                   <Link
                     href={`/network?school=${school.slug.toUpperCase()}`}
-                    className="hover:text-cardinal-600 block py-2 text-sm font-medium text-slate-600"
+                    className="hover:text-cardinal-600 block py-2 text-sm font-medium text-cardinal-600"
                     onClick={onClose}
                   >
                     {school.name}
-                    <span className="ml-2 rounded bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
+                    <span className="ml-2 rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
                       {school.slug.toUpperCase()}
                     </span>
                   </Link>
@@ -116,7 +118,7 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
                       <Link
                         key={club.id}
                         href={`/network/${club.slug}`}
-                        className="hover:text-cardinal-600 block py-1.5 text-sm text-slate-600"
+                        className="hover:text-cardinal-600 block py-1.5 text-sm text-cardinal-600"
                         onClick={onClose}
                       >
                         {club.name}
@@ -136,8 +138,8 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
               <Link
                 key={href}
                 href={href}
-                className={`hover:text-cardinal-600 block rounded-md px-3 py-2 text-base font-medium text-slate-700 transition-colors hover:bg-slate-50 ${
-                  pathname === href ? "text-cardinal-600 bg-slate-50" : ""
+                className={`hover:text-cardinal-600 block rounded-md px-3 py-2 text-base font-medium text-cardinal-700 transition-colors hover:bg-cardinal-50 ${
+                  pathname === href ? "text-cardinal-600 bg-cardinal-50" : ""
                 }`}
                 aria-current={pathname === href ? "page" : undefined}
                 onClick={onClose}
@@ -150,7 +152,7 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
               href="https://student.hust.edu.vn"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-cardinal-600 mt-2 block rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-slate-50"
+              className="text-cardinal-600 mt-2 block rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-cardinal-50"
               aria-label="Open eHUST in new tab"
               onClick={onClose}
             >

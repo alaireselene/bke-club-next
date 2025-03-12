@@ -47,6 +47,7 @@ export default async function NetworkPage({
       <PageHeader
         title="Mạng lưới thành viên"
         description="Khám phá mạng lưới các câu lạc bộ sinh viên nghiên cứu tại HUST"
+        breadcrumbItems={[{ text: "Mạng lưới thành viên", href: "/network" }]}
       />
 
       <div className="container mx-auto px-4 py-8">

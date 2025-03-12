@@ -103,7 +103,13 @@ export default async function ClubPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader title={data.club.name} />
+      <PageHeader
+        title={data.club.name}
+        breadcrumbItems={[
+          { text: "Mạng lưới thành viên", href: "/network" },
+          { text: data.club.name, href: `/network/${data.club.slug}` },
+        ]}
+      />
 
       <div className="container mx-auto px-4 py-8">
         <ClubDetails

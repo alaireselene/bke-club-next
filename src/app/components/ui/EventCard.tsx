@@ -40,12 +40,9 @@ export function EventCard({
   return (
     <Link href={`/events/${event.id}`}>
       <BaseCard
-        padding="p-0"
-        background="bg-base-100"
-        hover
-        hoverScale
-        rounded="rounded-xl"
-        className={className}
+        hover="scale"
+        rounded="lg"
+        className={className + " p-0 bg-base-100"}
       >
         <div className="relative">
           <Image
