@@ -96,7 +96,6 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
                     category: heroPost.categories.nodes[0]?.slug || "",
                     categoryName: heroPost.categories.nodes[0]?.name || "",
                     featuredImage: heroPost.featuredImage,
-                    author: heroPost.author?.node.name,
                   }}
                 />
               </div>
@@ -119,7 +118,6 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
                       category: post.categories.nodes[0]?.slug || "",
                       categoryName: post.categories.nodes[0]?.name || "",
                       featuredImage: post.featuredImage,
-                      author: post.author?.node.name,
                     }}
                   />
                 </div>

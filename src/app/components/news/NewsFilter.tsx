@@ -45,7 +45,6 @@ export function NewsFilter({ categories, posts }: NewsFilterProps) {
               publishedAt: post.date,
               category: post.categories.nodes[0]?.slug || "news",
               categoryName: post.categories.nodes[0]?.name || "Tin tức",
-              author: post.author?.node.name,
             }}
           />
         ))}

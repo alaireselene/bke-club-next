@@ -5,6 +5,7 @@ import { getClient } from "@/lib/apollo-client";
 import { GET_POST_BY_SLUG } from "@/lib/graphql/queries";
 import type { Post } from "@/types/wordpress";
 import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 interface Props {
   params: { slug: string };
@@ -106,13 +107,13 @@ export default async function NewsPage({ params }: Props) {
 
       {/* Navigation */}
       <div className="mt-12 border-t border-slate-200 pt-8">
-        <a
+        <Link
           href="/news"
           className="inline-flex items-center text-teal-600 hover:text-teal-700"
         >
           <ChevronLeft className="mr-1 h-4 w-4" />
           Quay lại Tin tức
-        </a>
+        </Link>
       </div>
     </article>
   );
