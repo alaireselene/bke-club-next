@@ -51,7 +51,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${data.club.title} | HUST Research Clubs Network`,
-    description: data.club.content.slice(0, 160).replace(/<[^>]*>/g, ""),
+    description: data.club.content
+      ? data.club.content.slice(0, 160).replace(/<[^>]*>/g, "")
+      : `Chi tiết về CLB ${data.club.title}`,
     openGraph: data.club.featuredImage
       ? {
           images: [data.club.featuredImage.node.sourceUrl],

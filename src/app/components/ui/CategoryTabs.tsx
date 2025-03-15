@@ -1,17 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { cn } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
 
 interface Category {
-  slug: string; // Changed from id to slug to match WordPress
+  slug: string;
   name: string;
+  icon?: LucideIcon;
+  count?: number;
 }
 
 interface CategoryTabsProps {
   categories: Category[];
-  onSelect: (categorySlug: string | null) => void; // Updated to use categorySlug
+  onSelect: (categorySlug: string | null) => void;
   defaultSelected?: string | null;
   className?: string;
+  variant?: "pills" | "underline" | "minimal";
+  size?: "sm" | "md" | "lg";
+  fullWidth?: boolean;
 }
 
 export function CategoryTabs({
@@ -19,39 +26,124 @@ export function CategoryTabs({
   onSelect,
   defaultSelected = null,
   className = "",
+  variant = "pills",
+  size = "md",
+  fullWidth = false,
 }: CategoryTabsProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     defaultSelected
   );
+
+  const baseClasses =
+    "relative inline-flex items-center gap-1.5 transition-all duration-200";
+  const focusClasses =
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-cardinal-500 focus-visible:ring-offset-2";
+
+  const sizeClasses = {
+    sm: "px-3 py-1 text-sm",
+    md: "px-4 py-1.5 text-base",
+    lg: "px-5 py-2 text-lg",
+  };
+
+  const variantClasses = {
+    pills: {
+      nav: "flex flex-wrap gap-2",
+      tab: {
+        default: "rounded-full hover:text-cardinal-600",
+        selected:
+          "bg-cardinal-600 text-white rounded-full hover:bg-cardinal-700",
+        notSelected:
+          "bg-white/60 text-charcoal-600 hover:bg-white/80 shadow-sm",
+      },
+    },
+    underline: {
+      nav: "flex overflow-x-auto scrollbar-none -mx-4 px-4 border-b border-charcoal-200",
+      tab: {
+        default: "border-b-2 border-transparent -mb-px",
+        selected: "border-cardinal-600 text-cardinal-600",
+        notSelected:
+          "text-charcoal-600 hover:text-cardinal-600 hover:border-cardinal-300",
+      },
+    },
+    minimal: {
+      nav: "flex flex-wrap gap-1",
+      tab: {
+        default: "rounded-lg",
+        selected: "bg-cardinal-50 text-cardinal-600 font-medium",
+        notSelected: "text-charcoal-600 hover:bg-charcoal-50",
+      },
+    },
+  };
 
   const handleSelect = (categorySlug: string | null) => {
     setSelectedCategory(categorySlug);
     onSelect(categorySlug);
   };
 
-  return (
-    <nav className={`mb-8 ${className}`}>
-      <div className="flex flex-wrap gap-2">
-        <button
-          className={`btn btn-sm ${
-            selectedCategory === null ? "btn-primary" : "btn-ghost"
-          }`}
-          onClick={() => handleSelect(null)}
-        >
-          Toàn bộ
-        </button>
-        {categories.map((category) => (
-          <button
-            key={category.slug}
-            className={`btn btn-sm ${
-              selectedCategory === category.slug ? "btn-primary" : "btn-ghost"
-            }`}
-            onClick={() => handleSelect(category.slug)}
+  const TabButton = ({
+    category,
+    isAll = false,
+  }: {
+    category?: Category;
+    isAll?: boolean;
+  }) => {
+    const isSelected = isAll
+      ? selectedCategory === null
+      : selectedCategory === category?.slug;
+    const Icon = category?.icon;
+
+    return (
+      <button
+        type="button"
+        onClick={() => handleSelect(isAll ? null : category?.slug ?? null)}
+        className={cn(
+          baseClasses,
+          sizeClasses[size],
+          variantClasses[variant].tab.default,
+          isSelected
+            ? variantClasses[variant].tab.selected
+            : variantClasses[variant].tab.notSelected,
+          focusClasses,
+          "group whitespace-nowrap animate-fade-in motion-reduce:animate-none"
+        )}
+        role="tab"
+        aria-selected={isSelected}
+        aria-controls={`panel-${isAll ? "all" : category?.slug}`}
+      >
+        {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
+        <span>{isAll ? "Toàn bộ" : category?.name}</span>
+        {category?.count !== undefined && (
+          <span
+            className={cn(
+              "ml-1 rounded-full px-1.5 py-0.5 text-xs font-medium",
+              isSelected
+                ? "bg-white/20 text-white"
+                : "bg-charcoal-100 text-charcoal-600"
+            )}
           >
-            {category.name}
-          </button>
+            {category.count}
+          </span>
+        )}
+      </button>
+    );
+  };
+
+  return (
+    <div className={className}>
+      <nav
+        className={cn(
+          variantClasses[variant].nav,
+          fullWidth && "w-full justify-between",
+          "relative"
+        )}
+        role="tablist"
+        aria-label="Category filters"
+      >
+        <TabButton isAll />
+        {categories.map((category) => (
+          <TabButton key={category.slug} category={category} />
         ))}
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }

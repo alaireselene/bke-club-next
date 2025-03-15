@@ -106,10 +106,7 @@ export function ClubDetails({
             <div className="flex items-center">
               <UserIcon className="h-5 w-5 mr-2" />
               <span>
-                <span className="font-semibold">
-                  {club.clubData.membersCount}
-                </span>{" "}
-                thành viên
+                <span className="font-semibold">{membersCount}</span> thành viên
               </span>
             </div>
 
@@ -173,7 +170,7 @@ export function ClubDetails({
                     <span className="text-sm">Thành viên</span>
                   </div>
                   <div className="text-xl font-bold text-slate-800">
-                    {club.clubData.membersCount}
+                    {membersCount}
                   </div>
                 </div>
 
@@ -204,10 +201,14 @@ export function ClubDetails({
             </h3>
 
             <div className="prose prose-base max-w-none prose-headings:text-cardinal-700 prose-headings:font-semibold prose-p:text-slate-600 prose-a:text-cardinal-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:shadow-md prose-strong:text-cardinal-700 prose-ul:text-slate-600 prose-ol:text-slate-600">
-              <div
-                className="prose"
-                dangerouslySetInnerHTML={{ __html: club.content }}
-              />
+              {club.content ? (
+                <div
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: club.content }}
+                />
+              ) : (
+                <p className="text-slate-600">Chưa có nội dung giới thiệu.</p>
+              )}
             </div>
           </div>
         </div>
