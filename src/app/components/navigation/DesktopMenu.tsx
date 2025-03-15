@@ -69,15 +69,6 @@ export function DesktopMenu({ schools, scrolled }: Props) {
             </div>
           </div>
           <Link
-            href="/events"
-            className={`flex items-center transition-colors hover:underline text-white ${
-              pathname === "/events" &&
-              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-            } uppercase font-bold relative`}
-          >
-            Sự kiện
-          </Link>
-          <Link
             href="/news"
             className={`flex items-center transition-colors hover:underline text-white ${
               pathname === "/news" &&
@@ -85,6 +76,15 @@ export function DesktopMenu({ schools, scrolled }: Props) {
             } uppercase font-bold relative`}
           >
             Tin tức
+          </Link>
+          <Link
+            href="/events"
+            className={`flex items-center transition-colors hover:underline text-white ${
+              pathname === "/events" &&
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+            } uppercase font-bold relative`}
+          >
+            Sự kiện nổi bật
           </Link>
 
           {/* Center Navigation - Network */}
@@ -261,7 +261,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
               "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
             } uppercase font-bold relative`}
           >
-            Đối tác
+            Hợp tác đối ngoại
           </Link>
           <Link
             href="/resources"

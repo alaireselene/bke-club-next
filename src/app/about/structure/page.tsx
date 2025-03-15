@@ -58,13 +58,13 @@ export default function StructurePage() {
             </h3>
             <ul className="space-y-2 text-gray-700">
               <li>
-                PGS.TS. Lương Xuân Điển – Chủ tịch Mạng lưới CLB Sinh viên NCKH
+                PGS.TS. Lương Xuân Điển - Chủ tịch Mạng lưới CLB Sinh viên NCKH
               </li>
               <li>
-                TS. Nguyễn Đình Văn – Phó Chủ tịch Mạng lưới CLB Sinh viên NCKH
+                TS. Nguyễn Bá Chiến - Phó Chủ tịch Mạng lưới CLB Sinh viên NCKH
               </li>
               <li>
-                TS. Nguyễn Bá Chiến – Phó Chủ tịch Mạng lưới CLB Sinh viên NCKH
+                TS Nguyễn Minh Quân - Phó Chủ tịch Mạng lưới CLB Sinh viên NCKH
               </li>
             </ul>
           </div>
@@ -86,6 +86,16 @@ export default function StructurePage() {
             pháp nghiên cứu khoa học, tổ chức các buổi hội thảo chuyên đề và hỗ
             trợ sinh viên phát triển kỹ năng viết báo cáo khoa học.
           </p>
+        </div>
+        <div className="bg-cardinal-50 rounded-lg p-6 mt-6">
+          <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+            Danh sách Ban Cố vấn
+          </h3>
+          <ul className="space-y-2 text-gray-700">
+            <li>
+              PGS.TS. Nguyễn Bình Minh - Viện trưởng Viện Khoa học và Kinh tế số
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -117,7 +127,7 @@ export default function StructurePage() {
 
       <section className="mt-12">
         <h2 className="text-3xl font-semibold text-cardinal-700">
-          Hỗ trợ Tài chính & Đối tác Bên Ngoài
+          Hỗ trợ Tài chính & Đối tác Bên ngoài
         </h2>
         <div className="mt-4 space-y-4">
           <p>
@@ -156,6 +166,25 @@ export default function StructurePage() {
               <li>Hợp tác với doanh nghiệp và tổ chức nghiên cứu</li>
             </ul>
           </div>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-3xl font-semibold text-cardinal-700">
+          Tài nguyên hỗ trợ
+        </h2>
+        <div className="mt-4 space-y-4">
+          <p>
+            Mạng lưới CLB sinh viên NCKH là nơi cung cấp các tài nguyên đa dạng
+            hỗ trợ sinh viên trong hành trình khởi nghiệp. Tại đây, sinh viên có
+            thể truy cập vào các biểu mẫu cần thiết, các công cụ phần mềm mã
+            nguồn mở giúp tối ưu hóa quá trình phát triển ý tưởng NCKH. Mạng
+            lưới cung cấp các bài giảng, bài thuyết trình và các quy trình chi
+            tiết, giúp sinh viên hiểu rõ hơn về các bước trong quá trình nghiên
+            cứu. Để mở rộng khả năng chia sẻ và học hỏi, trung tâm sẽ xây dựng
+            một kênh YouTube, nơi các tài liệu và kiến thức bổ ích sẽ được chia
+            sẻ đến cộng đồng sinh viên.
+          </p>
         </div>
       </section>
     </div>

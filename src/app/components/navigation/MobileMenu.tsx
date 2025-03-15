@@ -99,9 +99,9 @@ export function MobileMenu({
           <div className="space-y-1">
             {/* Main Links */}
             {[
-              { href: "/events", text: "Sự kiện" },
+              { href: "/about", text: "Giới thiệu" },
               { href: "/news", text: "Tin tức" },
-              { href: "/calendar", text: "Lịch công tác" },
+              { href: "/events", text: "Sự kiện nổi bật" },
             ].map(({ href, text }) => (
               <Link
                 key={href}
@@ -330,10 +330,10 @@ export function MobileMenu({
 
             {/* Other Links */}
             {[
-              { href: "/research", text: "Sinh viên NCKH" },
+              { href: "/research", text: "Đề tài SVNCKH" },
+              { href: "/partners", text: "Hợp tác đối ngoại" },
               { href: "/resources", text: "Tài nguyên" },
               { href: "/facilities", text: "Cơ sở vật chất" },
-              { href: "/contact", text: "Liên hệ" },
             ].map(({ href, text }) => (
               <Link
                 key={href}
