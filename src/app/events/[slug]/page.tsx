@@ -47,8 +47,8 @@ export default async function EventPage({ params }: Props) {
   }
 
   const event = data.post as Event;
-  const startDate = new Date(event.eventData.eventStartTime);
-  const endDate = new Date(event.eventData.eventEndTime);
+  const startDate = new Date(event.eventData.eventTime.eventStartTime);
+  const endDate = new Date(event.eventData.eventTime.eventEndTime);
   const sponsors = event.eventData.sponsors || [];
 
   return (
@@ -158,9 +158,9 @@ export default async function EventPage({ params }: Props) {
                     Đơn vị tổ chức
                   </h3>
                   <div className="flex items-center gap-4">
-                    {event.eventData.organizer.logo && (
+                    {event.eventData.organizer.logo?.node && (
                       <Image
-                        src={event.eventData.organizer.logo.sourceUrl}
+                        src={event.eventData.organizer.logo.node.sourceUrl}
                         alt={event.eventData.organizer.name}
                         width={48}
                         height={48}
@@ -198,7 +198,7 @@ export default async function EventPage({ params }: Props) {
                       >
                         {sponsor.logo && (
                           <Image
-                            src={sponsor.logo.sourceUrl}
+                            src={sponsor.logo.node.sourceUrl}
                             alt={sponsor.name}
                             width={32}
                             height={32}
@@ -216,10 +216,10 @@ export default async function EventPage({ params }: Props) {
             )}
 
             {/* Registration Link */}
-            {event.eventData.registerUrl && (
+            {event.eventData.registerLink && (
               <div className="rounded-xl border border-slate-200 bg-white p-6">
                 <a
-                  href={event.eventData.registerUrl}
+                  href={event.eventData.registerLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-cardinal-600 px-6 py-3 text-base font-medium text-white shadow-sm transition-colors hover:bg-cardinal-500 focus:ring-2 focus:ring-cardinal-500 focus:ring-offset-2 focus:outline-none"

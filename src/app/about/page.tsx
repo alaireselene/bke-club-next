@@ -1,41 +1,71 @@
-import { Metadata } from "next";
-import { PageHeader } from "@/app/components/ui/PageHeader";
-import { ResearchAreas } from "@/app/components/about/ResearchAreas";
-import { Timeline } from "@/app/components/about/Timeline";
-import { ContactInfo } from "@/app/components/about/ContactInfo";
-
-export const metadata: Metadata = {
-  title: "Về chúng tôi | HUST Research Clubs Network",
+export const metadata = {
+  title: "Giới thiệu - Mạng lưới CLB Sinh viên NCKH",
   description:
-    "Tìm hiểu về Mạng lưới Câu lạc bộ Sinh viên Nghiên cứu Khoa học HUST",
+    "Tổng quan về Mạng lưới CLB Sinh viên NCKH - Đại học Bách khoa Hà Nội",
 };
 
 export default function AboutPage() {
   return (
-    <div>
-      <PageHeader
-        title="Về chúng tôi"
-        description="Thúc đẩy đổi mới sáng tạo và nghiên cứu trong cộng đồng sinh viên Đại học Bách Khoa Hà Nội"
-      />
+    <div className="prose prose-lg max-w-none">
+      <h1 className="text-4xl font-bold text-cardinal-600">Giới thiệu</h1>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mx-auto max-w-3xl">
-          <section className="mb-12">
-            <h2 className="mb-4 text-2xl font-semibold">
-              Sứ mệnh của chúng tôi
-            </h2>
-            <p className="text-base-content/70">
-              Nuôi dưỡng sự đổi mới và xuất sắc trong nghiên cứu giữa các sinh
-              viên tại Đại học Bách khoa Hà Nội thông qua mạng lưới hợp tác, cố
-              vấn và cơ hội nghiên cứu thực tế.
-            </p>
-          </section>
+      <div className="mt-8 grid gap-8 md:grid-cols-2">
+        <div className="rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+          <h2 className="text-2xl font-semibold text-cardinal-700 mb-4">
+            Tổng quan
+          </h2>
+          <p className="text-gray-600">
+            Thông tin tổng quan về lịch sử, sứ mệnh, tầm nhìn và các hoạt động
+            chính của mạng lưới.
+          </p>
+          <a
+            href="/about/overview"
+            className="mt-4 inline-flex items-center text-cardinal-600 hover:text-cardinal-700"
+          >
+            Xem chi tiết
+            <svg
+              className="ml-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </a>
+        </div>
 
-          <ResearchAreas />
-
-          <Timeline />
-
-          <ContactInfo />
+        <div className="rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+          <h2 className="text-2xl font-semibold text-cardinal-700 mb-4">
+            Cơ cấu tổ chức
+          </h2>
+          <p className="text-gray-600">
+            Thông tin về cấu trúc tổ chức, ban điều hành, và các đơn vị thành
+            viên trong mạng lưới.
+          </p>
+          <a
+            href="/about/structure"
+            className="mt-4 inline-flex items-center text-cardinal-600 hover:text-cardinal-700"
+          >
+            Xem chi tiết
+            <svg
+              className="ml-2 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </a>
         </div>
       </div>
     </div>

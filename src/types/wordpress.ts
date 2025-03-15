@@ -61,6 +61,8 @@ export interface Post extends WithContent, WithFeaturedImage, WithDate, WithAuth
 
 export interface Event extends Post {
   eventData: {
+    organizer: OrganizerData;
+    sponsors?: SponsorData[];
     eventTime: {
       eventStartTime: string;
       eventEndTime: string
@@ -68,21 +70,7 @@ export interface Event extends Post {
     location: string;
     capacity: number;
     delivery: 'virtual' | 'onsite';
-    registerUrl?: string;
-    organizer: {
-      name: string;
-      email: string;
-      logo?: {
-        sourceUrl: string;
-      };
-    };
-    sponsors?: Array<{
-      name: string;
-      website: string;
-      logo?: {
-        sourceUrl: string;
-      };
-    }>;
+    registerLink?: string;
   };
 }
 
@@ -112,10 +100,13 @@ export interface Club extends WithContent, WithFeaturedImage {
   };
 }
 
+export type PartnerRegion = 'local' | 'global';
+export type PartnerType = 'academic' | 'business' | 'organization';
+
 export interface Partner extends WithContent, WithFeaturedImage {
   partnerData: {
-    region: 'local' | 'global';
-    type: 'academic' | 'business' | 'organization';
+    region: PartnerRegion[];
+    type: PartnerType[];
     website: string;
   };
 }
@@ -138,18 +129,22 @@ export interface QueryResponse<T> {
 }
 
 // Common Field Interfaces
-export interface OrganizerFields {
+export interface OrganizerData {
   name: string;
   email: string;
   logo?: {
-    sourceUrl: string;
+    node: {
+      sourceUrl: string;
+    }
   };
 }
 
-export interface SponsorFields {
+export interface SponsorData {
   name: string;
   website: string;
   logo?: {
-    sourceUrl: string;
+    node: {
+      sourceUrl: string;
+    };
   };
 }

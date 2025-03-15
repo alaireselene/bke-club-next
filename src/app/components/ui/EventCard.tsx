@@ -49,9 +49,9 @@ export function EventCard({ event }: EventCardProps) {
               </div>
               {event.eventData.organizer && (
                 <div className="flex items-center">
-                  {event.eventData.organizer.logo?.sourceUrl && (
+                  {event.eventData.organizer.logo?.node.sourceUrl && (
                     <Image
-                      src={event.eventData.organizer.logo.sourceUrl}
+                      src={event.eventData.organizer.logo.node.sourceUrl}
                       alt={event.eventData.organizer.name}
                       width={24}
                       height={24}

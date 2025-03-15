@@ -25,6 +25,9 @@ async function getEventsData() {
 
 export default async function EventsPage() {
   const { events } = await getEventsData();
+
+  // Debug output
+  console.log("Events data:", JSON.stringify(events, null, 2));
   const now = new Date();
   // Use UTC time for comparison to match server timestamps
   const currentTime = Date.UTC(
@@ -36,16 +39,28 @@ export default async function EventsPage() {
     now.getUTCSeconds()
   );
 
-  const upcomingEvents = events.filter(
-    (event) =>
-      new Date(event.eventData.eventTime.eventStartTime).getTime() >=
-      currentTime
-  );
+  // Debug date comparisons
+  const upcomingEvents = events.filter((event) => {
+    const eventTime = new Date(
+      event.eventData.eventTime.eventStartTime
+    ).getTime();
+    console.log(`Event: ${event.title}`);
+    console.log(
+      `Event time: ${new Date(
+        event.eventData.eventTime.eventStartTime
+      ).toISOString()}`
+    );
+    console.log(`Current time: ${new Date(currentTime).toISOString()}`);
+    console.log(`Is upcoming: ${eventTime >= currentTime}`);
+    return eventTime >= currentTime;
+  });
 
-  const pastEvents = events.filter(
-    (event) =>
-      new Date(event.eventData.eventTime.eventStartTime).getTime() < currentTime
-  );
+  const pastEvents = events.filter((event) => {
+    const eventTime = new Date(
+      event.eventData.eventTime.eventStartTime
+    ).getTime();
+    return eventTime < currentTime;
+  });
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

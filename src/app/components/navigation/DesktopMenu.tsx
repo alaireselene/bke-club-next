@@ -3,6 +3,8 @@
 import Link from "next/link";
 import type { School } from "@/types/wordpress";
 import { usePathname } from "next/navigation";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 
 interface Props {
   schools: School[];
@@ -11,6 +13,8 @@ interface Props {
 
 export function DesktopMenu({ schools, scrolled }: Props) {
   const pathname = usePathname();
+  const [aboutExpanded, setAboutExpanded] = useState(false);
+  const [networkExpanded, setNetworkExpanded] = useState(false);
 
   return (
     <div
@@ -26,34 +30,82 @@ export function DesktopMenu({ schools, scrolled }: Props) {
         {/* Main Navigation */}
         <nav className="flex h-12 items-center justify-evenly">
           {/* Left Navigation */}
+          <div
+            className="group/about relative"
+            onMouseEnter={() => setAboutExpanded(true)}
+            onMouseLeave={() => setAboutExpanded(false)}
+          >
+            <Link
+              href="/about"
+              className={`flex items-center gap-1 transition-colors hover:underline text-white ${
+                pathname.startsWith("/about") &&
+                "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+              } uppercase font-bold relative`}
+            >
+              Giới thiệu
+              {aboutExpanded ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </Link>
+
+            {/* About Dropdown Menu */}
+            <div className="absolute left-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 invisible opacity-0 transition-all duration-200 group-hover/about:visible group-hover/about:opacity-100">
+              <div className="py-1">
+                <Link
+                  href="/about/overview"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                >
+                  Tổng quan
+                </Link>
+                <Link
+                  href="/about/structure"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                >
+                  Cơ cấu tổ chức
+                </Link>
+              </div>
+            </div>
+          </div>
           <Link
             href="/events"
-            className={`flex items-center transition-colors hover:underline ${
-              pathname === "/events" ? "text-cardinal-600" : "text-chalk-100"
-            }`}
+            className={`flex items-center transition-colors hover:underline text-white ${
+              pathname === "/events" &&
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+            } uppercase font-bold relative`}
           >
             Sự kiện
           </Link>
           <Link
             href="/news"
-            className={`flex items-center transition-colors hover:underline ${
-              pathname === "/news" ? "text-cardinal-600" : "text-chalk-100"
-            }`}
+            className={`flex items-center transition-colors hover:underline text-white ${
+              pathname === "/news" &&
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+            } uppercase font-bold relative`}
           >
             Tin tức
           </Link>
 
           {/* Center Navigation - Network */}
-          <div className="group/network relative">
+          <div
+            className="group/network relative"
+            onMouseEnter={() => setNetworkExpanded(true)}
+            onMouseLeave={() => setNetworkExpanded(false)}
+          >
             <Link
               href="/network"
-              className={`flex items-center transition-colors hover:underline ${
-                pathname.startsWith("/network")
-                  ? "text-cardinal-600"
-                  : "text-chalk-100"
-              }`}
+              className={`flex items-center gap-1 transition-colors hover:underline text-white ${
+                pathname.startsWith("/network") &&
+                "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+              } uppercase font-bold relative`}
             >
               Mạng lưới
+              {networkExpanded ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
             </Link>
 
             {/* Dropdown Menu */}
@@ -195,29 +247,47 @@ export function DesktopMenu({ schools, scrolled }: Props) {
           {/* Right Navigation */}
           <Link
             href="/research"
-            className={`flex items-center transition-colors hover:underline ${
-              pathname === "/research" ? "text-cardinal-600" : "text-chalk-100"
-            }`}
+            className={`flex items-center transition-colors hover:underline text-white ${
+              pathname === "/research" &&
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+            } uppercase font-bold relative`}
           >
-            Sinh viên NCKH
+            Đề tài SVNCKH
+          </Link>
+          <Link
+            href="/partners"
+            className={`flex items-center transition-colors hover:underline text-white ${
+              pathname === "/partners" &&
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+            } uppercase font-bold relative`}
+          >
+            Đối tác
           </Link>
           <Link
             href="/resources"
-            className={`flex items-center transition-colors hover:underline ${
-              pathname === "/resources" ? "text-cardinal-600" : "text-chalk-100"
-            }`}
+            className={`flex items-center transition-colors hover:underline text-white ${
+              pathname === "/resources" &&
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+            } uppercase font-bold relative`}
           >
             Tài nguyên
           </Link>
           <Link
-            href="/facilities"
-            className={`flex items-center transition-colors hover:underline ${
-              pathname === "/facilities"
-                ? "text-cardinal-600"
-                : "text-chalk-100"
-            }`}
+            href="/facility"
+            className={`flex items-center transition-colors hover:underline text-white ${
+              pathname === "/facility" &&
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+            } uppercase font-bold relative`}
           >
             Cơ sở vật chất
+          </Link>
+          <Link
+            href="https://student.hust.edu.vn"
+            className={`flex items-center transition-colors hover:underline text-chalk-100 uppercase font-bold`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            eHUST
           </Link>
         </nav>
       </div>

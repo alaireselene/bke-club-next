@@ -40,7 +40,7 @@ export const client = new ApolloClient({
       Club: {
         keyFields: ['id', 'databaseId'],
         fields: {
-          clubFields: {
+          clubData: {
             merge(existing, incoming) {
               return {
                 ...existing,
@@ -53,7 +53,7 @@ export const client = new ApolloClient({
           },
         },
       },
-      // Add type policy for ClubFields type
+      // Add type policy for ClubData type
       ClubData: {
         merge(existing, incoming) {
           return {

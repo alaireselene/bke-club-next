@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 
 // Partner Fragments & Queries
 export const PARTNER_FIELDS = gql`
-  fragment PartnerFields on Partner {
+  fragment PartnerData on Partner {
     id
     databaseId
     slug
@@ -32,7 +32,7 @@ export const GET_PARTNERS = gql`
         endCursor
       }
       nodes {
-        ...PartnerFields
+        ...PartnerData
       }
     }
   }
@@ -42,7 +42,7 @@ export const GET_PARTNERS = gql`
 export const GET_PARTNER_BY_SLUG = gql`
   query GetPartnerBySlug($slug: ID!) {
     partner(id: $slug, idType: SLUG) {
-      ...PartnerFields
+      ...PartnerData
     }
   }
   ${PARTNER_FIELDS}
@@ -137,7 +137,7 @@ export const GET_POST_BY_SLUG = gql`
 
 // Event Fragment
 export const EVENT_FIELDS = gql`
-  fragment EventFields on Post {
+  fragment EventData on Post {
     eventData {
       eventTime {
         eventStartTime
@@ -209,7 +209,7 @@ export const GET_EVENTS = gql`
           title
         }
       }
-        ...EventFields
+        ...EventData
       }
     }
   }
@@ -232,7 +232,7 @@ export const GET_EVENT_BY_SLUG = gql`
           title
         }
       }
-      ...EventFields
+      ...EventData
     }
   }
   ${EVENT_FIELDS}

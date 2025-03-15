@@ -1,20 +1,17 @@
 import { useQuery } from '@apollo/client';
 import {
   GET_POSTS,
-  GET_POST_BY_ID,
+  GET_POST_BY_SLUG,
   GET_EVENTS,
-  GET_EVENT_BY_ID,
-  GET_SCHOOLS,
-  GET_CLUB_BY_ID,
+  GET_EVENT_BY_SLUG,
+  GET_CLUB_BY_SLUG,
   GET_NAVIGATION_DATA,
 } from '@/lib/graphql/queries';
 import type {
   Post,
   Event,
   Club,
-  School,
-  Connection,
-  QueryResponse
+
 } from '@/types/wordpress';
 
 // Posts Hook
@@ -49,7 +46,7 @@ export function usePosts({ first = 10, category }: UsePostsOptions = {}) {
 
 // Single Post Hook
 export function usePost(slug: string) {
-  const { data, loading, error } = useQuery(GET_POST_BY_ID, {
+  const { data, loading, error } = useQuery(GET_POST_BY_SLUG, {
     variables: { id: slug, idType: "SLUG" }
   });
 
@@ -91,7 +88,7 @@ export function useEvents({ first = 10 }: UseEventsOptions = {}) {
 
 // Single Event Hook
 export function useEvent(slug: string) {
-  const { data, loading, error } = useQuery(GET_EVENT_BY_ID, {
+  const { data, loading, error } = useQuery(GET_EVENT_BY_SLUG, {
     variables: { id: slug, idType: "SLUG" }
   });
 
@@ -102,20 +99,9 @@ export function useEvent(slug: string) {
   };
 }
 
-// Schools Hook
-export function useSchools() {
-  const { data, loading, error } = useQuery(GET_SCHOOLS);
-
-  return {
-    schools: data?.schools.nodes as School[],
-    loading,
-    error,
-  };
-}
-
 // Single Club Hook
 export function useClub(slug: string) {
-  const { data, loading, error } = useQuery(GET_CLUB_BY_ID, {
+  const { data, loading, error } = useQuery(GET_CLUB_BY_SLUG, {
     variables: { id: slug, idType: "SLUG" }
   });
 
@@ -140,7 +126,7 @@ interface NavigationData {
           databaseId: number;
           title: string;
           slug: string;
-          clubFields: {
+          clubData: {
             membersCount: number;
           };
         }>;

@@ -2,17 +2,17 @@
 
 import { useState } from "react";
 import { PartnerCard } from "./PartnerCard";
-import type { Partner } from "@/types/wordpress";
+import type { Partner, PartnerRegion, PartnerType } from "@/types/wordpress";
 import { MapPin, Building2 } from "lucide-react";
 
 interface RegionFilter {
-  id: "local" | "global";
+  id: PartnerRegion;
   name: string;
   icon: typeof MapPin;
 }
 
 interface TypeFilter {
-  id: "academic" | "business" | "organization";
+  id: PartnerType;
   name: string;
   icon: typeof Building2;
 }
@@ -33,14 +33,16 @@ interface PartnersListProps {
 }
 
 export function PartnersList({ partners }: PartnersListProps) {
-  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<PartnerRegion | null>(
+    null
+  );
+  const [selectedType, setSelectedType] = useState<PartnerType | null>(null);
 
   const filteredPartners = partners.filter((partner) => {
     const matchesRegion =
-      !selectedRegion || partner.partnerFields.region === selectedRegion;
+      !selectedRegion || partner.partnerData.region.includes(selectedRegion);
     const matchesType =
-      !selectedType || partner.partnerFields.type === selectedType;
+      !selectedType || partner.partnerData.type.includes(selectedType);
     return matchesRegion && matchesType;
   });
 

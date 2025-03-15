@@ -57,7 +57,7 @@ export function SchoolCard({ school, clubs }: Props) {
               <span className="font-medium">{club.title}</span>
             </div>
             <div className="text-sm text-slate-500">
-              {club.clubFields?.membersCount} thành viên
+              {club.clubData?.membersCount} thành viên
             </div>
           </Link>
         ))}
