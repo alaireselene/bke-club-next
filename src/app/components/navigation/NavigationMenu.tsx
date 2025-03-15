@@ -1,13 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Settings,
-  Calendar,
-  Mail,
-  Languages,
-  GraduationCap,
-} from "lucide-react";
+import { Settings, Calendar, Mail, Languages } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 interface Props {

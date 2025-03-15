@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { Menu, X, Settings, ChevronDown, ChevronUp } from "lucide-react";
+import { X, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { School } from "@/types/wordpress";
 import { useState } from "react";

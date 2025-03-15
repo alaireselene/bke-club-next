@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CalendarDays, MapPin } from "lucide-react";
-import type { Event, FeaturedImage } from "@/types/wordpress";
+import type { Event } from "@/types/wordpress";
 
 interface EventCardProps {
   event: Event;

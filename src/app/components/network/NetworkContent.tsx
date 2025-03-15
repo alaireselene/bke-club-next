@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { SearchFilter } from "@/app/components/network/SearchFilter";
 import { SchoolCard } from "@/app/components/network/SchoolCard";
-import type { School, Club } from "@/types/wordpress";
+import type { School } from "@/types/wordpress";
 import { useSearchParams } from "next/navigation";
 import {
   Compass,

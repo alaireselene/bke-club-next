@@ -44,7 +44,7 @@ async function getNetworkData() {
 }
 
 export default async function NetworkPage({ searchParams }: Props) {
-  const { schools, timestamp } = await getNetworkData();
+  const { schools } = await getNetworkData();
 
   // Add timestamp comment for debugging cache
   return (

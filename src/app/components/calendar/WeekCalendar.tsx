@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, MapPin, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type Event = {
   id: string;
@@ -29,7 +29,7 @@ const eventStyles: Record<EventType, string> = {
 };
 
 export function WeekCalendar({ events }: { events: Event[] }) {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
   const [currentWeek, setCurrentWeek] = useState(() => {
     const date = new Date(currentDate);
     date.setDate(date.getDate() - date.getDay() + 1); // Start week on Monday

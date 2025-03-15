@@ -42,8 +42,6 @@ export function Breadcrumb({
 
   const baseTextColor =
     variant === "light" ? "text-white" : "text-charcoal-600";
-  const separatorColor =
-    variant === "light" ? "bg-white/30" : "bg-charcoal-200";
   const hoverBgColor =
     variant === "light" ? "hover:bg-white/10" : "hover:bg-charcoal-100";
   const activeBgColor = variant === "light" ? "bg-white/10" : "bg-charcoal-100";

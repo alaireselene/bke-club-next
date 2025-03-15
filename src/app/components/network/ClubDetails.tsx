@@ -7,11 +7,7 @@ import {
   User as UserIcon,
   GraduationCap,
   Award,
-  Users,
   BookOpen,
-  Atom,
-  Rocket,
-  Lightbulb,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 

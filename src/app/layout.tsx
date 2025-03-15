@@ -52,7 +52,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { schools, clubs } = await getNavigationData();
+  const { schools } = await getNavigationData();
 
   return (
     <html lang="vi">
