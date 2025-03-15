@@ -1,12 +1,4 @@
-export type School = {
-  id: number;
-  name: string;
-  slug: string;
-};
+// DEPRECATED: Use @/types/wordpress instead
+import type { School as WPSchool, Club as WPClub } from "@/types/wordpress";
 
-export type Club = {
-  id: number;
-  name: string;
-  slug: string;
-  schoolId: number | null;
-};
+export type { WPSchool as School, WPClub as Club };

@@ -1,10 +1,10 @@
 import { Metadata } from "next";
-import { db } from "@/db";
-import { event, post } from "@/db/schema";
-import { desc, sql } from "drizzle-orm";
+import { getClient } from "@/lib/apollo-client";
+import { GET_POSTS, GET_EVENTS, GET_CLUBS } from "@/lib/graphql/queries";
 import { Hero } from "@/app/components/Hero";
 import { FeaturedNews } from "@/app/components/FeaturedNews";
 import { FeaturedEvents } from "@/app/components/FeaturedEvents";
+import { Club } from "@/types/wordpress";
 
 export const metadata: Metadata = {
   title: "Trang chủ | HUST Research Clubs Network",
@@ -31,60 +31,45 @@ export const metadata: Metadata = {
 };
 
 async function getHomePageData() {
-  const [clubCount, memberCount, projectCount, eventCount] = await Promise.all([
-    // Get club count
-    db
-      .select({ count: sql<number>`count(*)` })
-      .from(sql`club`)
-      .then((res) => res[0].count),
+  const client = getClient();
 
-    // Get member count (from user_in_club)
-    db
-      .select({ count: sql<number>`count(distinct userId)` })
-      .from(sql`user_in_club`)
-      .then((res) => res[0].count),
-
-    // Get project count (from research where status = 'active')
-    db
-      .select({ count: sql<number>`count(*)` })
-      .from(sql`research`)
-      .where(sql`status = 'active'`)
-      .then((res) => res[0].count),
-
-    // Get upcoming event count
-    db
-      .select({ count: sql<number>`count(*)` })
-      .from(event)
-      .where(sql`startDate > current_timestamp`)
-      .then((res) => res[0].count),
+  // Get posts and events data in parallel
+  const [postsData, eventsData, clubsData] = await Promise.all([
+    client.query({
+      query: GET_POSTS,
+      variables: { first: 5 },
+    }),
+    client.query({
+      query: GET_EVENTS,
+      variables: { first: 5 },
+    }),
+    client.query({
+      query: GET_CLUBS,
+      variables: { first: 100 }, // Get first 100 clubs
+    }),
   ]);
 
-  // Get featured posts (latest 5)
-  const featuredPosts = await db
-    .select()
-    .from(post)
-    .orderBy(desc(post.createdAt))
-    .limit(5);
-
-  // Get upcoming events (next 5)
-  const upcomingEvents = await db
-    .select()
-    .from(event)
-    .where(sql`startDate > current_timestamp`)
-    .orderBy(event.startDate)
-    .limit(5);
+  // Calculate stats
+  const clubCount = clubsData.data.clubs.nodes.length;
+  const memberCount = clubsData.data.clubs.nodes.reduce(
+    (acc: number, club: Club) => acc + (club.clubData?.membersCount || 0),
+    0
+  );
 
   const stats = [
     { label: "Câu lạc bộ" as const, value: clubCount.toString() },
     { label: "Thành viên" as const, value: memberCount.toString() },
-    { label: "Dự án" as const, value: projectCount.toString() },
-    { label: "Sự kiện" as const, value: eventCount.toString() },
+    { label: "Dự án" as const, value: "0" }, // Research count as 0
+    {
+      label: "Sự kiện" as const,
+      value: eventsData.data.posts.nodes.length.toString(),
+    },
   ];
 
   return {
     stats,
-    featuredPosts,
-    upcomingEvents,
+    featuredPosts: postsData.data.posts.nodes,
+    upcomingEvents: eventsData.data.posts.nodes,
   };
 }
 

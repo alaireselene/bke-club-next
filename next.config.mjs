@@ -1,5 +1,7 @@
 const nextConfig = {
-  /* config options here */
+  images: {
+    domains: ["test.sena.id.vn"],
+  },
 };
 
 export default nextConfig;

@@ -1,25 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Event } from "@/db/schema";
 import { EventCard } from "./ui/EventCard";
 import { CategoryTabs } from "./ui/CategoryTabs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import type { Event } from "@/types/wordpress";
 
 type FeaturedEventsProps = {
   events: Event[];
 };
 
-type CategoryType = "All" | Event["type"];
+type CategoryType = "All" | "competition" | "symposium" | "research-event";
 
 const categories = [
-  { id: "All", name: "Tất cả" },
-  { id: "workshop", name: "Hội thảo" },
-  { id: "competition", name: "Cuộc thi" },
-  { id: "cultural", name: "Văn hóa" },
-  { id: "research", name: "Nghiên cứu" },
-  { id: "symposium", name: "Hội nghị" },
+  { slug: "All", name: "Tất cả" },
+  { slug: "competition", name: "Cuộc thi" },
+  { slug: "symposium", name: "Hội nghị" },
+  { slug: "research-event", name: "Nghiên cứu" },
 ];
 
 export function FeaturedEvents({ events }: FeaturedEventsProps) {
@@ -28,7 +26,9 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
   const filteredEvents =
     selectedCategory === "All"
       ? events
-      : events.filter((event) => event.type === selectedCategory);
+      : events.filter((event) =>
+          event.categories?.nodes.some((cat) => cat.slug === selectedCategory)
+        );
 
   const heroEvent =
     filteredEvents[4] || filteredEvents[filteredEvents.length - 1];
@@ -91,7 +91,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
                 className="lg:col-span-5 animate-fade-in"
                 style={{ animationDelay: "400ms" }}
               >
-                <EventCard event={heroEvent} isHero />
+                <EventCard event={heroEvent} />
               </div>
             )}
           </div>

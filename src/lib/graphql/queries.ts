@@ -1,24 +1,5 @@
 import { gql } from '@apollo/client';
 
-// Common Fragments
-export const MEDIA_FIELDS = gql`
-  fragment MediaFields on MediaItem {
-    sourceUrl
-    altText
-    title
-  }
-`;
-
-export const FEATURED_IMAGE_FIELDS = gql`
-  fragment FeaturedImageFields on NodeWithFeaturedImage {
-    featuredImage {
-      node {
-        ...MediaFields
-      }
-    }
-  }
-  ${MEDIA_FIELDS}
-`;
 
 // Partner Fragments & Queries
 export const PARTNER_FIELDS = gql`
@@ -28,14 +9,19 @@ export const PARTNER_FIELDS = gql`
     slug
     title
     content
-    ...FeaturedImageFields
+    featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
     partnerData {
       region
       type
       website
     }
   }
-  ${FEATURED_IMAGE_FIELDS}
 `;
 
 export const GET_PARTNERS = gql`
@@ -88,7 +74,7 @@ export const GET_POSTS = gql`
       after: $after
       where: {
         orderby: { field: DATE, order: DESC }
-        categoryNotIn: ["event"]
+        categoryName: "news"
       }
     ) {
       pageInfo {
@@ -102,7 +88,6 @@ export const GET_POSTS = gql`
         title
         excerpt
         date
-        ...FeaturedImageFields
         categories {
           nodes {
             databaseId
@@ -118,7 +103,6 @@ export const GET_POSTS = gql`
       }
     }
   }
-  ${FEATURED_IMAGE_FIELDS}
 `;
 
 export const GET_POST_BY_SLUG = gql`
@@ -129,7 +113,13 @@ export const GET_POST_BY_SLUG = gql`
       title
       content
       excerpt
-      ...FeaturedImageFields
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
       categories {
         nodes {
           name
@@ -143,7 +133,6 @@ export const GET_POST_BY_SLUG = gql`
       }
     }
   }
-  ${FEATURED_IMAGE_FIELDS}
 `;
 
 // Event Fragment
@@ -162,19 +151,26 @@ export const EVENT_FIELDS = gql`
         name
         email
         logo {
-          ...MediaFields
+          node {
+            sourceUrl
+            altText
+            title
+          }
         }
       }
       sponsors {
         name
         website
         logo {
-          ...MediaFields
+          node {
+            sourceUrl
+            altText
+            title
+          }
         }
       }
     }
   }
-  ${MEDIA_FIELDS}
 `;
 
 // Event List Query
@@ -200,12 +196,23 @@ export const GET_EVENTS = gql`
         excerpt
         content
         date
-        ...FeaturedImageFields
+        categories {
+          nodes {
+            name
+            slug
+          }
+        }
+        featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
         ...EventFields
       }
     }
   }
-  ${FEATURED_IMAGE_FIELDS}
   ${EVENT_FIELDS}
 `;
 
@@ -218,17 +225,22 @@ export const GET_EVENT_BY_SLUG = gql`
       title
       content
       excerpt
-      ...FeaturedImageFields
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
       ...EventFields
     }
   }
-  ${FEATURED_IMAGE_FIELDS}
   ${EVENT_FIELDS}
 `;
 
 // Navigation Query
 export const GET_NAVIGATION_DATA = gql`
-  query GetNavigationData {
+  query GetNavigationData($first: Int!) {
     schools {
       nodes {
         id
@@ -242,14 +254,54 @@ export const GET_NAVIGATION_DATA = gql`
             title
             slug
             clubData {
+              establishedYear
               membersCount
+              president {
+                presidentName
+              }
+              advisors {
+                advisorName
+                advisorEmail
+              }
             }
+            featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
           }
         }
       }
     }
+    clubs(first: $first) {
+      nodes {
+        id
+        databaseId
+        title
+        slug
+        clubData {
+          establishedYear
+          membersCount
+          president {
+            presidentName
+          }
+          advisors {
+            advisorName
+            advisorEmail
+          }
+        }
+        featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
+      }
+    }
   }
-  ${FEATURED_IMAGE_FIELDS}
 `;
 
 // Club Queries
@@ -262,7 +314,13 @@ export const GET_CLUBS = gql`
         slug
         title
         content
-        ...FeaturedImageFields
+        featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
         clubData {
           establishedYear
           membersCount
@@ -275,8 +333,8 @@ export const GET_CLUBS = gql`
             advisorEmail
           }
         }
-        school {
-          node {
+        schools {
+          nodes {
             id
             databaseId
             name
@@ -286,7 +344,6 @@ export const GET_CLUBS = gql`
       }
     }
   }
-  ${FEATURED_IMAGE_FIELDS}
 `;
 
 export const GET_CLUB_BY_SLUG = gql`
@@ -297,7 +354,13 @@ export const GET_CLUB_BY_SLUG = gql`
       slug
       title
       content
-      ...FeaturedImageFields
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+          title
+        }
+      }
       clubData {
         establishedYear
         membersCount
@@ -310,8 +373,8 @@ export const GET_CLUB_BY_SLUG = gql`
           advisorEmail
         }
       }
-      school {
-        node {
+      schools {
+        nodes {
           id
           databaseId
           name
@@ -320,5 +383,4 @@ export const GET_CLUB_BY_SLUG = gql`
       }
     }
   }
-  ${FEATURED_IMAGE_FIELDS}
 `;

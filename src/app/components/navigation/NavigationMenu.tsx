@@ -1,54 +1,59 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, Mail, Search } from "lucide-react";
+import { Settings } from "lucide-react";
+import { usePathname } from "next/navigation";
 
-type Props = {
+interface Props {
   currentLang: string;
   onToggleLanguage: () => void;
-};
+}
 
 export function NavigationMenu({ currentLang, onToggleLanguage }: Props) {
+  const pathname = usePathname();
+  // TODO: Get auth status
+  const isAdmin = false;
+
   return (
-    <div className="hidden items-center space-x-6 md:flex">
+    <nav className="hidden items-center space-x-6 md:flex">
+      {/* Base Links */}
       <Link
         href="/calendar"
-        className="group focus:ring-chalk-100 text-chalk-100 flex items-center transition-colors hover:underline focus:ring-2 focus:ring-offset-2 focus:outline-none"
-        aria-label="Lịch công tác"
+        className={`flex items-center transition-colors hover:underline ${
+          pathname === "/calendar" ? "text-cardinal-600" : "text-chalk-100"
+        }`}
       >
-        <span className="flex items-center">
-          <Calendar className="h-5 w-5" />
-          Lịch công tác
-        </span>
+        Lịch công tác
       </Link>
-
       <Link
         href="/contact"
-        className="group focus:ring-chalk-600 text-chalk-100 flex items-center transition-colors hover:underline focus:ring-2 focus:ring-offset-2 focus:outline-none"
-        aria-label="Liên hệ"
+        className={`flex items-center transition-colors hover:underline ${
+          pathname === "/contact" ? "text-cardinal-600" : "text-chalk-100"
+        }`}
       >
-        <span className="flex items-center">
-          <Mail className="h-5 w-5" />
-          Liên hệ
-        </span>
+        Liên hệ
       </Link>
 
-      <button
-        className="focus:ring-cardinal-600 text-chalk-100 transition-colors hover:underline focus:ring-2 focus:ring-offset-2 focus:outline-none"
-        aria-label="Tìm kiếm"
-      >
-        <Search className="h-5 w-5" />
-      </button>
+      {/* Admin Link */}
+      {isAdmin && (
+        <Link
+          href="/admin"
+          className={`flex items-center transition-colors hover:underline ${
+            pathname === "/admin" ? "text-cardinal-600" : "text-chalk-100"
+          }`}
+        >
+          <Settings className="h-4 w-4 mr-2" />
+          Quản trị
+        </Link>
+      )}
 
+      {/* Language Toggle */}
       <button
-        className="border-cardinal-200 bg-chalk-100 text-cardinal-600 hover:bg-cardinal-50 hover:border-cardinal-300 active:bg-cardinal-100 focus:ring-cardinal-600 rounded-md border px-3 py-1.5 text-sm font-medium transition-all focus:ring-2 focus:ring-offset-2 focus:outline-none"
         onClick={onToggleLanguage}
-        aria-label={`Switch to ${
-          currentLang === "VI" ? "English" : "Vietnamese"
-        }`}
+        className="text-chalk-100 hover:underline"
       >
         {currentLang}
       </button>
-    </div>
+    </nav>
   );
 }

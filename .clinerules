@@ -3,7 +3,7 @@
 ## Overview
 
 - Purpose: Centralized platform for HUST research club activities, events, and resources
-- Core Features: Dynamic homepage, news, D3.js network visualization, schedules, resource sharing, Vietnamese support, CMS, member/club management
+- Core Features: Dynamic homepage, news, schedules, resource sharing, Vietnamese support, CMS, member/club management
 
 ## Design
 
@@ -14,12 +14,11 @@
 
 ## Tech Stack
 
-- Core: Next.js 19, TypeScript 5.x, React Server Components
-- Cloud: Vercel, Turso (SQLite), S3 (storage), Cloudinary (images)
+- Core: Next.js 19, TypeScript 5.x, React Server Components, Apollo Client, GraphQL
+- Backend: WordPress (Headless CMS), WPGraphQL plugin
+- Cloud: Vercel (frontend), WordPress hosting (backend), Cloudinary (images)
 - Styling: Tailwind CSS 4.x, DaisyUI, lucide-react icons
-- Database: DrizzleKit + Drizzle ORM
-- Security: Auth.js, Argon2id, Zod
-- Content: TipTap, DOMPurify
+- Security: Auth.js, WordPress authentication
 - Visualization: D3.js v7
 
 ## Development Approach
@@ -30,38 +29,36 @@
 
 ## Architecture
 
-- Patterns: Repository (data), Service (logic), Factory (objects), Observer (updates), Strategy (algorithms), Adapter (integration), Facade (simplicity)
+- Patterns: GraphQL (data), Service (logic), Factory (objects), Observer (updates), Strategy (algorithms), Adapter (integration), Facade (simplicity)
 - Principles: YAGNI (avoid unnecessary features), KISS (keep solutions simple)
 
 ## Business Logic
 
-- CMS: Admin-only CRUD for all entities (users, clubs, events, resources, posts, etc.) via a WordPress-like interface
-- Clubs: Manual creation/update of clubs and member roles (president, advisor, member) in `user_in_club`
-- Resources: Admin uploads documents/presentations/videos/links to `resource`, stored in S3, accessible to all
-- Events: Admin creates/updates events in `event`, tied to clubs, no recurring or external calendar sync
-- Visualization: D3.js displays static club/member connections from Turso (`club`, `user_in_club`), no real-time updates
-- Access: Admin-only content management; users view content without edit rights
+- CMS: WordPress handles all content management (clubs, users, events, resources, posts)
+- Clubs: Create/update clubs and roles via WordPress admin interface
+- Resources: Upload media through WordPress media library
+- Events: Manage events with custom post type and ACF fields
+- Access: WordPress roles and capabilities for content management
 
 ## Next.js Patterns
 
-- Data Fetching: Use Server Components for initial data, Client Components for interactivity
-- Route Handlers: Implement API endpoints in app/api directory
-- Server Actions: Use form actions for mutations
-- Caching: Leverage Next.js cache and revalidation strategies
+- Data Fetching: Use Apollo Client with Server/Client components
+- Route Handlers: Map dynamic routes to WordPress slugs
+- Caching: Apollo Client caching with Next.js ISR
 - Components: Build with Server/Client component pattern
-- State Management: Use React Context and hooks for complex state
-- Middleware: Implement auth and routing logic
+- State Management: Apollo Client cache and React Context
+- Middleware: Handle auth and routing with Next.js middleware
 
 ## Complex Implementation Tactics
 
-- Break Down Components: Split large features (e.g., CMS forms, D3.js visualization) into smaller, reusable components (max 200 lines each)
-- Layered Logic: Separate UI, business logic, and data access into distinct files (e.g., `cms.service.ts`, `club.repo.ts`)
-- Incremental Builds: Implement complex features (e.g., network visualization) in stages—start with static data, add interactivity later
-- Facade Pattern: Use a single entry point (e.g., `cmsFacade`) to simplify interactions with multiple subsystems
-- Type Safety: Leverage TypeScript interfaces (e.g., `Club`, `Event`) from schema to catch errors early
-- Mock Data: Test complex logic (e.g., visualization) with static JSON before integrating Turso queries
-- Documentation: Add inline comments for complex flows (e.g., admin CRUD), keep external docs minimal
-- Refactor Early: Simplify over-engineered code during review checkpoints, adhering to KISS
+- Break Down Components: Split large features into smaller components (max 200 lines each)
+- GraphQL Integration: Use fragments and type-safe queries
+- Incremental Builds: Start with static data, add dynamic features later
+- Facade Pattern: Use Apollo hooks to simplify data access
+- Type Safety: Generate TypeScript types from GraphQL schema
+- Mock Data: Test with WordPress staging environment
+- Documentation: Document GraphQL queries and component usage
+- Refactor Early: Keep code simple and maintainable
 
 ## Code Guidelines
 
@@ -82,49 +79,48 @@
 
 ## Security
 
-- Session auth with Auth.js (30-day expiry, 15-day renewal)
-- Hash passwords with Argon2
-- Implement role-based access (admin-only CMS)
-- Sanitize and validate content
+- WordPress authentication for admin access
+- Next.js session management for client
+- Implement role-based access via WordPress roles
+- Sanitize and validate content with DOMPurify
 
-## Database
+## Data Fetching
 
-- Use schema in app/db/schema.ts
-- Write type-safe queries with Drizzle
-- Optimize for visualization (e.g., `club`, `user_in_club`)
+- Use GraphQL fragments for reusable queries
+- Implement cursor-based pagination
+- Cache responses with Apollo Client
+- Handle loading and error states
 
 ## Storage
 
-- Store resources in S3
-- Deliver images via Cloudinary
-- Enforce secure uploads/access (admin-only)
+- Store media in WordPress media library
+- Use WordPress image sizes for optimization
+- Cloudinary for enhanced image delivery
+- Secure media access through WordPress
 
 ## UI Components
 
 - Build with DaisyUI components
 - Ensure accessibility (ARIA)
-- Integrate TipTap for rich text in CMS
+- Use WordPress Gutenberg blocks for rich content
+- Implement loading states with Suspense
 
 ## Quality & Testing
 
-- Deliver testable increments
-- Unit test business logic (e.g., CRUD operations)
-- Integration test APIs
-- Verify auth flows
-- Note edge cases (e.g., duplicate slugs) and suggest tests
+- Unit test React components
+- Test GraphQL queries and mutations
+- Integration test WordPress interactions
+- Verify authentication flows
+- Document edge cases with examples
 
 ## Performance
 
-- Minimize bundle size with code splitting
-- Optimize data fetching/caching
+- Optimize GraphQL queries
+- Implement query batching
 - Use React Suspense for loading states
-- Implement streaming and progressive hydration
+- Configure proper WordPress caching
 
 ## Vietnamese Support
 
-- Use Vietnamese date/time formats
-
-## Club Networking
-
-- Structure: President, Advisors, Members (via `user_in_club`)
-- Activities: Workshops, competitions, research (via `event`, `research`)
+- Use WordPress multilingual support
+- Vietnamese date/time formats

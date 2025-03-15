@@ -1,9 +1,9 @@
 import { Metadata } from "next";
-import { db } from "@/db";
-import { event } from "@/db/schema";
-import { desc, sql } from "drizzle-orm";
+import { getClient } from "@/lib/apollo-client";
+import { GET_EVENTS } from "@/lib/graphql/queries";
 import { PageHeader } from "@/app/components/ui/PageHeader";
 import { EventCard } from "@/app/components/ui/EventCard";
+import type { Event } from "@/types/wordpress";
 
 export const metadata: Metadata = {
   title: "Sự kiện | HUST Research Clubs Network",
@@ -11,38 +11,81 @@ export const metadata: Metadata = {
 };
 
 async function getEventsData() {
-  const events = await db.select().from(event).orderBy(event.startDate);
+  const { data } = await getClient().query({
+    query: GET_EVENTS,
+    variables: {
+      first: 100,
+    },
+  });
+
   return {
-    events,
+    events: data.posts.nodes as Event[],
   };
 }
 
 export default async function EventsPage() {
   const { events } = await getEventsData();
+  const now = new Date();
+  // Use UTC time for comparison to match server timestamps
+  const currentTime = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    now.getUTCHours(),
+    now.getUTCMinutes(),
+    now.getUTCSeconds()
+  );
+
+  const upcomingEvents = events.filter(
+    (event) =>
+      new Date(event.eventData.eventTime.eventStartTime).getTime() >=
+      currentTime
+  );
+
+  const pastEvents = events.filter(
+    (event) =>
+      new Date(event.eventData.eventTime.eventStartTime).getTime() < currentTime
+  );
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="space-y-8">
+      <div className="space-y-12">
         <PageHeader
           title="Sự kiện"
           description="Các sự kiện được tổ chức bởi Thành viên Mạng lưới"
         />
 
-        {events.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {events.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-        ) : (
-          <div className="card bg-base-100 border border-base-200 shadow-sm text-center">
-            <div className="card-body">
-              <p className="text-base-content/70">
-                Hiện tại không có sự kiện nào sắp diễn ra. Vui lòng kiểm tra lại
-                sau!
+        {/* Upcoming Events */}
+        <section>
+          <h2 className="text-2xl font-bold mb-6">Sự kiện sắp diễn ra</h2>
+          {upcomingEvents.length > 0 ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {upcomingEvents.map((event) => (
+                <EventCard key={event.databaseId} event={event} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 text-base-content/60 bg-white/50 rounded-xl backdrop-blur-sm border border-slate-200/60">
+              <div className="text-5xl mb-4">🎉</div>
+              <p>
+                Hiện tại không có sự kiện nào sắp diễn ra.
+                <br />
+                Vui lòng quay lại sau!
               </p>
             </div>
-          </div>
+          )}
+        </section>
+
+        {/* Past Events */}
+        {pastEvents.length > 0 && (
+          <section>
+            <h2 className="text-2xl font-bold mb-6">Sự kiện đã diễn ra</h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {pastEvents.map((event) => (
+                <EventCard key={event.title} event={event} />
+              ))}
+            </div>
+          </section>
         )}
       </div>
     </div>

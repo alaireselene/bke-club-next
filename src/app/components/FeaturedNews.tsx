@@ -1,24 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { Post } from "@/db/schema";
 import { NewsCard } from "./ui/NewsCard";
 import { CategoryTabs } from "./ui/CategoryTabs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import type { Post } from "@/types/wordpress";
 
 type FeaturedNewsProps = {
   posts: Post[];
 };
 
-type CategoryType = "All" | Post["category"];
+type CategoryType =
+  | "All"
+  | "scholarship"
+  | "research-news"
+  | "achievement"
+  | "announcement";
 
-const categories: { id: string; name: string }[] = [
-  { id: "All", name: "Tất cả" },
-  { id: "news", name: "Tin tức" },
-  { id: "announcement", name: "Thông báo" },
-  { id: "research", name: "Nghiên cứu" },
-  { id: "achievement", name: "Thành tựu" },
+const categories = [
+  { slug: "All", name: "Tất cả" },
+  { slug: "scholarship", name: "Học bổng - Trao đổi" },
+  { slug: "research-news", name: "Nghiên cứu" },
+  { slug: "achievement", name: "Thành tựu" },
+  { slug: "announcement", name: "Thông báo" },
 ];
 
 export function FeaturedNews({ posts }: FeaturedNewsProps) {
@@ -27,7 +32,9 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
   const filteredPosts =
     selectedCategory === "All"
       ? posts
-      : posts.filter((post) => post.category === selectedCategory);
+      : posts.filter((post) =>
+          post.categories?.nodes.some((cat) => cat.slug === selectedCategory)
+        );
 
   const heroPost = filteredPosts[0];
   const smallPosts = filteredPosts.slice(1, 5);
@@ -81,17 +88,16 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
             {heroPost && (
               <div className="lg:col-span-7 animate-fade-in">
                 <NewsCard
-                  key={heroPost.id}
-                  slug={`${heroPost.id}`}
-                  title={heroPost.title}
-                  summary={heroPost.summary || ""}
-                  category={heroPost.category}
-                  categoryName={
-                    categories.find((c) => c.id === heroPost.category)?.name ||
-                    heroPost.category
-                  }
-                  publishedAt={heroPost.createdAt.toISOString()}
-                  image={heroPost.featuredImageUrl || undefined}
+                  post={{
+                    slug: heroPost.slug,
+                    title: heroPost.title,
+                    summary: heroPost.excerpt || "",
+                    publishedAt: heroPost.date,
+                    category: heroPost.categories.nodes[0]?.slug || "",
+                    categoryName: heroPost.categories.nodes[0]?.name || "",
+                    featuredImage: heroPost.featuredImage,
+                    author: heroPost.author?.node.name,
+                  }}
                 />
               </div>
             )}
@@ -105,16 +111,16 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
                   style={{ animationDelay: `${(index + 1) * 100}ms` }}
                 >
                   <NewsCard
-                    slug={`${post.id}`}
-                    title={post.title}
-                    summary={post.summary || ""}
-                    category={post.category}
-                    categoryName={
-                      categories.find((c) => c.id === post.category)?.name ||
-                      post.category
-                    }
-                    publishedAt={post.createdAt.toISOString()}
-                    image={post.featuredImageUrl || undefined}
+                    post={{
+                      slug: post.slug,
+                      title: post.title,
+                      summary: post.excerpt || "",
+                      publishedAt: post.date,
+                      category: post.categories.nodes[0]?.slug || "",
+                      categoryName: post.categories.nodes[0]?.name || "",
+                      featuredImage: post.featuredImage,
+                      author: post.author?.node.name,
+                    }}
                   />
                 </div>
               ))}

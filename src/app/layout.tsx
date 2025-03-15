@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-import { getNavigationData } from "./lib/navigation";
+import { getClient } from "@/lib/apollo-client";
+import { GET_NAVIGATION_DATA } from "../lib/graphql/queries";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +33,20 @@ export const metadata: Metadata = {
   },
 };
 
+async function getNavigationData() {
+  const { data } = await getClient().query({
+    query: GET_NAVIGATION_DATA,
+    variables: {
+      first: 100, // Get up to 100 clubs
+    },
+  });
+
+  return {
+    schools: data.schools.nodes,
+    clubs: data.clubs.nodes,
+  };
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -48,7 +64,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col bg-chalk-100 antialiased">
-        <Header schools={schools} clubs={clubs} />
+        <Header schools={schools} />
 
         {/* Main Content */}
         <main className="mt-32 flex-grow pb-20">
@@ -58,6 +74,7 @@ export default async function RootLayout({
         </main>
 
         <Footer />
+        <Toaster />
       </body>
     </html>
   );

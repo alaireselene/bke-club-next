@@ -1,169 +1,226 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import type { School } from "@/types/wordpress";
 import { usePathname } from "next/navigation";
-import { School, Club } from "./types";
 
-type Props = {
+interface Props {
   schools: School[];
-  clubsBySchool: Record<number, Club[]>;
-  scrolled?: boolean;
-};
+  scrolled: boolean;
+}
 
-export function DesktopMenu({
-  schools,
-  clubsBySchool,
-  scrolled = false,
-}: Props) {
+export function DesktopMenu({ schools, scrolled }: Props) {
   const pathname = usePathname();
 
   return (
-    <nav
-      className={`fixed z-40 w-full border-b border-cardinal-200/50 shadow-sm transition-all duration-300 ${
+    <div
+      className={`fixed left-0 right-0 z-40 hidden md:block transition-all duration-300 ${
+        scrolled ? "top-20" : "top-24"
+      } ${
         scrolled
-          ? "top-20 bg-cardinal-800/95 backdrop-blur-md"
-          : "top-24 bg-gradient-to-r from-cardinal-800 via-cardinal-700 to-cardinal-600"
+          ? "bg-cardinal-800/95 backdrop-blur-md"
+          : "bg-gradient-to-r from-cardinal-800 via-cardinal-700 to-cardinal-600"
       }`}
     >
-      {/* Scientific menu decoration - subtle pattern */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px]"></div>
-      </div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Main Navigation */}
+        <nav className="flex h-12 items-center justify-evenly">
+          {/* Left Navigation */}
+          <Link
+            href="/events"
+            className={`flex items-center transition-colors hover:underline ${
+              pathname === "/events" ? "text-cardinal-600" : "text-chalk-100"
+            }`}
+          >
+            Sự kiện
+          </Link>
+          <Link
+            href="/news"
+            className={`flex items-center transition-colors hover:underline ${
+              pathname === "/news" ? "text-cardinal-600" : "text-chalk-100"
+            }`}
+          >
+            Tin tức
+          </Link>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="hidden h-16 items-center justify-between md:flex">
-          <div className="flex flex-1 items-center justify-between space-x-8">
-            {/* About Dropdown */}
-            <div className="group relative">
-              <button
-                className={`group inline-flex items-center font-medium text-chalk-100 hover:text-chalk-200 uppercase transition-all duration-200 focus:outline-none ${
-                  pathname?.startsWith("/about")
-                    ? "text-chalk-200 font-semibold after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-chalk-200 after:content-['']"
-                    : ""
-                }`}
-                aria-haspopup="true"
-              >
-                <span>Giới thiệu</span>
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              <div className="invisible absolute left-0 z-50 mt-2 w-48 transform translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-                <div className="rounded-lg bg-white/95 backdrop-blur-lg py-2 shadow-xl ring-1 ring-cardinal-200/70">
-                  <Link
-                    href="/about"
-                    className="group/link relative block px-4 py-2.5 text-sm text-cardinal-700 hover:text-cardinal-600 transition-colors duration-200"
-                  >
-                    Tổng quan
-                  </Link>
-                  <Link
-                    href="/about/structure"
-                    className="hover:text-cardinal-600 block px-4 py-2 text-sm text-cardinal-700 hover:bg-cardinal-50"
-                  >
-                    Cơ cấu tổ chức
-                  </Link>
+          {/* Center Navigation - Network */}
+          <div className="group/network relative">
+            <Link
+              href="/network"
+              className={`flex items-center transition-colors hover:underline ${
+                pathname.startsWith("/network")
+                  ? "text-cardinal-600"
+                  : "text-chalk-100"
+              }`}
+            >
+              Mạng lưới
+            </Link>
+
+            {/* Dropdown Menu */}
+            <div className="absolute left-0 mt-2 w-72 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 invisible opacity-0 transition-all duration-200 group-hover/network:visible group-hover/network:opacity-100">
+              <div className="py-1">
+                {/* School section */}
+                <div className="px-3 py-1.5 text-xs font-medium text-slate-500">
+                  Trường
                 </div>
-              </div>
-            </div>
-
-            {/* News and Events Links */}
-            {[
-              { href: "/news", text: "Tin tức" },
-              { href: "/events", text: "Sự kiện nổi bật" },
-            ].map(({ href, text }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`hover:text-chalk-200 focus:ring-chalk-200 text-chalk-100 uppercase transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-                  pathname === href ? "text-chalk-200 font-bold" : "font-medium"
-                }`}
-                aria-current={pathname === href ? "page" : undefined}
-              >
-                {text}
-              </Link>
-            ))}
-
-            {/* Network Dropdown */}
-            <div className="group relative">
-              <button
-                className={`hover:text-chalk-200 focus:ring-chalk-200 flex items-center font-medium text-chalk-100 uppercase transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-                  pathname?.startsWith("/network")
-                    ? "text-chalk-200 font-bold"
-                    : ""
-                }`}
-                aria-haspopup="true"
-              >
-                <span>Mạng lưới</span>
-                <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              <div className="invisible absolute left-0 z-50 mt-2 w-64 transform opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-                <div className="ring-opacity-5 rounded-lg bg-white py-2 shadow-lg ring-1 ring-black">
-                  {schools.map((school) => (
-                    <div
-                      key={school.id}
-                      className="group/school relative px-4 py-2 hover:bg-cardinal-50"
-                    >
+                {schools
+                  .filter((school) => school.name?.startsWith("Trường"))
+                  .map((school) => (
+                    <div key={school.id} className="group/school relative">
                       <Link
-                        href={`/network?school=${school.slug.toUpperCase()}`}
-                        className="flex items-center justify-between"
+                        href={`/network?school=${school.slug?.toUpperCase()}`}
+                        className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                       >
-                        <span className="text-sm text-cardinal-700">
-                          {school.name}
-                        </span>
-                        <span className="ml-2 rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
-                          {school.slug.toUpperCase()}
-                        </span>
+                        <span>{school.name}</span>
+                        {school.slug && (
+                          <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                            {school.slug.toUpperCase()}
+                          </span>
+                        )}
                       </Link>
-                      {/* Clubs Submenu */}
-                      <div className="invisible absolute top-0 left-full ml-2 w-64 transform opacity-0 transition-all duration-200 group-hover/school:visible group-hover/school:opacity-100">
-                        <div className="ring-opacity-5 rounded-lg bg-white py-2 shadow-lg ring-1 ring-black">
-                          {(clubsBySchool[school.id] || []).map((club) => (
+                      {/* Nested Dropdown */}
+                      <div className="absolute left-full top-0 invisible w-72 rounded-md bg-white shadow-lg opacity-0 transition-all duration-200 group-hover/school:visible group-hover/school:opacity-100">
+                        <div className="py-1">
+                          {(school.clubs?.nodes || []).map((club) => (
                             <Link
                               key={club.id}
                               href={`/network/${club.slug}`}
-                              className="hover:text-cardinal-600 block px-4 py-2 text-sm text-cardinal-700 hover:bg-cardinal-50"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                             >
-                              {club.name}
+                              {club.title}
                             </Link>
                           ))}
+                          {(!school.clubs?.nodes ||
+                            school.clubs.nodes.length === 0) && (
+                            <div className="px-4 py-2 text-sm text-slate-500 italic">
+                              Chưa có CLB
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
                   ))}
+
+                {/* Faculty section */}
+                <div className="mt-2 border-t border-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500">
+                  Khoa
                 </div>
+                {schools
+                  .filter((school) => school.name?.startsWith("Khoa"))
+                  .map((school) => (
+                    <div key={school.id} className="group/school relative">
+                      <Link
+                        href={`/network?school=${school.slug?.toUpperCase()}`}
+                        className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                      >
+                        <span>{school.name}</span>
+                        {school.slug && (
+                          <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                            {school.slug.toUpperCase()}
+                          </span>
+                        )}
+                      </Link>
+                      {/* Nested Dropdown */}
+                      <div className="absolute left-full top-0 invisible w-72 rounded-md bg-white shadow-lg opacity-0 transition-all duration-200 group-hover/school:visible group-hover/school:opacity-100">
+                        <div className="py-1">
+                          {(school.clubs?.nodes || []).map((club) => (
+                            <Link
+                              key={club.id}
+                              href={`/network/${club.slug}`}
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                            >
+                              {club.title}
+                            </Link>
+                          ))}
+                          {(!school.clubs?.nodes ||
+                            school.clubs.nodes.length === 0) && (
+                            <div className="px-4 py-2 text-sm text-slate-500 italic">
+                              Chưa có CLB
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                {/* Others section */}
+                <div className="mt-2 border-t border-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500">
+                  Khác
+                </div>
+                {schools
+                  .filter(
+                    (school) =>
+                      !school.name?.startsWith("Trường") &&
+                      !school.name?.startsWith("Khoa")
+                  )
+                  .map((school) => (
+                    <div key={school.id} className="group/school relative">
+                      <Link
+                        href={`/network?school=${school.slug?.toUpperCase()}`}
+                        className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                      >
+                        <span>{school.name}</span>
+                        {school.slug && (
+                          <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                            {school.slug.toUpperCase()}
+                          </span>
+                        )}
+                      </Link>
+                      {/* Nested Dropdown */}
+                      <div className="absolute left-full top-0 invisible w-72 rounded-md bg-white shadow-lg opacity-0 transition-all duration-200 group-hover/school:visible group-hover/school:opacity-100">
+                        <div className="py-1">
+                          {(school.clubs?.nodes || []).map((club) => (
+                            <Link
+                              key={club.id}
+                              href={`/network/${club.slug}`}
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                            >
+                              {club.title}
+                            </Link>
+                          ))}
+                          {(!school.clubs?.nodes ||
+                            school.clubs.nodes.length === 0) && (
+                            <div className="px-4 py-2 text-sm text-slate-500 italic">
+                              Chưa có CLB
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
               </div>
             </div>
-
-            {/* Additional Navigation Links */}
-            {[
-              { href: "/research", text: "Đề tài SVNCKH" },
-              { href: "/partnerships", text: "Hợp tác Đối ngoại" },
-              { href: "/resources", text: "Tài nguyên" },
-              { href: "/facilities", text: "Cơ sở vật chất" },
-            ].map(({ href, text }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`hover:text-chalk-200 focus:ring-chalk-200 font-medium text-chalk-100 uppercase transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-                  pathname === href ? "text-chalk-200 font-bold" : ""
-                }`}
-                aria-current={pathname === href ? "page" : undefined}
-              >
-                {text}
-              </Link>
-            ))}
-
-            <a
-              href="https://student.hust.edu.vn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-chalk-200 hover:text-chalk-300 focus:ring-chalk-200 transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none"
-              aria-label="Open eHUST in new tab"
-            >
-              eHUST
-            </a>
           </div>
-        </div>
+
+          {/* Right Navigation */}
+          <Link
+            href="/research"
+            className={`flex items-center transition-colors hover:underline ${
+              pathname === "/research" ? "text-cardinal-600" : "text-chalk-100"
+            }`}
+          >
+            Sinh viên NCKH
+          </Link>
+          <Link
+            href="/resources"
+            className={`flex items-center transition-colors hover:underline ${
+              pathname === "/resources" ? "text-cardinal-600" : "text-chalk-100"
+            }`}
+          >
+            Tài nguyên
+          </Link>
+          <Link
+            href="/facilities"
+            className={`flex items-center transition-colors hover:underline ${
+              pathname === "/facilities"
+                ? "text-cardinal-600"
+                : "text-chalk-100"
+            }`}
+          >
+            Cơ sở vật chất
+          </Link>
+        </nav>
       </div>
-    </nav>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { School, Club, User } from "@/db/schema";
+import type { Club } from "@/types/wordpress";
 import {
   CalendarHeart,
   FlagTriangleRight,
@@ -15,31 +15,38 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-interface Leadership {
-  president: User | null;
-  advisors: User[];
+interface SchoolBasicInfo {
+  id: string;
+  databaseId: number;
+  name: string;
+  slug: string;
+  featuredImage?: {
+    node: {
+      sourceUrl: string;
+      altText?: string;
+    };
+  };
 }
 
 interface ClubDetailsProps {
   club: Club;
-  school: School | null;
-  leadership: Leadership;
+  school: SchoolBasicInfo | null;
   className?: string;
 }
 
 export function ClubDetails({
   club,
   school,
-  leadership,
   className = "",
 }: ClubDetailsProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const establishedYear = new Date(club.establishedAt).getFullYear();
-  const presidentName = leadership?.president?.fullName || "Chưa có";
+  const establishedYear = club.clubData?.establishedYear || "Chưa có";
+  const presidentName = club.clubData?.president?.presidentName || "Chưa có";
+  const membersCount = club.clubData?.membersCount || 0;
   const advisorNames =
-    leadership?.advisors?.length > 0
-      ? leadership.advisors
-          .map((a) => a?.fullName)
+    club.clubData?.advisors && club.clubData.advisors.length > 0
+      ? club.clubData.advisors
+          .map((a) => a.advisorName)
           .filter(Boolean)
           .join(", ")
       : "Chưa có";
@@ -59,7 +66,7 @@ export function ClubDetails({
       "from-navy-500 to-sunflower-500",
     ];
 
-    return gradients[club.id % gradients.length];
+    return gradients[club.databaseId % gradients.length];
   };
 
   const clubGradient = getClubGradient();
@@ -92,14 +99,16 @@ export function ClubDetails({
             </div>
           )}
 
-          <h1 className="text-4xl font-bold mb-4">{club.name}</h1>
+          <h1 className="text-4xl font-bold mb-4">{club.title}</h1>
 
           {/* Stats */}
           <div className="flex flex-wrap items-center gap-6 text-white/90">
             <div className="flex items-center">
               <UserIcon className="h-5 w-5 mr-2" />
               <span>
-                <span className="font-semibold">{club.memberCount || 0}</span>{" "}
+                <span className="font-semibold">
+                  {club.clubData.membersCount}
+                </span>{" "}
                 thành viên
               </span>
             </div>
@@ -164,7 +173,7 @@ export function ClubDetails({
                     <span className="text-sm">Thành viên</span>
                   </div>
                   <div className="text-xl font-bold text-slate-800">
-                    {club.memberCount || 0}
+                    {club.clubData.membersCount}
                   </div>
                 </div>
 
@@ -197,7 +206,7 @@ export function ClubDetails({
             <div className="prose prose-base max-w-none prose-headings:text-cardinal-700 prose-headings:font-semibold prose-p:text-slate-600 prose-a:text-cardinal-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:shadow-md prose-strong:text-cardinal-700 prose-ul:text-slate-600 prose-ol:text-slate-600">
               <div
                 className="prose"
-                dangerouslySetInnerHTML={{ __html: club.description }}
+                dangerouslySetInnerHTML={{ __html: club.content }}
               />
             </div>
           </div>

@@ -1,62 +1,72 @@
 import { Metadata } from "next";
-import { db } from "@/db";
-import { school, club } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { PageHeader } from "@/app/components/ui/PageHeader";
-import { NetworkContent } from "./NetworkContent";
+import { getClient } from "@/lib/apollo-client";
+import { GET_NAVIGATION_DATA } from "@/lib/graphql/queries";
+import { NetworkContent } from "@/app/components/network/NetworkContent";
+import type { School } from "@/types/wordpress";
 
 export const metadata: Metadata = {
-  title: "Mạng lưới thành viên | HUST Research Clubs Network",
-  description:
-    "Khám phá mạng lưới các câu lạc bộ sinh viên nghiên cứu tại HUST",
+  title: "Mạng lưới | HUST Research Clubs Network",
+  description: "Tìm hiểu và kết nối với các câu lạc bộ nghiên cứu tại HUST",
 };
 
-async function getNetworkData(schoolFilter?: string) {
-  // Get all schools
-  const schools = await db.select().from(school).orderBy(school.name);
-
-  // Get all clubs with their school relationships
-  const clubs = await db.select().from(club).orderBy(club.name);
-
-  // Group clubs by school
-  const clubsBySchool = clubs.reduce((acc, club) => {
-    if (club.schoolId) {
-      if (!acc[club.schoolId]) {
-        acc[club.schoolId] = [];
-      }
-      acc[club.schoolId].push(club);
-    }
-    return acc;
-  }, {} as Record<number, typeof clubs>);
-
-  return {
-    schools,
-    clubsBySchool,
-  };
+interface Props {
+  searchParams: { school?: string };
 }
 
-export default async function NetworkPage({
-  searchParams,
-}: {
-  searchParams: { school?: string };
-}) {
-  const { schools, clubsBySchool } = await getNetworkData();
+// Revalidate cache every hour
+export const revalidate = 3600;
 
+async function getNetworkData() {
+  try {
+    const { data } = await getClient().query({
+      query: GET_NAVIGATION_DATA,
+      variables: {
+        first: 100, // Fetch first 100 clubs
+      },
+      context: {
+        fetchOptions: {
+          next: {
+            // Tags for granular revalidation
+            tags: ["schools", "clubs"],
+          },
+        },
+      },
+    });
+
+    return {
+      schools: data.schools.nodes as School[],
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error) {
+    console.error("Failed to fetch network data:", error);
+    throw new Error("Failed to fetch network data");
+  }
+}
+
+export default async function NetworkPage({ searchParams }: Props) {
+  const { schools, timestamp } = await getNetworkData();
+
+  // Add timestamp comment for debugging cache
   return (
     <>
-      <PageHeader
-        title="Mạng lưới thành viên"
-        description="Khám phá mạng lưới các câu lạc bộ sinh viên nghiên cứu tại HUST"
-        breadcrumbItems={[{ text: "Mạng lưới thành viên", href: "/network" }]}
-      />
-
-      <div className="container mx-auto px-4 py-8">
+      {/* Cache timestamp: ${timestamp} */}
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <NetworkContent
-          initialSchools={schools}
-          initialClubsBySchool={clubsBySchool}
+          schools={schools}
           initialSchoolFilter={searchParams.school}
         />
       </div>
     </>
   );
+}
+
+// Generate static params for initial build
+export async function generateStaticParams() {
+  const { schools } = await getNetworkData();
+
+  return schools
+    .map((school) => ({
+      school: school.slug?.toUpperCase(),
+    }))
+    .filter((params) => params.school);
 }

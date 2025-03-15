@@ -1,68 +1,63 @@
 import { Metadata } from "next";
-import { db } from "@/db";
-import { post, user } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { getClient } from "@/lib/apollo-client";
+import { GET_POSTS, GET_CATEGORIES } from "@/lib/graphql/queries";
 import { PageHeader } from "@/app/components/ui/PageHeader";
 import { NewsFilter } from "@/app/components/news/NewsFilter";
-import { NewsCard } from "@/app/components/ui/NewsCard";
-import { Suspense } from "react";
+import type { Post } from "@/types/wordpress";
 
 export const metadata: Metadata = {
   title: "Tin tức | HUST Research Clubs Network",
   description: "Tin tức và thông báo mới nhất từ Mạng lưới",
 };
 
-const categories = [
-  { id: "research", name: "Nghiên cứu" },
-  { id: "announcement", name: "Thông báo" },
-  { id: "news", name: "Tin tức" },
-  { id: "achievement", name: "Thành tựu" },
-];
+export const revalidate = 3600; // Revalidate every hour
 
-interface Post {
-  id: number;
-  title: string;
-  summary: string | null;
-  category: "news" | "announcement" | "research" | "achievement";
-  createdAt: Date;
-  featuredImageUrl: string | null;
-  author: {
-    fullName: string;
+interface CategoryNode {
+  slug: string;
+  name: string;
+}
+
+interface NewsData {
+  posts: {
+    nodes: Post[];
+  };
+  categories: {
+    nodes: CategoryNode[];
   };
 }
 
 async function getNewsData() {
-  const posts = await db
-    .select({
-      id: post.id,
-      title: post.title,
-      summary: post.summary,
-      category: post.category,
-      createdAt: post.createdAt,
-      featuredImageUrl: post.featuredImageUrl,
-      author: {
-        fullName: user.fullName,
-      },
-    })
-    .from(post)
-    .leftJoin(user, eq(post.authorId, user.id))
-    .orderBy(desc(post.createdAt));
+  const { data } = await getClient().query<NewsData>({
+    query: GET_POSTS,
+    variables: {
+      first: 100,
+    },
+  });
+
+  const { data: categoryData } = await getClient().query<NewsData>({
+    query: GET_CATEGORIES,
+  });
+
+  const categories = categoryData.categories.nodes.filter(
+    (category) => category.slug !== "event"
+  );
 
   return {
-    posts,
+    posts: data.posts.nodes,
+    categories,
   };
 }
 
 export default async function NewsPage() {
-  const { posts } = await getNewsData();
+  const { posts, categories } = await getNewsData();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <PageHeader title="Tin tức" description="Các tin tức mới nhất" />
-
-      <Suspense fallback={<div>Loading...</div>}>
-        <NewsFilter categories={categories} posts={posts} />
-      </Suspense>
+      <PageHeader
+        title="Tin tức"
+        description="Tin tức và thông báo mới nhất từ Mạng lưới"
+      />
+      <NewsFilter categories={categories} posts={posts} />
     </div>
   );
 }

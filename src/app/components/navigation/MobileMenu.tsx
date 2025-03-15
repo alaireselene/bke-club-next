@@ -1,127 +1,146 @@
 "use client";
 
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import Image from "next/image";
+import { Menu, X, Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { School, Club } from "./types";
+import type { School } from "@/types/wordpress";
 
-type Props = {
+interface Props {
   isOpen: boolean;
   onClose: () => void;
   schools: School[];
-  clubsBySchool: Record<number, Club[]>;
-};
+  currentLang?: string;
+  onToggleLanguage?: () => void;
+  isAdmin?: boolean;
+}
 
-export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
+export function MobileMenu({
+  isOpen,
+  onClose,
+  schools,
+  currentLang = "VI",
+  onToggleLanguage,
+  isAdmin = false,
+}: Props) {
   const pathname = usePathname();
 
   return (
     <div
       id="mobile-menu"
-      className={`mobile-menu fixed inset-0 z-30 transform md:hidden ${
+      className={`mobile-menu fixed inset-0 z-50 transform md:hidden ${
         isOpen ? "translate-x-0" : "translate-x-full"
       } transition-transform duration-200 ease-in-out`}
     >
+      {/* Backdrop */}
       <div
         className="bg-opacity-75 absolute inset-0 bg-cardinal-800 transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
+
+      {/* Menu Content */}
       <div
-        className="absolute right-0 h-full w-64 transform overflow-y-auto bg-white shadow-xl transition-transform"
+        className="absolute right-0 h-full w-[90%] max-w-md transform overflow-y-auto bg-white shadow-xl transition-transform"
         role="dialog"
         aria-modal="true"
         aria-label="Mobile menu"
       >
+        {/* Header */}
         <div className="flex h-20 items-center justify-between border-b border-cardinal-600 px-4">
-          <div className="text-lg font-medium text-cardinal-600">Menu</div>
+          <div className="flex items-center space-x-4">
+            <div className="text-lg font-medium text-cardinal-600">Menu</div>
+            {onToggleLanguage && (
+              <button
+                onClick={onToggleLanguage}
+                className="rounded-md px-2 py-1 text-sm font-medium text-cardinal-600 hover:bg-cardinal-50"
+              >
+                {currentLang}
+              </button>
+            )}
+          </div>
           <button
             onClick={onClose}
-            className="focus:ring-cardinal-600 hover:text-cardinal-600 rounded-md p-2 text-cardinal-600 hover:bg-cardinal-50 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+            className="rounded-md p-2 text-cardinal-600 hover:bg-cardinal-50 hover:text-cardinal-700 focus:outline-none focus:ring-2 focus:ring-cardinal-500"
             aria-label="Close menu"
           >
-            <Menu className="h-6 w-6" />
+            <X className="h-6 w-6" />
           </button>
         </div>
+
+        {/* Navigation Links */}
         <nav className="px-2 py-3">
           <div className="space-y-1">
-            {/* Basic Links */}
+            {/* Main Links */}
             {[
+              { href: "/events", text: "Sự kiện" },
+              { href: "/news", text: "Tin tức" },
               { href: "/calendar", text: "Lịch công tác" },
-              { href: "/contact", text: "Liên hệ" },
             ].map(({ href, text }) => (
               <Link
                 key={href}
                 href={href}
-                className={`hover:text-cardinal-600 block rounded-md px-3 py-2 text-base font-medium text-cardinal-700 transition-colors hover:bg-cardinal-50 ${
-                  pathname === href ? "text-cardinal-600 bg-cardinal-50" : ""
+                className={`block rounded-lg px-3 py-2 text-base font-medium transition-colors ${
+                  pathname === href
+                    ? "bg-cardinal-50 text-cardinal-600"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
                 }`}
-                aria-current={pathname === href ? "page" : undefined}
                 onClick={onClose}
               >
                 {text}
               </Link>
             ))}
 
-            <div className="my-4 border-t border-cardinal-200" />
-
-            {/* About Section */}
-            <div className="mb-2">
-              <div className="px-3 py-2 text-base font-medium text-cardinal-700">
-                Giới thiệu
-              </div>
-              <div className="ml-4">
-                <Link
-                  href="/about"
-                  className={`hover:text-cardinal-600 block py-2 text-sm font-medium text-cardinal-600 hover:bg-cardinal-50 ${
-                    pathname === "/about"
-                      ? "text-cardinal-600 bg-cardinal-50"
-                      : ""
-                  }`}
-                  onClick={onClose}
-                >
-                  Tổng quan
-                </Link>
-                <Link
-                  href="/about/structure"
-                  className={`hover:text-cardinal-600 block py-2 text-sm font-medium text-cardinal-600 hover:bg-cardinal-50 ${
-                    pathname === "/about/structure"
-                      ? "text-cardinal-600 bg-cardinal-50"
-                      : ""
-                  }`}
-                  onClick={onClose}
-                >
-                  Cơ cấu tổ chức
-                </Link>
-              </div>
-            </div>
-
             {/* Network Section */}
-            <div className="my-2">
-              <div className="px-3 py-2 text-base font-medium text-cardinal-700">
+            <div className="relative space-y-2 py-4">
+              <div className="px-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
                 Mạng lưới
               </div>
+
               {schools.map((school) => (
-                <div key={school.id} className="mb-3 ml-4">
+                <div key={school.id} className="rounded-lg hover:bg-slate-50">
                   <Link
-                    href={`/network?school=${school.slug.toUpperCase()}`}
-                    className="hover:text-cardinal-600 block py-2 text-sm font-medium text-cardinal-600"
+                    href={`/network?school=${school.slug?.toUpperCase()}`}
+                    className="flex items-center gap-3 px-3 py-2"
                     onClick={onClose}
                   >
-                    {school.name}
-                    <span className="ml-2 rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
-                      {school.slug.toUpperCase()}
-                    </span>
+                    {school.featuredImage && (
+                      <Image
+                        src={school.featuredImage.node.sourceUrl}
+                        alt={school.name}
+                        width={32}
+                        height={32}
+                        className="rounded-lg"
+                      />
+                    )}
+                    <div>
+                      <div className="text-sm font-medium text-slate-900">
+                        {school.name}
+                      </div>
+                      {school.slug && (
+                        <div className="text-xs text-slate-500">
+                          {school.slug.toUpperCase()}
+                        </div>
+                      )}
+                    </div>
                   </Link>
-                  <div className="ml-4">
-                    {(clubsBySchool[school.id] || []).map((club) => (
+
+                  <div className="ml-11 mt-1 space-y-1 pb-2">
+                    {school.clubs?.nodes.map((club) => (
                       <Link
                         key={club.id}
                         href={`/network/${club.slug}`}
-                        className="hover:text-cardinal-600 block py-1.5 text-sm text-cardinal-600"
+                        className="flex items-center justify-between px-3 py-1 text-sm"
                         onClick={onClose}
                       >
-                        {club.name}
+                        <span className="text-slate-600 hover:text-cardinal-600">
+                          {club.title}
+                        </span>
+                        {club.clubData?.membersCount && (
+                          <span className="text-xs text-slate-400">
+                            {club.clubData.membersCount} thành viên
+                          </span>
+                        )}
                       </Link>
                     ))}
                   </div>
@@ -134,29 +153,46 @@ export function MobileMenu({ isOpen, onClose, schools, clubsBySchool }: Props) {
               { href: "/research", text: "Sinh viên NCKH" },
               { href: "/resources", text: "Tài nguyên" },
               { href: "/facilities", text: "Cơ sở vật chất" },
+              { href: "/contact", text: "Liên hệ" },
             ].map(({ href, text }) => (
               <Link
                 key={href}
                 href={href}
-                className={`hover:text-cardinal-600 block rounded-md px-3 py-2 text-base font-medium text-cardinal-700 transition-colors hover:bg-cardinal-50 ${
-                  pathname === href ? "text-cardinal-600 bg-cardinal-50" : ""
+                className={`block rounded-lg px-3 py-2 text-base font-medium transition-colors ${
+                  pathname === href
+                    ? "bg-cardinal-50 text-cardinal-600"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
                 }`}
-                aria-current={pathname === href ? "page" : undefined}
                 onClick={onClose}
               >
                 {text}
               </Link>
             ))}
 
+            {/* Admin Link */}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="flex items-center rounded-lg px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
+                onClick={onClose}
+              >
+                <Settings className="h-5 w-5 mr-2" />
+                Quản trị
+              </Link>
+            )}
+          </div>
+
+          {/* External Links */}
+          <div className="mt-6 border-t border-slate-200 pt-4">
             <a
               href="https://student.hust.edu.vn"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-cardinal-600 mt-2 block rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-cardinal-50"
-              aria-label="Open eHUST in new tab"
+              className="flex items-center justify-between rounded-lg px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
               onClick={onClose}
             >
-              eHUST
+              <span>eHUST</span>
+              <span className="text-xs">(student.hust.edu.vn)</span>
             </a>
           </div>
         </nav>

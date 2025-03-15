@@ -1,24 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { CategoryTabs } from "@/app/components/ui/CategoryTabs";
 import { NewsCard } from "@/app/components/ui/NewsCard";
+import type { Post } from "@/types/wordpress";
 
 interface Category {
-  id: string;
+  slug: string;
   name: string;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  summary: string | null;
-  category: "news" | "announcement" | "research" | "achievement";
-  createdAt: Date;
-  featuredImageUrl: string | null;
-  author: {
-    fullName: string;
-  } | null;
 }
 
 interface NewsFilterProps {
@@ -26,16 +15,16 @@ interface NewsFilterProps {
   posts: Post[];
 }
 
-export function NewsFilter({
-  categories,
-  posts: initialPosts,
-}: NewsFilterProps) {
+export function NewsFilter({ categories, posts }: NewsFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const filteredPosts =
-    selectedCategory === null
-      ? initialPosts
-      : initialPosts.filter((post) => post.category === selectedCategory);
+  const filteredPosts = useMemo(() => {
+    if (!selectedCategory) return posts;
+
+    return posts.filter((post) =>
+      post.categories.nodes.some((cat) => cat.slug === selectedCategory)
+    );
+  }, [posts, selectedCategory]);
 
   return (
     <>
@@ -47,19 +36,26 @@ export function NewsFilter({
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredPosts.map((post) => (
           <NewsCard
-            key={post.id}
-            slug={`${post.id}`}
-            title={post.title}
-            summary={post.summary || ""}
-            category={post.category}
-            categoryName={
-              categories.find((c) => c.id === post.category)?.name ||
-              post.category
-            }
-            publishedAt={post.createdAt.toISOString()}
-            image={post.featuredImageUrl || undefined}
+            key={post.databaseId}
+            post={{
+              slug: post.slug,
+              title: post.title,
+              summary: post.excerpt || "",
+              featuredImage: post.featuredImage,
+              publishedAt: post.date,
+              category: post.categories.nodes[0]?.slug || "news",
+              categoryName: post.categories.nodes[0]?.name || "Tin tức",
+              author: post.author?.node.name,
+            }}
           />
         ))}
+
+        {filteredPosts.length === 0 && (
+          <div className="col-span-full text-center py-16 text-base-content/60 bg-white/50 rounded-xl backdrop-blur-sm border border-slate-200/60">
+            <div className="text-5xl mb-4">📰</div>
+            <p>Không có bài viết nào trong danh mục này.</p>
+          </div>
+        )}
       </div>
     </>
   );

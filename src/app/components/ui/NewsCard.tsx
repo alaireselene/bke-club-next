@@ -1,63 +1,75 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { Calendar } from "lucide-react";
+import type { FeaturedImage } from "@/types/wordpress";
 
-interface NewsCardProps {
+interface PostData {
   slug: string;
   title: string;
   summary: string;
+  featuredImage?: FeaturedImage;
+  publishedAt: string;
   category: string;
   categoryName: string;
-  publishedAt: string;
-  image?: string;
+  author?: string;
 }
 
-export function NewsCard({
-  slug,
-  title,
-  summary,
-  category,
-  categoryName,
-  publishedAt,
-  image,
-}: NewsCardProps) {
+interface NewsCardProps {
+  post: PostData;
+}
+
+export function NewsCard({ post }: NewsCardProps) {
+  const publishDate = new Date(post.publishedAt);
+  const formattedDate = new Intl.DateTimeFormat("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(publishDate);
+
   return (
-    <article className="card bg-base-100 shadow-md hover:scale-[1.02] transition-transform min-h-[24rem]">
-      {image && (
-        <figure>
-          <Image
-            src={image}
-            alt={title}
-            width={600}
-            height={400}
-            className="h-48 w-full object-cover"
-          />
-        </figure>
-      )}
-      <div className="card-body">
-        <div className="grow">
-          <div className="flex items-center gap-2 text-sm mb-2">
-            <span className="badge badge-primary">{categoryName}</span>
-            <time dateTime={publishedAt} className="text-base-content/60">
-              {new Date(publishedAt).toLocaleDateString("vi-VN")}
-            </time>
+    <Link href={`/news/${post.slug}`}>
+      <article className="group h-full bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden transition hover:shadow-md">
+        {post.featuredImage?.node.sourceUrl && (
+          <div className="relative h-48 w-full overflow-hidden">
+            <Image
+              src={post.featuredImage.node.sourceUrl}
+              alt={post.title}
+              fill
+              className="object-cover transition group-hover:scale-105"
+            />
           </div>
+        )}
+        <div className="p-6">
+          <div className="space-y-4">
+            <div>
+              <span className="inline-flex items-center rounded-full bg-cardinal-50 px-2 py-1 text-xs font-medium text-cardinal-700">
+                {post.categoryName}
+              </span>
+            </div>
 
-          <h2 className="card-title mb-2">{title}</h2>
+            <h3 className="text-lg font-semibold line-clamp-2 group-hover:text-cardinal-600 transition-colors">
+              {post.title}
+            </h3>
 
-          <p className="text-base-content/70">{summary}</p>
+            <div
+              className="text-sm text-slate-600 line-clamp-2"
+              dangerouslySetInnerHTML={{ __html: post.summary }}
+            />
+
+            <div className="flex items-center justify-between text-sm text-slate-500">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <time dateTime={publishDate.toISOString()}>
+                  {formattedDate}
+                </time>
+              </div>
+              {post.author && (
+                <span className="text-sm text-slate-500">{post.author}</span>
+              )}
+            </div>
+          </div>
         </div>
-
-        <div className="card-actions justify-start mt-4">
-          <Link
-            href={`/news/${slug}`}
-            className="flex items-center text-primary hover:text-primary-focus"
-          >
-            Đọc tiếp
-            <ChevronRight className="h-4 w-4 ml-1" />
-          </Link>
-        </div>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 }

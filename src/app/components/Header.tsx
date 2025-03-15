@@ -6,29 +6,16 @@ import { Logo } from "@/app/components/navigation/Logo";
 import { NavigationMenu } from "@/app/components/navigation/NavigationMenu";
 import { MobileMenu } from "@/app/components/navigation/MobileMenu";
 import { DesktopMenu } from "@/app/components/navigation/DesktopMenu";
-import type { School, Club } from "@/app/components/navigation/types";
+import type { School } from "@/types/wordpress";
 
 type Props = {
   schools: School[];
-  clubs: Club[];
 };
 
-export function Header({ schools, clubs }: Props) {
+export function Header({ schools }: Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("VI");
   const [scrolled, setScrolled] = useState(false);
-
-  // Group clubs by schoolId for efficient lookup
-  const clubsBySchool = clubs.reduce<Record<number, Club[]>>((acc, club) => {
-    const schoolId = club.schoolId;
-    if (schoolId) {
-      if (!acc[schoolId]) {
-        acc[schoolId] = [];
-      }
-      acc[schoolId].push(club);
-    }
-    return acc;
-  }, {});
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -44,12 +31,7 @@ export function Header({ schools, clubs }: Props) {
   // Handle scroll effect for header
   useEffect(() => {
     const handleScroll = () => {
-      const offset = window.scrollY;
-      if (offset > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -100,6 +82,7 @@ export function Header({ schools, clubs }: Props) {
           >
             <Logo />
 
+            {/* Top Navigation Menu */}
             <NavigationMenu
               currentLang={currentLang}
               onToggleLanguage={toggleLanguage}
@@ -121,17 +104,17 @@ export function Header({ schools, clubs }: Props) {
         </div>
       </header>
 
-      <DesktopMenu
-        schools={schools}
-        clubsBySchool={clubsBySchool}
-        scrolled={scrolled}
-      />
+      {/* Secondary Navigation Menu */}
+      <DesktopMenu schools={schools} scrolled={scrolled} />
 
+      {/* Mobile Menu */}
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
         schools={schools}
-        clubsBySchool={clubsBySchool}
+        currentLang={currentLang}
+        onToggleLanguage={toggleLanguage}
+        isAdmin={false} // TODO: Get from auth context
       />
     </>
   );

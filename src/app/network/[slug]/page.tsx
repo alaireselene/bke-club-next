@@ -1,11 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { db } from "@/db";
-import { club, school, user, userInClub } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { getClient } from "@/lib/apollo-client";
+import { GET_CLUB_BY_SLUG, GET_NAVIGATION_DATA } from "@/lib/graphql/queries";
 import { PageHeader } from "@/app/components/ui/PageHeader";
 import { ClubDetails } from "@/app/components/network/ClubDetails";
-import type { Club, School, User } from "@/db/schema";
+import type { Club } from "@/types/wordpress";
 
 interface Props {
   params: {
@@ -15,68 +14,29 @@ interface Props {
 
 interface ClubData {
   club: Club;
-  school: School | null;
-  leadership: {
-    president: User | null;
-    advisors: User[];
-  };
 }
 
 async function getClubData(slug: string): Promise<ClubData | null> {
-  const clubData = await db
-    .select()
-    .from(club)
-    .where(eq(club.slug, slug))
-    .then((rows) => rows[0]);
+  try {
+    const { data } = await getClient().query<ClubData>({
+      query: GET_CLUB_BY_SLUG,
+      variables: {
+        slug: slug,
+      },
+      context: {
+        fetchOptions: {
+          next: {
+            tags: ["clubs"],
+          },
+        },
+      },
+    });
 
-  if (!clubData) {
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch club data:", error);
     return null;
   }
-
-  const [schoolData, leadershipRows] = await Promise.all([
-    // Get school
-    clubData.schoolId
-      ? db
-          .select()
-          .from(school)
-          .where(eq(school.id, clubData.schoolId))
-          .then((rows) => rows[0])
-      : null,
-
-    // Get advisors
-    db
-      .select({
-        user: user,
-      })
-      .from(userInClub)
-      .where(
-        and(eq(userInClub.clubId, clubData.id), eq(userInClub.role, "advisor"))
-      )
-      .innerJoin(user, eq(userInClub.userId, user.id)),
-  ]);
-
-  // Get president
-  const presidentRow = await db
-    .select()
-    .from(user)
-    .innerJoin(
-      userInClub,
-      and(
-        eq(userInClub.userId, user.id),
-        eq(userInClub.clubId, clubData.id),
-        eq(userInClub.role, "president")
-      )
-    )
-    .then((rows) => rows[0]?.user);
-
-  return {
-    club: clubData,
-    school: schoolData,
-    leadership: {
-      president: presidentRow || null,
-      advisors: leadershipRows.map((row) => row.user),
-    },
-  };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -85,12 +45,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) {
     return {
       title: "Không tìm thấy câu lạc bộ | HUST Research Clubs Network",
+      description: "Câu lạc bộ này không tồn tại, hoặc đã bị xóa.",
     };
   }
 
   return {
-    title: `${data.club.name} | HUST Research Clubs Network`,
-    description: data.club.description.slice(0, 160),
+    title: `${data.club.title} | HUST Research Clubs Network`,
+    description: data.club.content.slice(0, 160).replace(/<[^>]*>/g, ""),
+    openGraph: data.club.featuredImage
+      ? {
+          images: [data.club.featuredImage.node.sourceUrl],
+        }
+      : undefined,
   };
 }
 
@@ -102,22 +68,42 @@ export default async function ClubPage({ params }: Props) {
   }
 
   return (
-    <>
-      <PageHeader
-        title={data.club.name}
-        breadcrumbItems={[
-          { text: "Mạng lưới thành viên", href: "/network" },
-          { text: data.club.name, href: `/network/${data.club.slug}` },
-        ]}
-      />
-
-      <div className="container mx-auto px-4 py-8">
-        <ClubDetails
-          club={data.club}
-          school={data.school}
-          leadership={data.leadership}
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="space-y-8">
+        <PageHeader
+          title={data.club.title}
+          breadcrumbItems={[
+            { text: "Mạng lưới thành viên", href: "/network" },
+            { text: data.club.title, href: `/network/${data.club.slug}` },
+          ]}
         />
+
+        <ClubDetails club={data.club} school={data.club.school?.node || null} />
       </div>
-    </>
+    </div>
   );
+}
+
+// Generate static params for initial build
+export async function generateStaticParams() {
+  const { data } = await getClient().query<{
+    schools: {
+      nodes: Array<{
+        clubs: {
+          nodes: Array<{ slug: string }>;
+        };
+      }>;
+    };
+  }>({
+    query: GET_NAVIGATION_DATA,
+    variables: {
+      first: 100, // Get up to 100 clubs for static paths
+    },
+  });
+
+  return data.schools.nodes
+    .flatMap((school) => school.clubs.nodes)
+    .map((club) => ({
+      slug: club.slug,
+    }));
 }

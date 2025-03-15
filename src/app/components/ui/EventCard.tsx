@@ -1,107 +1,72 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Users, ChevronRight } from "lucide-react";
-import { BaseCard } from "./BaseCard";
-import { formatDate } from "@/lib/utils/date";
-import type { Event } from "@/db/schema";
+import Image from "next/image";
+import { CalendarDays, MapPin } from "lucide-react";
+import type { Event, FeaturedImage } from "@/types/wordpress";
 
-type EventCardProps = {
+interface EventCardProps {
   event: Event;
-  isHero?: boolean;
-  className?: string;
-};
+}
 
-const eventTypeLabels: Record<Event["type"], string> = {
-  workshop: "Hội thảo",
-  competition: "Cuộc thi",
-  cultural: "Văn hóa",
-  research: "Nghiên cứu",
-  symposium: "Hội nghị",
-};
-
-const getEventTypeLabel = (type: Event["type"]) =>
-  eventTypeLabels[type] || type;
-
-// Placeholder until we add it to the schema
-const getParticipants = (event: Event) =>
-  event.capacity || Math.floor(Math.random() * 1000) + 100;
-const formatParticipants = (count: number) =>
-  count >= 1000 ? `${(count / 1000).toFixed(1)}K` : count.toString();
-
-export function EventCard({
-  event,
-  isHero = false,
-  className,
-}: EventCardProps) {
-  const imageHeight = isHero ? "h-72 sm:h-96" : "h-48";
+export function EventCard({ event }: EventCardProps) {
+  const startDate = new Date(event.eventData.eventTime.eventStartTime);
+  const formattedDate = new Intl.DateTimeFormat("vi-VN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(startDate);
 
   return (
-    <Link href={`/events/${event.id}`}>
-      <BaseCard
-        hover="scale"
-        rounded="lg"
-        className={className + " p-0 bg-base-100"}
-      >
-        <div className="relative">
-          <Image
-            src={event.imageUrl || "https://placehold.co/1200x800"}
-            alt={event.title}
-            width={1200}
-            height={800}
-            className={`w-full object-cover transition-transform group-hover:scale-105 ${imageHeight}`}
-            loading={isHero ? "eager" : "lazy"}
-          />
-        </div>
-
-        <div className="flex h-full flex-col p-5">
-          <div className="flex-1">
-            <div className="mb-3 space-y-3">
-              <div className="flex flex-wrap items-center gap-3 text-sm text-base-content/60">
-                <span className="badge badge-primary badge-outline">
-                  {getEventTypeLabel(event.type)}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Users className="h-4 w-4" />
-                  {formatParticipants(getParticipants(event))}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-base-content/60">
-                <Calendar className="h-4 w-4" />
-                <span>
-                  {formatDate(event.startDate)} - {formatDate(event.endDate)}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-base-content/60">
-                <MapPin className="h-4 w-4" />
-                <span>{event.location}</span>
-              </div>
-            </div>
-
-            <h3
-              className={`font-sans font-bold uppercase text-neutral-content ${
-                isHero ? "mb-3 text-2xl" : "mb-3 text-lg"
-              }`}
-            >
+    <Link href={`/events/${event.slug}`}>
+      <article className="group h-full bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden transition hover:shadow-md">
+        {event.featuredImage?.node.sourceUrl && (
+          <div className="relative h-48 w-full overflow-hidden">
+            <Image
+              src={event.featuredImage.node.sourceUrl}
+              alt={event.title}
+              fill
+              className="object-cover transition group-hover:scale-105"
+            />
+          </div>
+        )}
+        <div className="p-6">
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold line-clamp-2 group-hover:text-cardinal-600 transition-colors">
               {event.title}
             </h3>
-
-            {isHero && event.summary && (
-              <p className="mb-6 font-sans text-base-content/70">
-                {event.summary}
+            {event.excerpt && (
+              <p className="text-sm text-slate-600 line-clamp-2">
+                {event.excerpt}
               </p>
             )}
-          </div>
-
-          <div className="mt-auto inline-flex items-center font-medium text-primary hover:text-primary-focus">
-            Xem chi tiết
-            <ChevronRight className="ml-1 h-4 w-4" />
+            <div className="pt-4 space-y-2 border-t border-slate-100">
+              <div className="flex items-center text-sm text-slate-600">
+                <CalendarDays className="h-4 w-4 mr-2 text-cardinal-500" />
+                <span>{formattedDate}</span>
+              </div>
+              <div className="flex items-center text-sm text-slate-600">
+                <MapPin className="h-4 w-4 mr-2 text-cardinal-500" />
+                <span>{event.eventData.location}</span>
+              </div>
+              {event.eventData.organizer && (
+                <div className="flex items-center">
+                  {event.eventData.organizer.logo?.sourceUrl && (
+                    <Image
+                      src={event.eventData.organizer.logo.sourceUrl}
+                      alt={event.eventData.organizer.name}
+                      width={24}
+                      height={24}
+                      className="rounded-full mr-2"
+                    />
+                  )}
+                  <span className="text-sm text-slate-600">
+                    {event.eventData.organizer.name}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </BaseCard>
+      </article>
     </Link>
   );
 }
