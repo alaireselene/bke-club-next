@@ -11,7 +11,6 @@ interface PostData {
   publishedAt: string;
   category: string;
   categoryName: string;
-  author?: string;
 }
 
 interface NewsCardProps {
@@ -63,9 +62,6 @@ export function NewsCard({ post }: NewsCardProps) {
                   {formattedDate}
                 </time>
               </div>
-              {post.author && (
-                <span className="text-sm text-slate-500">{post.author}</span>
-              )}
             </div>
           </div>
         </div>

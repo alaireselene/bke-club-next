@@ -55,7 +55,7 @@ export function EventCard({ event }: EventCardProps) {
                       alt={event.eventData.organizer.name}
                       width={24}
                       height={24}
-                      className="rounded-full mr-2"
+                      className="h-6 w-6 rounded-full object-cover mr-2"
                     />
                   )}
                   <span className="text-sm text-slate-600">

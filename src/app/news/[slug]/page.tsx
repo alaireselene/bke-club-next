@@ -97,9 +97,6 @@ export default async function NewsPage({ params }: Props) {
           </time>
         </div>
         <h1 className="mb-4 font-sans text-4xl text-slate-900">{post.title}</h1>
-        {post.author?.node.name && (
-          <p className="text-slate-500">Tác giả {post.author.node.name}</p>
-        )}
       </header>
 
       {/* Content */}

@@ -164,7 +164,7 @@ export default async function EventPage({ params }: Props) {
                         alt={event.eventData.organizer.name}
                         width={48}
                         height={48}
-                        className="rounded-full ring-2 ring-cardinal-500 ring-offset-2"
+                        className="h-12 w-12 rounded-full object-cover ring-2 ring-cardinal-500 ring-offset-2"
                       />
                     )}
                     <div>
