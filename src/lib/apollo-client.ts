@@ -84,6 +84,16 @@ export const client = new ApolloClient({
       },
     },
   }),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'network-only', // Don't use cache for queries by default
+      nextFetchPolicy: 'cache-first', // Use cache for subsequent requests
+      pollInterval: 300000, // Poll every 5 minutes for fresh data
+    },
+    query: {
+      fetchPolicy: 'network-only', // Don't use cache for one-time queries
+    },
+  },
 });
 
 // Server-side client
