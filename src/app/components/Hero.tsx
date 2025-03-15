@@ -38,10 +38,10 @@ export function Hero({ stats }: HeroProps) {
         <div className="absolute bottom-20 right-10 h-60 w-60 rounded-full border border-dashed border-sunflower-200/40 opacity-60"></div>
 
         {/* Scientific formulas - subtle background text */}
-        <div className="absolute bottom-10 left-10 font-serif text-[10px] text-cardinal-300/20 rotate-12 select-none">
+        <div className="absolute bottom-10 left-10 font-sans text-[10px] text-cardinal-300/20 rotate-12 select-none">
           E = mc<sup>2</sup>
         </div>
-        <div className="absolute top-20 right-20 font-serif text-[10px] text-navy-300/20 -rotate-6 select-none">
+        <div className="absolute top-20 right-20 font-sans text-[10px] text-navy-300/20 -rotate-6 select-none">
           F = ma
         </div>
 

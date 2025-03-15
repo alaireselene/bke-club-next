@@ -49,31 +49,37 @@ export function MobileMenu({
     <div
       id="mobile-menu"
       className={`mobile-menu fixed inset-0 z-50 transform md:hidden ${
-        isOpen ? "translate-x-0" : "translate-x-full"
-      } transition-transform duration-200 ease-in-out`}
+        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      } transition-all duration-300 ease-out`}
     >
       {/* Backdrop */}
       <div
-        className="bg-opacity-75 absolute inset-0 bg-cardinal-800 transition-opacity"
+        className={`absolute inset-0 bg-cardinal-900/60 backdrop-blur-sm transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Menu Content */}
       <div
-        className="absolute right-0 h-full w-[90%] max-w-md transform overflow-y-auto bg-white shadow-xl transition-transform"
+        className={`absolute right-0 h-full w-[90%] max-w-md transform overflow-y-auto bg-white/95 backdrop-blur-md shadow-xl transition-all duration-300 ease-out dark:bg-card/95 ${
+          isOpen ? "translate-x-0" : "translate-x-full scale-95"
+        }`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile menu"
       >
         {/* Header */}
-        <div className="flex h-20 items-center justify-between border-b border-cardinal-600 px-4">
+        <div className="flex h-20 items-center justify-between border-b border-cardinal-100 px-6 backdrop-blur-lg">
           <div className="flex items-center space-x-4">
-            <div className="text-lg font-medium text-cardinal-600">Menu</div>
+            <div className="font-sans text-xl font-semibold text-cardinal-600">
+              Menu
+            </div>
             {onToggleLanguage && (
               <button
                 onClick={onToggleLanguage}
-                className="rounded-md px-2 py-1 text-sm font-medium text-cardinal-600 hover:bg-cardinal-50"
+                className="rounded-full bg-cardinal-50/50 px-3 py-1.5 text-sm font-medium text-cardinal-600 transition-all duration-200 hover:bg-cardinal-100/50"
               >
                 {currentLang}
               </button>
@@ -81,7 +87,7 @@ export function MobileMenu({
           </div>
           <button
             onClick={onClose}
-            className="rounded-md p-2 text-cardinal-600 hover:bg-cardinal-50 hover:text-cardinal-700 focus:outline-none focus:ring-2 focus:ring-cardinal-500"
+            className="rounded-full p-2 text-cardinal-600 transition-all duration-200 hover:bg-cardinal-50/50 hover:text-cardinal-700 focus:outline-none focus:ring-2 focus:ring-cardinal-500 focus:ring-offset-2"
             aria-label="Close menu"
           >
             <X className="h-6 w-6" />
@@ -100,10 +106,10 @@ export function MobileMenu({
               <Link
                 key={href}
                 href={href}
-                className={`block rounded-lg px-3 py-2 text-base font-medium transition-colors ${
+                className={`block rounded-full px-4 py-2.5 text-base font-medium transition-all duration-200 ${
                   pathname === href
-                    ? "bg-cardinal-50 text-cardinal-600"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
+                    ? "bg-cardinal-50/50 text-cardinal-600"
+                    : "text-slate-600 hover:bg-slate-50/50 hover:text-cardinal-600"
                 }`}
                 onClick={onClose}
               >
@@ -113,7 +119,7 @@ export function MobileMenu({
 
             {/* Network Section */}
             <div className="relative space-y-2 py-4">
-              <div className="px-3 text-sm font-semibold uppercase tracking-wider text-slate-400">
+              <div className="px-4 py-2 text-sm font-sans font-semibold uppercase tracking-wider text-cardinal-600/70">
                 Mạng lưới
               </div>
 
@@ -121,7 +127,7 @@ export function MobileMenu({
               <div>
                 <button
                   onClick={() => toggleCategory("schools")}
-                  className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50"
+                  className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600 rounded-full"
                 >
                   <span>Trường</span>
                   <div className="ml-2">
@@ -140,10 +146,12 @@ export function MobileMenu({
                         <div key={school.id} className="rounded-lg">
                           <button
                             onClick={() => toggleSchool(school.id)}
-                            className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+                            className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
-                            <span>{school.name}</span>
-                            <div className="ml-2">
+                            <span className="flex-1 text-left truncate">
+                              {school.name}
+                            </span>
+                            <div className="flex-shrink-0">
                               {expandedSchools.has(school.id) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
@@ -152,19 +160,19 @@ export function MobileMenu({
                             </div>
                           </button>
                           {expandedSchools.has(school.id) && (
-                            <div className="ml-11 mt-1 space-y-1 pb-2">
+                            <div className="ml-8 mt-2 space-y-0.5 pb-2">
                               {school.clubs?.nodes.map((club) => (
                                 <Link
                                   key={club.id}
                                   href={`/network/${club.slug}`}
-                                  className="block px-3 py-1 text-sm"
+                                  className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
                                   onClick={onClose}
                                 >
-                                  <span className="flex-1 text-slate-600 hover:text-cardinal-600">
+                                  <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
                                     {club.title}
                                   </span>
                                   {club.clubData?.membersCount && (
-                                    <span className="ml-2 text-xs text-slate-400 whitespace-nowrap">
+                                    <span className="ml-2 rounded-full bg-slate-100/80 px-2 py-0.5 text-xs text-slate-500 transition-colors group-hover:bg-cardinal-100/50 group-hover:text-cardinal-600">
                                       {club.clubData.membersCount} thành viên
                                     </span>
                                   )}
@@ -172,7 +180,7 @@ export function MobileMenu({
                               ))}
                               {(!school.clubs?.nodes ||
                                 school.clubs.nodes.length === 0) && (
-                                <div className="px-3 py-2 text-sm text-slate-500 italic">
+                                <div className="mx-4 flex items-center justify-center rounded-full bg-slate-50/50 px-4 py-3 text-sm text-slate-500 italic backdrop-blur-sm">
                                   Chưa có CLB
                                 </div>
                               )}
@@ -188,7 +196,7 @@ export function MobileMenu({
               <div>
                 <button
                   onClick={() => toggleCategory("faculties")}
-                  className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50"
+                  className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600 rounded-full"
                 >
                   <span>Khoa</span>
                   {expandedCategory === "faculties" ? (
@@ -205,10 +213,12 @@ export function MobileMenu({
                         <div key={school.id} className="rounded-lg">
                           <button
                             onClick={() => toggleSchool(school.id)}
-                            className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+                            className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
-                            <span>{school.name}</span>
-                            <div className="ml-2">
+                            <span className="flex-1 text-left truncate">
+                              {school.name}
+                            </span>
+                            <div className="flex-shrink-0">
                               {expandedSchools.has(school.id) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
@@ -217,19 +227,19 @@ export function MobileMenu({
                             </div>
                           </button>
                           {expandedSchools.has(school.id) && (
-                            <div className="ml-11 mt-1 space-y-1 pb-2">
+                            <div className="ml-8 mt-2 space-y-0.5 pb-2">
                               {school.clubs?.nodes.map((club) => (
                                 <Link
                                   key={club.id}
                                   href={`/network/${club.slug}`}
-                                  className="flex items-center justify-between px-3 py-1 text-sm"
+                                  className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
                                   onClick={onClose}
                                 >
-                                  <span className="text-slate-600 hover:text-cardinal-600">
+                                  <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
                                     {club.title}
                                   </span>
                                   {club.clubData?.membersCount && (
-                                    <span className="text-xs text-slate-400">
+                                    <span className="ml-2 rounded-full bg-slate-100/80 px-2 py-0.5 text-xs text-slate-500 transition-colors group-hover:bg-cardinal-100/50 group-hover:text-cardinal-600">
                                       {club.clubData.membersCount} thành viên
                                     </span>
                                   )}
@@ -237,7 +247,7 @@ export function MobileMenu({
                               ))}
                               {(!school.clubs?.nodes ||
                                 school.clubs.nodes.length === 0) && (
-                                <div className="px-3 py-2 text-sm text-slate-500 italic">
+                                <div className="mx-4 flex items-center justify-center rounded-full bg-slate-50/50 px-4 py-3 text-sm text-slate-500 italic backdrop-blur-sm">
                                   Chưa có CLB
                                 </div>
                               )}
@@ -253,7 +263,7 @@ export function MobileMenu({
               <div>
                 <button
                   onClick={() => toggleCategory("others")}
-                  className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50"
+                  className="flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600 rounded-full"
                 >
                   <span>Khác</span>
                   <div className="ml-2">
@@ -276,10 +286,12 @@ export function MobileMenu({
                         <div key={school.id} className="rounded-lg">
                           <button
                             onClick={() => toggleSchool(school.id)}
-                            className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+                            className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
-                            <span>{school.name}</span>
-                            <div className="ml-2">
+                            <span className="flex-1 text-left truncate">
+                              {school.name}
+                            </span>
+                            <div className="flex-shrink-0">
                               {expandedSchools.has(school.id) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
@@ -288,22 +300,22 @@ export function MobileMenu({
                             </div>
                           </button>
                           {expandedSchools.has(school.id) && (
-                            <div className="ml-11 mt-1 space-y-1 pb-2">
+                            <div className="ml-8 mt-2 space-y-0.5 pb-2">
                               {school.clubs?.nodes.map((club) => (
                                 <Link
                                   key={club.id}
                                   href={`/network/${club.slug}`}
-                                  className="flex items-center justify-between px-3 py-1 text-sm"
+                                  className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
                                   onClick={onClose}
                                 >
-                                  <span className="text-slate-600 hover:text-cardinal-600">
+                                  <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
                                     {club.title}
                                   </span>
                                 </Link>
                               ))}
                               {(!school.clubs?.nodes ||
                                 school.clubs.nodes.length === 0) && (
-                                <div className="px-3 py-2 text-sm text-slate-500 italic">
+                                <div className="mx-4 flex items-center justify-center rounded-full bg-slate-50/50 px-4 py-3 text-sm text-slate-500 italic backdrop-blur-sm">
                                   Chưa có CLB
                                 </div>
                               )}
@@ -351,17 +363,21 @@ export function MobileMenu({
           </div>
 
           {/* External Links */}
-          <div className="mt-6 border-t border-slate-200 pt-4">
-            <a
-              href="https://student.hust.edu.vn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between rounded-lg px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
-              onClick={onClose}
-            >
-              <span>eHUST</span>
-              <span className="text-xs">(student.hust.edu.vn)</span>
-            </a>
+          <div className="mt-6 border-t border-slate-200/60 pt-4">
+            <div className="px-2">
+              <a
+                href="https://student.hust.edu.vn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-full px-4 py-2.5 text-base font-medium text-slate-600 transition-all duration-200 hover:bg-cardinal-50/30 hover:text-cardinal-600"
+                onClick={onClose}
+              >
+                <span>eHUST</span>
+                <span className="text-xs text-slate-500">
+                  (student.hust.edu.vn)
+                </span>
+              </a>
+            </div>
           </div>
         </nav>
       </div>

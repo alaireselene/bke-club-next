@@ -49,11 +49,12 @@ export function CategoryTabs({
     pills: {
       nav: "flex flex-wrap gap-2",
       tab: {
-        default: "rounded-full hover:text-cardinal-600",
+        default:
+          "rounded-full hover:text-cardinal-600 backdrop-blur-sm transition-all duration-200",
         selected:
-          "bg-cardinal-600 text-white rounded-full hover:bg-cardinal-700",
+          "bg-cardinal-600/90 text-white rounded-full hover:bg-cardinal-600 shadow-md hover:shadow-lg hover:scale-[1.02]",
         notSelected:
-          "bg-white/60 text-charcoal-600 hover:bg-white/80 shadow-sm",
+          "bg-white/80 text-charcoal-600 hover:bg-white/90 shadow-sm hover:shadow-md hover:scale-[1.02]",
       },
     },
     underline: {
@@ -111,7 +112,7 @@ export function CategoryTabs({
         aria-controls={`panel-${isAll ? "all" : category?.slug}`}
       >
         {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
-        <span>{isAll ? "Toàn bộ" : category?.name}</span>
+        <span>{category?.name}</span>
         {category?.count !== undefined && (
           <span
             className={cn(
