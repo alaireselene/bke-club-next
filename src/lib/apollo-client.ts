@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import type { Post, Club } from '@/types/wordpress';
 
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_WORDPRESS_API_URL,
@@ -14,23 +15,42 @@ export const client = new ApolloClient({
           // Handle pagination for posts
           posts: {
             keyArgs: ['where'],
-            merge(existing, incoming, { args }) {
+            merge(existing: { nodes: Post[] } | undefined, incoming: { nodes: Post[] }, { args }) {
               if (!args) return incoming;
+
+              // Create a Set of IDs to prevent duplicates
+              const seenIds = new Set<string>();
               const merged = existing ? existing.nodes : [];
+
+              // Add existing IDs to Set
+              merged.forEach((node: Post) => seenIds.add(node.id));
+
+              // Only add nodes that haven't been seen
+              const newNodes = incoming.nodes.filter((node: Post) => !seenIds.has(node.id));
+
               return {
                 ...incoming,
-                nodes: [...merged, ...incoming.nodes],
+                nodes: [...merged, ...newNodes],
               };
             },
           },
           // Handle pagination for clubs
           clubs: {
             keyArgs: ['where'],
-            merge(existing, incoming) {
+            merge(existing: { nodes: Club[] } | undefined, incoming: { nodes: Club[] }) {
+              // Create a Set of IDs to prevent duplicates
+              const seenIds = new Set<string>();
               const merged = existing ? existing.nodes : [];
+
+              // Add existing IDs to Set
+              merged.forEach((node: Club) => seenIds.add(node.id));
+
+              // Only add nodes that haven't been seen
+              const newNodes = incoming.nodes.filter((node: Club) => !seenIds.has(node.id));
+
               return {
                 ...incoming,
-                nodes: [...merged, ...incoming.nodes],
+                nodes: [...merged, ...newNodes],
               };
             },
           },

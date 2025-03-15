@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Settings } from "lucide-react";
+import { Menu, X, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { School } from "@/types/wordpress";
+import { useState } from "react";
 
 interface Props {
   isOpen: boolean;
@@ -24,6 +25,26 @@ export function MobileMenu({
   isAdmin = false,
 }: Props) {
   const pathname = usePathname();
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedSchools, setExpandedSchools] = useState<Set<string>>(
+    new Set()
+  );
+
+  const toggleSchool = (schoolId: string) => {
+    setExpandedSchools((prev) => {
+      const next = new Set(prev);
+      if (next.has(schoolId)) {
+        next.delete(schoolId);
+      } else {
+        next.add(schoolId);
+      }
+      return next;
+    });
+  };
+
+  const toggleCategory = (category: string) => {
+    setExpandedCategory(expandedCategory === category ? null : category);
+  };
 
   return (
     <div
@@ -97,55 +118,203 @@ export function MobileMenu({
                 Mạng lưới
               </div>
 
-              {schools.map((school) => (
-                <div key={school.id} className="rounded-lg hover:bg-slate-50">
-                  <Link
-                    href={`/network?school=${school.slug?.toUpperCase()}`}
-                    className="flex items-center gap-3 px-3 py-2"
-                    onClick={onClose}
-                  >
-                    {school.featuredImage && (
-                      <Image
-                        src={school.featuredImage.node.sourceUrl}
-                        alt={school.name}
-                        width={32}
-                        height={32}
-                        className="rounded-lg"
-                      />
+              {/* Schools Section */}
+              <div>
+                <button
+                  onClick={() => toggleCategory("schools")}
+                  className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50"
+                >
+                  <span>Trường</span>
+                  <div className="ml-2">
+                    {expandedCategory === "schools" ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
                     )}
-                    <div>
-                      <div className="text-sm font-medium text-slate-900">
-                        {school.name}
-                      </div>
-                      {school.slug && (
-                        <div className="text-xs text-slate-500">
-                          {school.slug.toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-
-                  <div className="ml-11 mt-1 space-y-1 pb-2">
-                    {school.clubs?.nodes.map((club) => (
-                      <Link
-                        key={club.id}
-                        href={`/network/${club.slug}`}
-                        className="flex items-center justify-between px-3 py-1 text-sm"
-                        onClick={onClose}
-                      >
-                        <span className="text-slate-600 hover:text-cardinal-600">
-                          {club.title}
-                        </span>
-                        {club.clubData?.membersCount && (
-                          <span className="text-xs text-slate-400">
-                            {club.clubData.membersCount} thành viên
-                          </span>
-                        )}
-                      </Link>
-                    ))}
                   </div>
-                </div>
-              ))}
+                </button>
+                {expandedCategory === "schools" && (
+                  <div className="space-y-1">
+                    {schools
+                      .filter((school) => school.name?.startsWith("Trường"))
+                      .map((school) => (
+                        <div key={school.id} className="rounded-lg">
+                          <button
+                            onClick={() => toggleSchool(school.id)}
+                            className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+                          >
+                            <span>{school.name}</span>
+                            <div className="ml-2">
+                              {expandedSchools.has(school.id) ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
+                            </div>
+                          </button>
+                          {expandedSchools.has(school.id) && (
+                            <div className="ml-11 mt-1 space-y-1 pb-2">
+                              {school.clubs?.nodes.map((club) => (
+                                <Link
+                                  key={club.id}
+                                  href={`/network/${club.slug}`}
+                                  className="block px-3 py-1 text-sm"
+                                  onClick={onClose}
+                                >
+                                  <span className="flex-1 text-slate-600 hover:text-cardinal-600">
+                                    {club.title}
+                                  </span>
+                                  {club.clubData?.membersCount && (
+                                    <span className="ml-2 text-xs text-slate-400 whitespace-nowrap">
+                                      {club.clubData.membersCount} thành viên
+                                    </span>
+                                  )}
+                                </Link>
+                              ))}
+                              {(!school.clubs?.nodes ||
+                                school.clubs.nodes.length === 0) && (
+                                <div className="px-3 py-2 text-sm text-slate-500 italic">
+                                  Chưa có CLB
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Faculty Section */}
+              <div>
+                <button
+                  onClick={() => toggleCategory("faculties")}
+                  className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50"
+                >
+                  <span>Khoa</span>
+                  {expandedCategory === "faculties" ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
+                {expandedCategory === "faculties" && (
+                  <div className="space-y-1">
+                    {schools
+                      .filter((school) => school.name?.startsWith("Khoa"))
+                      .map((school) => (
+                        <div key={school.id} className="rounded-lg">
+                          <button
+                            onClick={() => toggleSchool(school.id)}
+                            className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+                          >
+                            <span>{school.name}</span>
+                            <div className="ml-2">
+                              {expandedSchools.has(school.id) ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
+                            </div>
+                          </button>
+                          {expandedSchools.has(school.id) && (
+                            <div className="ml-11 mt-1 space-y-1 pb-2">
+                              {school.clubs?.nodes.map((club) => (
+                                <Link
+                                  key={club.id}
+                                  href={`/network/${club.slug}`}
+                                  className="flex items-center justify-between px-3 py-1 text-sm"
+                                  onClick={onClose}
+                                >
+                                  <span className="text-slate-600 hover:text-cardinal-600">
+                                    {club.title}
+                                  </span>
+                                  {club.clubData?.membersCount && (
+                                    <span className="text-xs text-slate-400">
+                                      {club.clubData.membersCount} thành viên
+                                    </span>
+                                  )}
+                                </Link>
+                              ))}
+                              {(!school.clubs?.nodes ||
+                                school.clubs.nodes.length === 0) && (
+                                <div className="px-3 py-2 text-sm text-slate-500 italic">
+                                  Chưa có CLB
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Others Section */}
+              <div>
+                <button
+                  onClick={() => toggleCategory("others")}
+                  className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-500 hover:bg-slate-50"
+                >
+                  <span>Khác</span>
+                  <div className="ml-2">
+                    {expandedCategory === "others" ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                  </div>
+                </button>
+                {expandedCategory === "others" && (
+                  <div className="space-y-1">
+                    {schools
+                      .filter(
+                        (school) =>
+                          !school.name?.startsWith("Trường") &&
+                          !school.name?.startsWith("Khoa")
+                      )
+                      .map((school) => (
+                        <div key={school.id} className="rounded-lg">
+                          <button
+                            onClick={() => toggleSchool(school.id)}
+                            className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50"
+                          >
+                            <span>{school.name}</span>
+                            <div className="ml-2">
+                              {expandedSchools.has(school.id) ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
+                            </div>
+                          </button>
+                          {expandedSchools.has(school.id) && (
+                            <div className="ml-11 mt-1 space-y-1 pb-2">
+                              {school.clubs?.nodes.map((club) => (
+                                <Link
+                                  key={club.id}
+                                  href={`/network/${club.slug}`}
+                                  className="flex items-center justify-between px-3 py-1 text-sm"
+                                  onClick={onClose}
+                                >
+                                  <span className="text-slate-600 hover:text-cardinal-600">
+                                    {club.title}
+                                  </span>
+                                </Link>
+                              ))}
+                              {(!school.clubs?.nodes ||
+                                school.clubs.nodes.length === 0) && (
+                                <div className="px-3 py-2 text-sm text-slate-500 italic">
+                                  Chưa có CLB
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Other Links */}
