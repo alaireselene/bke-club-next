@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export const metadata = {
   title: "Cơ cấu tổ chức - Mạng lưới CLB Sinh viên NCKH",
   description:
@@ -15,6 +17,17 @@ export default function StructurePage() {
           liên kết đa cấp, tạo sự kết nối chặt chẽ giữa các câu lạc bộ thành
           viên và các đơn vị hỗ trợ nghiên cứu, đổi mới sáng tạo.
         </p>
+      </div>
+
+      <div className="mt-8">
+        <Image
+          src="/org-chart.jpg"
+          alt="Sơ đồ tổ chức Mạng lưới SVNCKH"
+          width={1200}
+          height={800}
+          className="w-full h-auto rounded-lg shadow-lg"
+          priority
+        />
       </div>
 
       <section className="mt-12">
@@ -109,7 +122,7 @@ export default function StructurePage() {
             tiếp triển khai các hoạt động nghiên cứu, trao đổi học thuật và thực
             hiện các dự án khoa học.
           </p>
-          <div className="bg-cardinal-50 rounded-lg p-6 mt-4">
+          {/* <div className="p-6 mt-4">
             <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
               Hoạt động chính
             </h3>
@@ -121,7 +134,7 @@ export default function StructurePage() {
                 Cuộc thi nghiên cứu khoa học cấp trường, cấp khu vực và quốc gia
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </section>
 

@@ -119,7 +119,7 @@ export function Footer() {
                     href="tel:0911550986"
                     className="hover:text-cardinal-600 transition-colors"
                   >
-                    0911550986 (Mr. Điển)
+                    0911550986 (PGS. Lương Xuân Điển)
                   </a>
                 </li>
                 <li className="flex items-center">
@@ -128,7 +128,7 @@ export function Footer() {
                     href="tel:0983900429"
                     className="hover:text-cardinal-600 transition-colors"
                   >
-                    0983900429 (Mr. Chiến)
+                    0983900429 (TS. Nguyễn Bá Chiến)
                   </a>
                 </li>
               </ul>

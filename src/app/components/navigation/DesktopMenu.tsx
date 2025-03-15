@@ -38,8 +38,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
             <Link
               href="/about"
               className={`flex items-center gap-1 transition-colors hover:underline text-white ${
-                pathname.startsWith("/about") &&
-                "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
+                pathname.startsWith("/about") && "bg-cardinal-700"
               } uppercase font-bold relative`}
             >
               Giới thiệu
@@ -70,19 +69,13 @@ export function DesktopMenu({ schools, scrolled }: Props) {
           </div>
           <Link
             href="/news"
-            className={`flex items-center transition-colors hover:underline text-white ${
-              pathname === "/news" &&
-              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-            } uppercase font-bold relative`}
+            className={`flex items-center transition-colors hover:underline text-white $ uppercase font-bold relative`}
           >
             Tin tức
           </Link>
           <Link
             href="/events"
-            className={`flex items-center transition-colors hover:underline text-white ${
-              pathname === "/events" &&
-              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-            } uppercase font-bold relative`}
+            className={`flex items-center transition-colors hover:underline text-white  uppercase font-bold relative`}
           >
             Sự kiện nổi bật
           </Link>
@@ -95,10 +88,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
           >
             <Link
               href="/network"
-              className={`flex items-center gap-1 transition-colors hover:underline text-white ${
-                pathname.startsWith("/network") &&
-                "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-              } uppercase font-bold relative`}
+              className={`flex items-center gap-1 transition-colors hover:underline text-white uppercase font-bold relative`}
             >
               Mạng lưới
               {networkExpanded ? (
@@ -247,43 +237,31 @@ export function DesktopMenu({ schools, scrolled }: Props) {
           {/* Right Navigation */}
           <Link
             href="/research"
-            className={`flex items-center transition-colors hover:underline text-white ${
-              pathname === "/research" &&
-              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-            } uppercase font-bold relative`}
+            className={`flex items-center transition-colors hover:underline text-white  uppercase font-bold relative`}
           >
             Đề tài SVNCKH
           </Link>
           <Link
             href="/partners"
-            className={`flex items-center transition-colors hover:underline text-white ${
-              pathname === "/partners" &&
-              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-            } uppercase font-bold relative`}
+            className={`flex items-center transition-colors hover:underline text-white  uppercase font-bold relative`}
           >
             Hợp tác đối ngoại
           </Link>
           <Link
             href="/resources"
-            className={`flex items-center transition-colors hover:underline text-white ${
-              pathname === "/resources" &&
-              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-            } uppercase font-bold relative`}
+            className={`flex items-center transition-colors hover:underline text-white  uppercase font-bold relative`}
           >
             Tài nguyên
           </Link>
           <Link
             href="/facility"
-            className={`flex items-center transition-colors hover:underline text-white ${
-              pathname === "/facility" &&
-              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-white after:rounded-full"
-            } uppercase font-bold relative`}
+            className={`flex items-center transition-colors hover:underline text-white  uppercase font-bold relative`}
           >
             Cơ sở vật chất
           </Link>
           <Link
             href="https://student.hust.edu.vn"
-            className={`flex items-center transition-colors hover:underline text-chalk-100 uppercase font-bold`}
+            className={`flex items-center transition-colors hover:underline text-chalk-100 font-bold`}
             target="_blank"
             rel="noopener noreferrer"
           >
