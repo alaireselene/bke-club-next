@@ -71,7 +71,11 @@ export default function StructurePage() {
             </h3>
             <ul className="space-y-2 text-gray-700">
               <li>
-                PGS.TS. Lương Xuân Điển - Chủ tịch Mạng lưới CLB Sinh viên NCKH
+                PGS.TS. Huỳnh Đăng Chính - Chủ tịch Mạng lưới CLB Sinh viên NCKH
+              </li>
+              <li>
+                PGS.TS. Lương Xuân Điển - Phó Chủ tịch Mạng lưới CLB Sinh viên
+                NCKH
               </li>
               <li>
                 TS. Nguyễn Bá Chiến - Phó Chủ tịch Mạng lưới CLB Sinh viên NCKH
