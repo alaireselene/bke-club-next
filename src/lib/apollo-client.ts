@@ -1,99 +1,29 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import type { Post, Club } from '@/types/wordpress';
+import { ApolloClient, InMemoryCache, createHttpLink, DefaultOptions, WatchQueryFetchPolicy } from '@apollo/client';
 
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_WORDPRESS_API_URL,
   credentials: 'same-origin',
 });
 
+const cache = new InMemoryCache({
+  resultCaching: false
+});
+
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache' as WatchQueryFetchPolicy,
+    errorPolicy: 'ignore'
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all'
+  }
+};
+
 export const client = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          // Handle pagination for posts
-          posts: {
-            keyArgs: ['where'],
-            merge(existing: { nodes: Post[] } | undefined, incoming: { nodes: Post[] }, { args }) {
-              if (!args) return incoming;
-
-              // Create a Set of IDs to prevent duplicates
-              const seenIds = new Set<string>();
-              const merged = existing ? existing.nodes : [];
-
-              // Add existing IDs to Set
-              merged.forEach((node: Post) => seenIds.add(node.id));
-
-              // Only add nodes that haven't been seen
-              const newNodes = incoming.nodes.filter((node: Post) => !seenIds.has(node.id));
-
-              return {
-                ...incoming,
-                nodes: [...merged, ...newNodes],
-              };
-            },
-          },
-          // Handle pagination for clubs
-          clubs: {
-            keyArgs: ['where'],
-            merge(existing: { nodes: Club[] } | undefined, incoming: { nodes: Club[] }) {
-              // Create a Set of IDs to prevent duplicates
-              const seenIds = new Set<string>();
-              const merged = existing ? existing.nodes : [];
-
-              // Add existing IDs to Set
-              merged.forEach((node: Club) => seenIds.add(node.id));
-
-              // Only add nodes that haven't been seen
-              const newNodes = incoming.nodes.filter((node: Club) => !seenIds.has(node.id));
-
-              return {
-                ...incoming,
-                nodes: [...merged, ...newNodes],
-              };
-            },
-          },
-        },
-      },
-      // Add type policy for Club type
-      Club: {
-        keyFields: ['id', 'databaseId'],
-        fields: {
-          clubData: {
-            merge(existing, incoming) {
-              return {
-                ...existing,
-                ...incoming,
-                // Preserve nested objects
-                president: incoming?.president || existing?.president,
-                advisors: incoming?.advisors || existing?.advisors,
-              };
-            },
-          },
-        },
-      },
-      // Add type policy for ClubData type
-      ClubData: {
-        merge(existing, incoming) {
-          return {
-            ...existing,
-            ...incoming,
-          };
-        },
-      },
-    },
-  }),
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: 'network-only', // Don't use cache for queries by default
-      nextFetchPolicy: 'cache-first', // Use cache for subsequent requests
-      pollInterval: 300000, // Poll every 5 minutes for fresh data
-    },
-    query: {
-      fetchPolicy: 'network-only', // Don't use cache for one-time queries
-    },
-  },
+  cache,
+  defaultOptions
 });
 
 // Server-side client

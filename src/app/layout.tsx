@@ -6,6 +6,9 @@ import { getClient } from "@/lib/apollo-client";
 import { GET_NAVIGATION_DATA } from "../lib/graphql/queries";
 import { Toaster } from "@/components/ui/sonner";
 
+// Revalidate all pages every 60 seconds
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: {
     default: "Mạng lưới CLB sinh viên nghiên cứu khoa học | HUST",

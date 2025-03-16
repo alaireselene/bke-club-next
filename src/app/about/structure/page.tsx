@@ -78,7 +78,7 @@ export default function StructurePage() {
                 <span className="font-bold">PGS.TS. Lương Xuân Điển</span> - Phó
                 Chủ tịch Thường trực Mạng lưới CLB Sinh viên NCKH (Phụ trách
                 Tiểu ban cơ sở vật chất, Tiểu ban học thuật, Tiểu ban hợp tác
-                đối ngoại, Tiểu ban truyền thông - sự kiện) NCKH
+                đối ngoại, Tiểu ban truyền thông - sự kiện)
               </li>
               <li>
                 <span className="font-bold">TS. Nguyễn Bá Chiến</span> - Phó Chủ
@@ -86,9 +86,31 @@ export default function StructurePage() {
                 đối ngoại - tài chính)
               </li>
               <li>
-                <span className="font-bold">TS Nguyễn Minh Quân</span> - Phó Chủ
-                tịch Mạng lưới CLB Sinh viên NCKH (Phụ trách Tiểu ban truyền
+                <span className="font-bold">TS. Nguyễn Minh Quân</span> - Phó
+                Chủ tịch Mạng lưới CLB Sinh viên NCKH (Phụ trách Tiểu ban truyền
                 thông - sự kiện)
+              </li>
+              <li>
+                <span className="font-bold">Giảng viên: </span> (đang cập nhật)
+              </li>
+              <li>
+                <span className="font-bold">Doanh nghiệp: </span> (đang cập
+                nhật)
+              </li>
+              <li>
+                <span className="font-bold">Sinh viên: </span>
+                <ul>
+                  <li>
+                    <span className="font-bold">21 Chủ nhiệm CLB</span> thuộc
+                    Mạng lưới
+                  </li>
+                  <li>
+                    <span className="font-bold">
+                      Nguyễn Trường Sơn (Khoa Toán - Tin)
+                    </span>{" "}
+                    - Webadmin, phát triển tài nguyên số
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>

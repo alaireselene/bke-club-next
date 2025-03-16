@@ -150,7 +150,7 @@ export function ClubDetails({
                 <div className="flex-1">
                   <div className="mb-2 flex items-center">
                     <GraduationCap className="h-5 w-5 text-navy-500" />
-                    <span className="ml-2 font-semibold">Cố vấn</span>
+                    <span className="ml-2 font-semibold">Mentor</span>
                   </div>
                   <div className="text-slate-600">{advisorNames}</div>
                 </div>

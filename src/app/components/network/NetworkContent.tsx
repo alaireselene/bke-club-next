@@ -131,7 +131,7 @@ export function NetworkContent({
           <div className="absolute top-0 right-0 w-24 h-24 bg-cardinal-50 rounded-bl-full opacity-70"></div>
           <div className="relative z-10">
             <h3 className="text-sm font-medium text-slate-500 mb-1">
-              Trường/Viện
+              Trường/Khoa/Viện
             </h3>
             <p className="text-3xl font-bold text-slate-800">
               {schools.length}
