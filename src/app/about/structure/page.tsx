@@ -71,17 +71,24 @@ export default function StructurePage() {
             </h3>
             <ul className="space-y-2 text-gray-700">
               <li>
-                PGS.TS. Huỳnh Đăng Chính - Chủ tịch Mạng lưới CLB Sinh viên NCKH
+                <span className="font-bold">PGS.TS. Huỳnh Đăng Chính</span> -
+                Chủ tịch Mạng lưới CLB Sinh viên NCKH (Phụ trách chung)
               </li>
               <li>
-                PGS.TS. Lương Xuân Điển - Phó Chủ tịch Mạng lưới CLB Sinh viên
-                NCKH
+                <span className="font-bold">PGS.TS. Lương Xuân Điển</span> - Phó
+                Chủ tịch Thường trực Mạng lưới CLB Sinh viên NCKH (Phụ trách
+                Tiểu ban cơ sở vật chất, Tiểu ban học thuật, Tiểu ban hợp tác
+                đối ngoại, Tiểu ban truyền thông - sự kiện) NCKH
               </li>
               <li>
-                TS. Nguyễn Bá Chiến - Phó Chủ tịch Mạng lưới CLB Sinh viên NCKH
+                <span className="font-bold">TS. Nguyễn Bá Chiến</span> - Phó Chủ
+                tịch Mạng lưới CLB Sinh viên NCKH (Phụ trách Tiểu ban hợp tác
+                đối ngoại - tài chính)
               </li>
               <li>
-                TS Nguyễn Minh Quân - Phó Chủ tịch Mạng lưới CLB Sinh viên NCKH
+                <span className="font-bold">TS Nguyễn Minh Quân</span> - Phó Chủ
+                tịch Mạng lưới CLB Sinh viên NCKH (Phụ trách Tiểu ban truyền
+                thông - sự kiện)
               </li>
             </ul>
           </div>
