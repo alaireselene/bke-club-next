@@ -21,7 +21,7 @@ async function getNetworkData() {
     const { data } = await getClient().query({
       query: GET_NAVIGATION_DATA,
       variables: {
-        first: 100, // Fetch first 100 clubs
+        first: 50, // Max clubs per school
       },
       context: {
         fetchOptions: {

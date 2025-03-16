@@ -241,13 +241,13 @@ export const GET_EVENT_BY_SLUG = gql`
 // Navigation Query
 export const GET_NAVIGATION_DATA = gql`
   query GetNavigationData($first: Int!) {
-    schools {
+    schools(first: 100) {
       nodes {
         id
         databaseId
         name
         slug
-        clubs {
+        clubs(first: 50) {
           nodes {
             id
             databaseId
@@ -265,40 +265,14 @@ export const GET_NAVIGATION_DATA = gql`
               }
             }
             featuredImage {
-        node {
-          sourceUrl
-          altText
-          title
-        }
-      }
+              node {
+                sourceUrl
+                altText
+                title
+              }
+            }
           }
         }
-      }
-    }
-    clubs(first: $first) {
-      nodes {
-        id
-        databaseId
-        title
-        slug
-        clubData {
-          establishedYear
-          membersCount
-          president {
-            presidentName
-          }
-          advisors {
-            advisorName
-            advisorEmail
-          }
-        }
-        featuredImage {
-        node {
-          sourceUrl
-          altText
-          title
-        }
-      }
       }
     }
   }
