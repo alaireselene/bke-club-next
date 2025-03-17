@@ -240,7 +240,7 @@ export const GET_EVENT_BY_SLUG = gql`
 
 // Navigation Query
 export const GET_NAVIGATION_DATA = gql`
-  query GetNavigationData($first: Int!) {
+  query GetNavigationData {
     schools(first: 100) {
       nodes {
         id

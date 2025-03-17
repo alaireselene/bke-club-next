@@ -39,14 +39,10 @@ export const metadata: Metadata = {
 async function getNavigationData() {
   const { data } = await getClient().query({
     query: GET_NAVIGATION_DATA,
-    variables: {
-      first: 100, // Get up to 100 clubs
-    },
   });
 
   return {
     schools: data.schools.nodes,
-    clubs: data.clubs.nodes,
   };
 }
 
