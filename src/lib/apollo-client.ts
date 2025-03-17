@@ -21,9 +21,6 @@ export const client = new ApolloClient({
   cache,
 });
 
-// Server-side client
-let clientSide: typeof client | undefined;
-
 export function getClient() {
   return client;
 }

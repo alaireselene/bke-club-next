@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
+import { motion } from "motion/react";
 import {
   Settings2,
   Cpu,
@@ -13,18 +13,6 @@ import {
   Microscope,
   Wallet,
 } from "lucide-react";
-
-interface ResearchArea {
-  title: string;
-  description: string;
-  icon: string;
-  color: string;
-  schools: { name: string; code: string }[];
-}
-
-interface ResearchAreasProps {
-  areas: ResearchArea[];
-}
 
 const researchAreas = [
   {
@@ -234,7 +222,7 @@ export function ResearchAreas() {
           }}
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {researchAreas.map((area, index) => {
+          {researchAreas.map((area) => {
             const Icon = icons[area.icon as keyof typeof icons];
             return (
               <motion.div

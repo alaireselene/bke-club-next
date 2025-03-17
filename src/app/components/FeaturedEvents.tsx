@@ -153,7 +153,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
                 }}
                 className="grid gap-6 lg:col-span-7 lg:grid-cols-2"
               >
-                {smallEvents.map((event, index) => (
+                {smallEvents.map((event) => (
                   <motion.div
                     key={event.id}
                     variants={{
