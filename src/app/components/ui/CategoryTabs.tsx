@@ -11,6 +11,12 @@ interface Category {
   count?: number;
 }
 
+interface TabButtonProps {
+  category?: Category;
+  isAll?: boolean;
+  name?: string;
+}
+
 interface CategoryTabsProps {
   categories: Category[];
   onSelect: (categorySlug: string | null) => void;
@@ -81,13 +87,7 @@ export function CategoryTabs({
     onSelect(categorySlug);
   };
 
-  const TabButton = ({
-    category,
-    isAll = false,
-  }: {
-    category?: Category;
-    isAll?: boolean;
-  }) => {
+  const TabButton = ({ category, isAll = false, name }: TabButtonProps) => {
     const isSelected = isAll
       ? selectedCategory === null
       : selectedCategory === category?.slug;
@@ -112,7 +112,7 @@ export function CategoryTabs({
         aria-controls={`panel-${isAll ? "all" : category?.slug}`}
       >
         {Icon && <Icon className="h-4 w-4" aria-hidden="true" />}
-        <span>{category?.name}</span>
+        <span>{isAll ? name || "Tất cả" : category?.name}</span>
         {category?.count !== undefined && (
           <span
             className={cn(
@@ -140,7 +140,7 @@ export function CategoryTabs({
         role="tablist"
         aria-label="Category filters"
       >
-        <TabButton isAll />
+        <TabButton isAll name="Tất cả" />
         {categories.map((category) => (
           <TabButton key={category.slug} category={category} />
         ))}

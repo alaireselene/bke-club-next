@@ -1,9 +1,17 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
-import { GET_POSTS, GET_EVENTS, GET_CLUBS } from "@/lib/graphql/queries";
+import {
+  GET_POSTS,
+  GET_EVENTS,
+  GET_CLUBS,
+  GET_PARTNERS,
+} from "@/lib/graphql/queries";
 import { Hero } from "@/app/components/Hero";
 import { FeaturedNews } from "@/app/components/FeaturedNews";
 import { FeaturedEvents } from "@/app/components/FeaturedEvents";
+import { ResearchAreas } from "@/app/components/ResearchAreas";
+import { QuickAbout } from "@/app/components/QuickAbout";
+import { Partners } from "@/app/components/partners/Partners";
 import { Club } from "@/types/wordpress";
 
 export const metadata: Metadata = {
@@ -33,8 +41,8 @@ export const metadata: Metadata = {
 async function getHomePageData() {
   const client = getClient();
 
-  // Get posts and events data in parallel
-  const [postsData, eventsData, clubsData] = await Promise.all([
+  // Get data in parallel
+  const [postsData, eventsData, clubsData, partnersData] = await Promise.all([
     client.query({
       query: GET_POSTS,
       variables: { first: 5 },
@@ -46,6 +54,10 @@ async function getHomePageData() {
     client.query({
       query: GET_CLUBS,
       variables: { first: 100 }, // Get first 100 clubs
+    }),
+    client.query({
+      query: GET_PARTNERS,
+      variables: { first: 4 },
     }),
   ]);
 
@@ -70,16 +82,31 @@ async function getHomePageData() {
     stats,
     featuredPosts: postsData.data.posts.nodes,
     upcomingEvents: eventsData.data.posts.nodes,
+    partners: partnersData.data.partners.nodes,
   };
 }
 
 export default async function HomePage() {
-  const { stats, featuredPosts, upcomingEvents } = await getHomePageData();
+  const { stats, featuredPosts, upcomingEvents, partners } =
+    await getHomePageData();
 
   return (
     <main>
       <Hero stats={stats} />
+
+      {/* Quick About Section */}
+      <QuickAbout />
+
+      {/* Research Areas */}
+      <ResearchAreas />
+
+      {/* Featured News */}
       <FeaturedNews posts={featuredPosts} />
+
+      {/* Partners Section */}
+      <Partners partners={partners} />
+
+      {/* Featured Events */}
       <FeaturedEvents events={upcomingEvents} />
     </main>
   );

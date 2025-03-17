@@ -1,9 +1,23 @@
-import { Breadcrumb, BreadcrumbSegment } from "./Breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { cn } from "@/lib/utils";
+
+export interface BreadcrumbItem {
+  href?: string;
+  label: string;
+  current?: boolean;
+}
 
 interface PageHeaderProps {
   title: string;
   description?: string;
-  breadcrumbItems?: BreadcrumbSegment[];
+  breadcrumbItems?: BreadcrumbItem[];
   className?: string;
 }
 
@@ -31,13 +45,42 @@ export function PageHeader({
       <div className="container relative mx-auto px-4">
         <div className="pt-8 pb-12">
           {/* Breadcrumb */}
-          <Breadcrumb items={breadcrumbItems} className="mb-8 text-white/80" />
+          {breadcrumbItems && breadcrumbItems.length > 0 && (
+            <Breadcrumb className="mb-8">
+              <BreadcrumbList className="text-white/80">
+                {breadcrumbItems.map((item, index) => (
+                  <BreadcrumbItem key={item.label + index}>
+                    {item.current ? (
+                      <BreadcrumbPage className="text-white/80">
+                        {item.label}
+                      </BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink
+                        href={item.href}
+                        className="text-white/80 hover:text-white"
+                      >
+                        {item.label}
+                      </BreadcrumbLink>
+                    )}
+                    {index < breadcrumbItems.length - 1 && (
+                      <BreadcrumbSeparator className="text-white/60" />
+                    )}
+                  </BreadcrumbItem>
+                ))}
+              </BreadcrumbList>
+            </Breadcrumb>
+          )}
 
           {/* Title and Description */}
           <div className="max-w-3xl relative">
             <div className="absolute -inset-1 bg-white/5 rounded-2xl blur-2xl"></div>
             <div className="relative">
-              <h1 className="text-4xl font-bold text-white mb-4 animate-fade-in">
+              <h1
+                className={cn(
+                  "text-4xl font-bold text-white mb-4 animate-fade-in",
+                  "group relative"
+                )}
+              >
                 {title}
                 <div className="absolute -inset-x-6 -inset-y-4 bg-white/5 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </h1>

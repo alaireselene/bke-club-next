@@ -70,19 +70,28 @@ export default async function ClubPage({ params }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="space-y-8">
-        <PageHeader
-          title={data.club.title}
-          breadcrumbItems={[
-            { text: "Mạng lưới thành viên", href: "/network" },
-            { text: data.club.title, href: `/network/${data.club.slug}` },
-          ]}
-        />
+    <main className="min-h-screen bg-gradient-to-b from-base-200/20 to-transparent">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <div className="relative mb-12">
+          <div className="absolute inset-0 bg-[#003366] opacity-5 -rotate-1" />
+          <PageHeader
+            title={data.club.title}
+            breadcrumbItems={[
+              { label: "Mạng lưới thành viên", href: "/network" },
+              {
+                label: data.club.title,
+                href: `/network/${data.club.slug}`,
+                current: true,
+              },
+            ]}
+            className="relative bg-white/50 backdrop-blur-sm p-8 rounded-xl border border-slate-200/60"
+          />
+        </div>
 
         <ClubDetails club={data.club} school={data.club.school?.node || null} />
       </div>
-    </div>
+    </main>
   );
 }
 

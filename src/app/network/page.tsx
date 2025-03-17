@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
 import { GET_NAVIGATION_DATA } from "@/lib/graphql/queries";
 import { NetworkContent } from "@/app/components/network/NetworkContent";
+import { PageHeader } from "@/app/components/ui/PageHeader";
 import type { School } from "@/types/wordpress";
 
 export const metadata: Metadata = {
@@ -44,25 +45,66 @@ async function getNetworkData() {
 }
 
 export default async function NetworkPage({ searchParams }: Props) {
-  const { schools } = await getNetworkData();
+  const { schools: unsortedSchools } = await getNetworkData();
 
-  // Add timestamp comment for debugging cache
+  // Sort schools in the same order as DesktopMenu:
+  // 1. Schools starting with "Trường"
+  // 2. Schools starting with "Khoa"
+  // 3. Others
+  const schools = [
+    ...unsortedSchools.filter(
+      (school) => school.name?.startsWith("Trường") ?? false
+    ),
+    ...unsortedSchools.filter(
+      (school) => school.name?.startsWith("Khoa") ?? false
+    ),
+    ...unsortedSchools.filter(
+      (school) =>
+        !(school.name?.startsWith("Trường") ?? false) &&
+        !(school.name?.startsWith("Khoa") ?? false)
+    ),
+  ];
+
   return (
-    <>
-      {/* Cache timestamp: ${timestamp} */}
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-gradient-to-b from-base-200/20 to-transparent">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <div className="relative mb-12">
+          <div className="absolute inset-0 bg-[#003366] opacity-5 -rotate-1" />
+          <PageHeader
+            title="Mạng lưới"
+            description="Tìm hiểu và kết nối với các câu lạc bộ nghiên cứu tại HUST"
+            className="relative bg-white/50 backdrop-blur-sm p-8 rounded-xl border border-slate-200/60"
+          />
+        </div>
+
         <NetworkContent
           schools={schools}
           initialSchoolFilter={searchParams.school}
         />
       </div>
-    </>
+    </main>
   );
 }
 
 // Generate static params for initial build
 export async function generateStaticParams() {
-  const { schools } = await getNetworkData();
+  const { schools: unsortedSchools } = await getNetworkData();
+
+  // Use the same sorting logic for consistency
+  const schools = [
+    ...unsortedSchools.filter(
+      (school) => school.name?.startsWith("Trường") ?? false
+    ),
+    ...unsortedSchools.filter(
+      (school) => school.name?.startsWith("Khoa") ?? false
+    ),
+    ...unsortedSchools.filter(
+      (school) =>
+        !(school.name?.startsWith("Trường") ?? false) &&
+        !(school.name?.startsWith("Khoa") ?? false)
+    ),
+  ];
 
   return schools
     .map((school) => ({

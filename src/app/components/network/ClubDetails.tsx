@@ -36,7 +36,10 @@ export function ClubDetails({
   className = "",
 }: ClubDetailsProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const establishedYear = club.clubData?.establishedYear || "Chưa có";
+  // Extract year from establishedYear string (which could be a full date)
+  const establishedYear = club.clubData?.establishedYear
+    ? new Date(club.clubData.establishedYear).getFullYear().toString()
+    : "Chưa có";
   const presidentName = club.clubData?.president?.presidentName || "Chưa có";
   const membersCount = club.clubData?.membersCount || 0;
   const advisorNames =
