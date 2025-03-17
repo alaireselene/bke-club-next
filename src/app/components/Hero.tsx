@@ -24,7 +24,7 @@ const icons = {
 
 export function Hero({ stats }: HeroProps) {
   return (
-    <section className="relative -mt-8 overflow-hidden bg-gradient-radial from-[#CE1628]/5 via-white to-[#F3C108]/10 px-4 pt-32 pb-36 sm:px-6 lg:px-8">
+    <section className="relative -mt-8 overflow-hidden bg-gradient-radial from-[#CE1628]/5 via-white to-[#F3C108]/10 px-4 pt-24 pb-24 sm:px-6 lg:px-8">
       {/* Scientific Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         {/* Enhanced grid pattern */}
@@ -127,7 +127,7 @@ export function Hero({ stats }: HeroProps) {
 
       <div className="relative mx-auto max-w-7xl">
         <div className="relative z-10 text-center">
-          <h1 className="relative font-sans text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
+          <h1 className="relative font-sans text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -142,7 +142,7 @@ export function Hero({ stats }: HeroProps) {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="bg-gradient-to-r from-cardinal-600 to-cardinal-500 bg-clip-text text-transparent"
             >
-              Thúc đẩy phát triển
+              Thúc đẩy Phát triển
             </motion.span>
             <div className="absolute -right-16 top-0 h-32 w-32">
               <motion.div

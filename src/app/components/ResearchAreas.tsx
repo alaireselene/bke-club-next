@@ -103,7 +103,7 @@ const icons = {
 
 export function ResearchAreas() {
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <motion.div

@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 
 export function QuickAbout() {
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-navy-50/50 to-white"></div>

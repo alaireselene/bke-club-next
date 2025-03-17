@@ -36,7 +36,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
   const smallEvents = filteredEvents.slice(0, 4);
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       {/* Scientific background elements */}
       <div className="absolute inset-0 -z-10">
         <motion.div

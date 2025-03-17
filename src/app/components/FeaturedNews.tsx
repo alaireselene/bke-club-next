@@ -40,7 +40,7 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
   const smallPosts = filteredPosts.slice(1, 5);
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       {/* Scientific background elements */}
       <div className="absolute inset-0 -z-10">
         <motion.div

@@ -36,15 +36,23 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-start space-x-4">
-              <div className="flex-shrink-0">
-                <Phone className="h-6 w-6 text-teal-600" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-gray-900">
-                  Điện thoại
-                </h3>
-                <p className="mt-1 text-gray-600">0934 788 266</p>
-              </div>
+              <Phone className="mr-3 h-5 w-5 text-slate-400" />
+              <a
+                href="tel:0911550986"
+                className="hover:text-cardinal-600 transition-colors"
+              >
+                0911550986 (PGS. Lương Xuân Điển)
+              </a>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <Phone className="mr-3 h-5 w-5 text-slate-400" />
+              <a
+                href="tel:0983900429"
+                className="hover:text-cardinal-600 transition-colors"
+              >
+                0983900429 (TS. Nguyễn Bá Chiến)
+              </a>
             </div>
 
             <div className="flex items-start space-x-4">
@@ -63,7 +71,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="text-lg font-medium text-gray-900">
-                  Thời gian làm viện
+                  Thời gian làm việc
                 </h3>
                 <p className="mt-1 text-gray-600">
                   Thứ Hai - Thứ Sáu: 8:00 AM - 5:00 PM
