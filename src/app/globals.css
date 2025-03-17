@@ -3,7 +3,9 @@
 @custom-variant dark (&:is(.dark *));
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: bke-theme --default;
+}
 
 /* DaisyUI Theme Configuration */
 @plugin "daisyui/theme" {
