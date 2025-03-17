@@ -25,7 +25,7 @@ export function PartnerCard({ partner }: PartnerCardProps) {
   const type = partner.partnerData.type[0];
 
   return (
-    <Link href={`/partners/${partner.slug}`}>
+    <Link href={partner.partnerData.website}>
       <article className="group h-full bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden transition hover:shadow-md">
         {partner.featuredImage?.node.sourceUrl && (
           <div className="relative h-32 w-full overflow-hidden bg-white">
