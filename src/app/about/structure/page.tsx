@@ -15,7 +15,10 @@ export default function StructurePage() {
         <p className="text-gray-600">
           Mạng lưới CLB Sinh viên Nghiên cứu Khoa học hoạt động theo mô hình
           liên kết đa cấp, tạo sự kết nối chặt chẽ giữa các câu lạc bộ thành
-          viên và các đơn vị hỗ trợ nghiên cứu, đổi mới sáng tạo.
+          viên và các đơn vị hỗ trợ nghiên cứu, đổi mới sáng tạo. Cơ cấu tổ chức
+          của Mạng lưới được thiết kế để đồng hành với định hướng phát triển
+          khoa học, công nghệ, đổi mới sáng tạo và chuyển đổi số quốc gia, đảm
+          bảo sự phát triển bền vững và hiệu quả.
         </p>
       </div>
 
@@ -101,14 +104,16 @@ export default function StructurePage() {
                 <span className="font-bold">Sinh viên: </span>
                 <ul>
                   <li>
-                    <span className="font-bold">21 Chủ nhiệm CLB</span> thuộc
-                    Mạng lưới
+                    <span className="font-bold">
+                      Đại diện các chủ nhiệm CLB
+                    </span>{" "}
+                    thuộc Mạng lưới
                   </li>
                   <li>
                     <span className="font-bold">
                       Nguyễn Trường Sơn (Khoa Toán - Tin)
                     </span>{" "}
-                    - Webadmin, phát triển tài nguyên số
+                    - Hỗ trợ quản trị website, phát triển tài nguyên số
                   </li>
                 </ul>
               </li>
@@ -123,14 +128,15 @@ export default function StructurePage() {
         </h2>
         <div className="mt-4 space-y-4">
           <p>
-            Ban Cố vấn là nhóm giảng viên, nhà khoa học và chuyên gia trong các
-            lĩnh vực nghiên cứu khác nhau. Họ đóng vai trò quan trọng trong việc
-            định hướng và nâng cao chất lượng nghiên cứu của sinh viên.
+            Ban Cố vấn bao gồm các học giả uy tín trong và ngoài nước, các nhà
+            quản lý cấp cao của các tập đoàn, doanh nghiệp lớn, các cựu sinh
+            viên Bách khoa là doanh nhân thành đạt, cùng các chuyên gia hàng đầu
+            trong các lĩnh vực nghiên cứu.
           </p>
           <p>
-            Ban Cố vấn giúp các CLB xây dựng kế hoạch nghiên cứu, đào tạo phương
-            pháp nghiên cứu khoa học, tổ chức các buổi hội thảo chuyên đề và hỗ
-            trợ sinh viên phát triển kỹ năng viết báo cáo khoa học.
+            Với vai trò quan trọng, Ban Cố vấn định hướng chiến lược và góp phần
+            nâng cao chất lượng hoạt động nghiên cứu khoa học và đổi mới sáng
+            tạo của sinh viên.
           </p>
         </div>
         <div className="bg-cardinal-50 rounded-lg p-6 mt-6">
@@ -151,65 +157,186 @@ export default function StructurePage() {
         </h2>
         <div className="mt-4 space-y-4">
           <p>
-            Các CLB Sinh viên NCKH là hạt nhân chính của mạng lưới, nơi trực
-            tiếp triển khai các hoạt động nghiên cứu, trao đổi học thuật và thực
-            hiện các dự án khoa học.
+            Các Câu lạc bộ Sinh viên Nghiên cứu Khoa học đóng vai trò hạt nhân
+            trong mạng lưới, trực tiếp triển khai hoặc tham gia các hoạt động
+            đào tạo kỹ năng nghiên cứu, công bố ấn phẩm khoa học, trao đổi học
+            thuật, giao lưu ý tưởng, đồng thời đề xuất và phát triển các đề tài,
+            dự án nghiên cứu khoa học và đổi mới sáng tạo.
           </p>
-          {/* <div className="p-6 mt-4">
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-3xl font-semibold text-cardinal-700">
+          Đối tác Bên ngoài
+        </h2>
+        <div className="mt-4 space-y-6">
+          <p>
+            Các đối tác bên ngoài có mối quan hệ với mạng lưới các câu lạc bộ
+            sinh viên nghiên cứu khoa học bao gồm:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Các đối tác trong nước
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Các trường Đại học, Viện nghiên cứu</li>
+                <li>Các tổ chức khoa học, công nghệ và giáo dục</li>
+                <li>Các quỹ tài trợ, tổ chức hỗ trợ nghiên cứu khoa học</li>
+              </ul>
+            </div>
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Các đối tác nước ngoài
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Các trường Đại học, Viện nghiên cứu quốc tế</li>
+                <li>Các tổ chức khoa học, công nghệ và giáo dục toàn cầu</li>
+                <li>
+                  Các tổ chức phi chính phủ hỗ trợ nghiên cứu khoa học và đổi
+                  mới sáng tạo
+                </li>
+              </ul>
+            </div>
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Doanh nghiệp & Khởi nghiệp
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Các tập đoàn lớn có hoạt động nghiên cứu và phát triển (R&D)
+                </li>
+                <li>
+                  Các doanh nghiệp khoa học công nghệ, công ty khởi nghiệp đổi
+                  mới sáng tạo
+                </li>
+                <li>
+                  Các quỹ đầu tư hỗ trợ khởi nghiệp và thương mại hóa kết quả
+                  nghiên cứu khoa học
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-3xl font-semibold text-cardinal-700">
+          Hỗ trợ tài chính
+        </h2>
+        <div className="mt-4 space-y-6">
+          <div className="bg-cardinal-50 rounded-lg p-6">
             <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
-              Hoạt động chính
+              Các khoản tài trợ
             </h3>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Các hội thảo chuyên đề về nghiên cứu khoa học</li>
-              <li>Các khóa đào tạo kỹ năng nghiên cứu</li>
-              <li>Chương trình trao đổi giữa các nhóm nghiên cứu</li>
+            <ul className="space-y-4">
               <li>
-                Cuộc thi nghiên cứu khoa học cấp trường, cấp khu vực và quốc gia
+                <span className="font-semibold">
+                  Từ trường Đại học, viện nghiên cứu:
+                </span>
+                <p className="mt-1">
+                  Hỗ trợ kinh phí cho các đề tài/dự án nghiên cứu khoa học và
+                  đổi mới sáng tạo của sinh viên.
+                </p>
+              </li>
+              <li>
+                <span className="font-semibold">
+                  Từ doanh nghiệp, tập đoàn:
+                </span>
+                <p className="mt-1">
+                  Hỗ trợ tài chính cho các đề tài/dự án nghiên cứu có tiềm năng
+                  ứng dụng thực tế, các cuộc thi nghiên cứu khoa học.
+                </p>
+              </li>
+              <li>
+                <span className="font-semibold">
+                  Từ các tổ chức khoa học, công nghệ, giáo dục:
+                </span>
+                <p className="mt-1">
+                  Hỗ trợ dưới dạng học bổng, kinh phí tổ chức hội thảo, diễn đàn
+                  nghiên cứu khoa học.
+                </p>
               </li>
             </ul>
-          </div> */}
+          </div>
+
+          <div className="bg-cardinal-50 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+              Các quỹ nghiên cứu
+            </h3>
+            <ul className="space-y-4">
+              <li>
+                <span className="font-semibold">Quỹ từ Nhà nước:</span>
+                <p className="mt-1">
+                  Quỹ Phát triển Khoa học và Công nghệ Quốc gia (NAFOSTED), quỹ
+                  hỗ trợ nghiên cứu sinh viên của Bộ GD&ĐT.
+                </p>
+              </li>
+              <li>
+                <span className="font-semibold">Quỹ từ tổ chức quốc tế:</span>
+                <p className="mt-1">
+                  Các quỹ học thuật, quỹ đổi mới sáng tạo từ các tổ chức nước
+                  ngoài hoặc liên chính phủ.
+                </p>
+              </li>
+              <li>
+                <span className="font-semibold">Quỹ từ doanh nghiệp:</span>
+                <p className="mt-1">
+                  Quỹ hỗ trợ nghiên cứu phát triển sản phẩm, thương mại hóa công
+                  nghệ.
+                </p>
+              </li>
+              <li>
+                <span className="font-semibold">
+                  Quỹ từ ĐHBK và cựu sinh viên:
+                </span>
+                <p className="mt-1">
+                  Quỹ nghiên cứu từ Đại học Bách khoa Hà Nội, cựu sinh viên và
+                  các tổ chức, cá nhân trong nước.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-3xl font-semibold text-cardinal-700">Mentors</h2>
+        <div className="mt-4 space-y-4">
+          <p>
+            Mentors là những chuyên gia, giảng viên và cựu sinh viên có giàu
+            kinh nghiệm trong lĩnh vực nghiên cứu khoa học và đổi mới sáng tạo,
+            trực tiếp hướng dẫn, tư vấn và đào tạo các câu lạc bộ sinh viên
+            nghiên cứu khoa trong các hoạt động nghiên cứu khoa học như đào tạo
+            kỹ năng nghiên cứu khoa học, chia sẻ chuyên môn, sự kiện học thuật,
+            việc xác định hướng đi, triển khai các đề tài/dự án nghiên cứu và
+            ứng dụng kết quả nghiên cứu vào thực tiễn, trao đổi sinh viên và kết
+            nối doanh nghiệp, tham gia các cuộc thi nghiên cứu khoa học và đổi
+            mới sáng tạo.
+          </p>
         </div>
       </section>
 
       <section className="mt-12">
         <h2 className="text-3xl font-semibold text-cardinal-700">
-          Hỗ trợ Tài chính & Đối tác Bên ngoài
+          Nhóm chuyên môn
         </h2>
         <div className="mt-4 space-y-4">
           <p>
-            Mạng lưới CLB Sinh viên NCKH kết nối với các doanh nghiệp, tổ chức
-            tài trợ và quỹ nghiên cứu nhằm hỗ trợ kinh phí thực hiện dự án, cấp
-            học bổng nghiên cứu và cung cấp trang thiết bị phục vụ thí nghiệm.
-          </p>
-          <p>
-            Các đối tác bên ngoài cũng mang đến cơ hội thực tập, làm việc và
-            tiếp cận công nghệ mới cho sinh viên. Điều này không chỉ giúp nghiên
-            cứu khoa học của sinh viên có tính thực tế cao hơn mà còn tạo điều
-            kiện để các bạn phát triển sự nghiệp trong tương lai.
-          </p>
-        </div>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-3xl font-semibold text-cardinal-700">
-          Hệ thống Mentor & Nhóm Nghiên cứu
-        </h2>
-        <div className="mt-4 space-y-4">
-          <p>
-            Mentor là những chuyên gia, giảng viên và cựu sinh viên có kinh
-            nghiệm trong lĩnh vực nghiên cứu khoa học, trực tiếp hướng dẫn các
-            nhóm nghiên cứu trong việc xác định hướng đi, triển khai dự án và
-            ứng dụng kết quả nghiên cứu vào thực tiễn.
+            Nhóm chuyên môn là tập hợp các giảng viên, nhà nghiên cứu có cùng
+            chuyên môn trong một lĩnh vực nhất định, trực thuộc các khoa của các
+            trường thuộc Đại học Bách khoa Hà Nội.
           </p>
           <div className="bg-cardinal-50 rounded-lg p-6 mt-4">
             <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
-              Các nhóm chuyên môn
+              Nhiệm vụ chính
             </h3>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Phát triển kiến thức chuyên sâu trong từng lĩnh vực</li>
-              <li>Tổ chức các buổi đào tạo và chia sẻ chuyên môn</li>
-              <li>Triển khai các dự án nghiên cứu ứng dụng</li>
-              <li>Hợp tác với doanh nghiệp và tổ chức nghiên cứu</li>
+              <li>Giảng dạy và phát triển chương trình đào tạo</li>
+              <li>Nghiên cứu khoa học và triển khai công nghệ</li>
+              <li>Hợp tác với doanh nghiệp, tổ chức nghiên cứu</li>
+              <li>Hướng dẫn sinh viên, học viên cao học, nghiên cứu sinh</li>
             </ul>
           </div>
         </div>
@@ -217,20 +344,71 @@ export default function StructurePage() {
 
       <section className="mt-12">
         <h2 className="text-3xl font-semibold text-cardinal-700">
-          Tài nguyên hỗ trợ
+          Nhóm nghiên cứu
         </h2>
         <div className="mt-4 space-y-4">
           <p>
-            Mạng lưới CLB sinh viên NCKH là nơi cung cấp các tài nguyên đa dạng
-            hỗ trợ sinh viên trong hành trình khởi nghiệp. Tại đây, sinh viên có
-            thể truy cập vào các biểu mẫu cần thiết, các công cụ phần mềm mã
-            nguồn mở giúp tối ưu hóa quá trình phát triển ý tưởng NCKH. Mạng
-            lưới cung cấp các bài giảng, bài thuyết trình và các quy trình chi
-            tiết, giúp sinh viên hiểu rõ hơn về các bước trong quá trình nghiên
-            cứu. Để mở rộng khả năng chia sẻ và học hỏi, trung tâm sẽ xây dựng
-            một kênh YouTube, nơi các tài liệu và kiến thức bổ ích sẽ được chia
-            sẻ đến cộng đồng sinh viên.
+            Nhóm nghiên cứu tại Đại học Bách khoa Hà Nội là tập hợp các giảng
+            viên, nhà nghiên cứu, và sinh viên có cùng định hướng khoa học và
+            công nghệ, hoạt động nhằm giải quyết các vấn đề nghiên cứu chuyên
+            sâu, phát triển công nghệ, ứng dụng thực tiễn và hợp tác trong nước,
+            quốc tế.
           </p>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-3xl font-semibold text-cardinal-700">
+          Chương trình đào tạo
+        </h2>
+        <div className="mt-4 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Phương pháp nghiên cứu khoa học
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Hướng dẫn sinh viên về quy trình nghiên cứu</li>
+                <li>Kỹ năng tìm kiếm và tổng hợp tài liệu khoa học</li>
+                <li>
+                  Phương pháp thiết kế thí nghiệm, thu thập và xử lý dữ liệu
+                </li>
+                <li>Cách viết báo cáo khoa học, bài báo quốc tế</li>
+              </ul>
+            </div>
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Kỹ năng mềm cho nghiên cứu khoa học
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Kỹ năng trình bày và bảo vệ đề tài nghiên cứu khoa học</li>
+                <li>Làm việc nhóm trong nghiên cứu khoa học</li>
+                <li>Kỹ năng tư duy phản biện và sáng tạo</li>
+              </ul>
+            </div>
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Đổi mới sáng tạo khoa học công nghệ
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Phát triển ý tưởng từ nghiên cứu khoa học đến ứng dụng thực tế
+                </li>
+                <li>Bảo hộ sở hữu trí tuệ và thương mại hóa công nghệ</li>
+                <li>Kết nối với doanh nghiệp và vườn ươm khởi nghiệp</li>
+              </ul>
+            </div>
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Hội thảo và hội nghị khoa học
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Hội nghị khoa học sinh viên các cấp</li>
+                <li>Diễn đàn giao lưu với các nhà khoa học, chuyên gia</li>
+                <li>Chuỗi seminar nghiên cứu chuyên sâu</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
     </div>

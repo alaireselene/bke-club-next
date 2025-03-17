@@ -223,6 +223,106 @@ export default function OverviewPage() {
           </ul>
         </div>
       </section>
+
+      <section className="mt-12">
+        <h2 className="text-3xl font-semibold text-cardinal-700">
+          Chiến lược phát triển
+        </h2>
+        <div className="mt-4">
+          <p className="font-medium text-gray-800 mb-4">
+            Mạng lưới Câu lạc bộ Sinh viên Nghiên cứu Khoa học tập trung vào các
+            chiến lược trọng tâm:
+          </p>
+
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
+                Đẩy mạnh đào tạo và nghiên cứu về công nghệ số
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Đào tạo các kỹ năng nghiên cứu khoa học và các kỹ năng công bố
+                  các ấn phẩm khoa học
+                </li>
+                <li>
+                  Tổ chức các khóa học về trí tuệ nhân tạo (AI), dữ liệu lớn
+                  (Big Data), Internet vạn vật (IoT) và an ninh mạng.
+                </li>
+                <li>
+                  Hướng dẫn sinh viên tiếp cận các công nghệ tiên tiến, tham gia
+                  các dự án nghiên cứu về chuyển đổi số.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
+                Tăng cường trao đổi sinh viên, công bố khoa học và tham gia
+                seminar
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Khuyến khích sinh viên viết bài báo khoa học, công bố trên các
+                  tạp chí uy tín.
+                </li>
+                <li>
+                  Hỗ trợ sinh viên tham gia hội nghị khoa học trong và ngoài
+                  nước nhằm học hỏi và mở rộng mạng lưới hợp tác.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
+                Thúc đẩy hợp tác giữa sinh viên và doanh nghiệp
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Phối hợp với các tập đoàn công nghệ để triển khai chương trình
+                  thực tập sinh, thực tập kỹ thuật, thực tập tốt nghiệp, trao
+                  đổi sinh viên; và thực hiện các đề tài nghiên cứu ứng dụng.
+                </li>
+                <li>
+                  Kết nối sinh viên với các chuyên gia và cố vấn trong ngành để
+                  hỗ trợ định hướng nghiên cứu.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
+                Hỗ trợ khởi nghiệp đổi mới sáng tạo
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Xây dựng chương trình ươm tạo khởi nghiệp dành cho sinh viên.
+                </li>
+                <li>
+                  Tạo cơ chế hỗ trợ tài chính và kết nối với các quỹ đầu tư,
+                  giúp sinh viên hiện thực hóa ý tưởng nghiên cứu thành sản phẩm
+                  thương mại.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
+                Phát triển cơ sở vật chất và tài nguyên
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Phát triển và cập nhật các học liệu và hướng dẫn cách sử dụng
+                  các phần mềm
+                </li>
+                <li>
+                  Hình thành trung tâm chế tạo phục vụ các đề tài và cuộc thi
+                  NCKH & ĐMST
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
