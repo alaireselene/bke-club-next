@@ -31,9 +31,8 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
         event.categories?.nodes.some((cat) => cat.slug === selectedCategory)
       );
 
-  const heroEvent =
-    filteredEvents[4] || filteredEvents[filteredEvents.length - 1];
-  const smallEvents = filteredEvents.slice(0, 4);
+  const heroEvent = filteredEvents[0];
+  const smallEvents = filteredEvents.slice(1, 5);
 
   return (
     <section className="relative py-16 overflow-hidden">
@@ -138,50 +137,58 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="grid gap-8 lg:grid-cols-12"
+              className="grid gap-8 lg:grid-cols-12 h-[500px]"
             >
-              {/* Small Events Grid */}
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.1,
-                    },
-                  },
-                }}
-                className="grid gap-6 lg:col-span-7 lg:grid-cols-2"
-              >
-                {smallEvents.map((event) => (
-                  <motion.div
-                    key={event.id}
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0 },
-                    }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <motion.div whileHover={{ y: -4 }}>
-                      <EventCard event={event} />
-                    </motion.div>
-                  </motion.div>
-                ))}
-              </motion.div>
-
               {/* Hero Event */}
               {heroEvent && (
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
+                  layout
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="lg:col-span-5"
+                  transition={{ duration: 0.6 }}
+                  className="lg:col-span-7 h-full"
                 >
-                  <motion.div whileHover={{ y: -4 }}>
+                  <motion.div whileHover={{ y: -4 }} className="h-full">
                     <EventCard event={heroEvent} />
                   </motion.div>
                 </motion.div>
               )}
+
+              {/* Small Events Grid */}
+              <div className="grid grid-rows-2 gap-8 lg:col-span-5 h-full">
+                <div className="grid grid-cols-2 gap-8 h-full">
+                  {smallEvents.slice(0, 2).map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      layout
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      className="h-full"
+                    >
+                      <motion.div whileHover={{ y: -4 }} className="h-full">
+                        <EventCard event={event} />
+                      </motion.div>
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-8 h-full">
+                  {smallEvents.slice(2, 4).map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      layout
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, delay: (index + 2) * 0.1 }}
+                      className="h-full"
+                    >
+                      <motion.div whileHover={{ y: -4 }} className="h-full">
+                        <EventCard event={event} />
+                      </motion.div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           ) : (
             <motion.div
