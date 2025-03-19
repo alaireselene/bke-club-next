@@ -57,7 +57,7 @@ async function getHomePageData() {
     }),
     client.query({
       query: GET_PARTNERS,
-      variables: { first: 4 },
+      variables: { first: 100 },
     }),
   ]);
 
@@ -67,15 +67,14 @@ async function getHomePageData() {
     (acc: number, club: Club) => acc + (club.clubData?.membersCount || 0),
     0
   );
+  const partnerCount = partnersData.data.partners.nodes.length;
+  const eventCount = eventsData.data.posts.nodes.length;
 
   const stats = [
     { label: "Câu lạc bộ" as const, value: clubCount.toString() },
     { label: "Thành viên" as const, value: memberCount.toString() },
-    { label: "Dự án" as const, value: "0" }, // Research count as 0
-    {
-      label: "Sự kiện" as const,
-      value: eventsData.data.posts.nodes.length.toString(),
-    },
+    { label: "Đối tác" as const, value: partnerCount.toString() },
+    { label: "Sự kiện" as const, value: eventCount.toString() },
   ];
 
   return {

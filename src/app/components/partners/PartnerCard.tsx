@@ -31,37 +31,32 @@ export function PartnerCard({ partner }: PartnerCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
+      className="w-full h-full"
     >
-      <Link href={partner.partnerData.website}>
+      <Link href={partner.partnerData.website} className="block h-full">
         <motion.article
           whileHover={{ y: -4 }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          className="group h-full bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden"
+          className="group h-full flex flex-col bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden"
         >
           {partner.featuredImage?.node.sourceUrl && (
             <div className="relative h-32 w-full overflow-hidden bg-white">
-              <motion.div
-                initial={{ scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Image
-                  src={partner.featuredImage.node.sourceUrl}
-                  alt={partner.title}
-                  fill
-                  className="object-contain p-4"
-                />
-              </motion.div>
+              <Image
+                src={partner.featuredImage.node.sourceUrl}
+                alt={partner.title}
+                fill
+                className="object-contain p-4"
+              />
             </div>
           )}
-          <div className="p-6">
-            <div className="space-y-4">
+          <div className="flex-1 p-6">
+            <div className="flex flex-col h-full">
               {/* Region & Type Tags */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex flex-wrap gap-2"
+                className="flex flex-wrap gap-2 mb-4"
               >
                 {region && (
                   <motion.span
@@ -105,7 +100,7 @@ export function PartnerCard({ partner }: PartnerCardProps) {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="flex items-center gap-2 text-sm text-slate-600"
+                  className="flex items-center gap-2 text-sm text-slate-600 mt-auto"
                 >
                   <Globe className="h-4 w-4 text-cardinal-500" />
                   <span className="truncate">

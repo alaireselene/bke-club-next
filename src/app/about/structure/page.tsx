@@ -123,9 +123,7 @@ export default function StructurePage() {
       </section>
 
       <section className="mt-12">
-        <h2 className="text-3xl font-semibold text-cardinal-700">
-          Ban Cố vấn – Đội ngũ chuyên gia hỗ trợ chuyên môn
-        </h2>
+        <h2 className="text-3xl font-semibold text-cardinal-700">Ban Cố vấn</h2>
         <div className="mt-4 space-y-4">
           <p>
             Ban Cố vấn bao gồm các học giả uy tín trong và ngoài nước, các nhà
@@ -400,12 +398,39 @@ export default function StructurePage() {
             </div>
             <div className="bg-cardinal-50 rounded-lg p-6">
               <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Hướng dẫn nghiên cứu khoa học và cố vấn học thuật
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Kết nối sinh viên với giảng viên, nhà nghiên cứu để phát triển
+                  đề tài nghiên cứu khoa học
+                </li>
+                <li>Hỗ trợ thực hành nghiên cứu tại phòng thí nghiệm</li>
+                <li>Hướng dẫn viết đề xuất tài trợ nghiên cứu khoa học</li>
+              </ul>
+            </div>
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
                 Hội thảo và hội nghị khoa học
               </h3>
               <ul className="list-disc pl-6 space-y-2">
                 <li>Hội nghị khoa học sinh viên các cấp</li>
                 <li>Diễn đàn giao lưu với các nhà khoa học, chuyên gia</li>
                 <li>Chuỗi seminar nghiên cứu chuyên sâu</li>
+              </ul>
+            </div>
+            <div className="bg-cardinal-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-cardinal-700 mb-4">
+                Hợp tác nghiên cứu với doanh nghiệp và viện nghiên cứu
+              </h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  Tạo cơ hội tham gia đề tài/dự án nghiên cứu ứng dụng thực tế
+                </li>
+                <li>
+                  Thực tập nghiên cứu tại doanh nghiệp, viện nghiên cứu và các
+                  đối tác nước ngoài.
+                </li>
               </ul>
             </div>
           </div>

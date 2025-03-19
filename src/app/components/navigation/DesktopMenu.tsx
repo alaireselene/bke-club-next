@@ -102,7 +102,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
             <div className="absolute left-0 mt-2 w-72 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 invisible opacity-0 transition-all duration-200 group-hover/network:visible group-hover/network:opacity-100">
               <div className="py-1">
                 {/* School section */}
-                <div className="px-3 py-1.5 text-xs font-medium text-slate-500">
+                <div className="px-3 py-1.5 text-sm font-semibold text-cardinal-500">
                   Trường
                 </div>
                 {schools
@@ -144,7 +144,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   ))}
 
                 {/* Faculty section */}
-                <div className="mt-2 border-t border-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500">
+                <div className="mt-2 border-t border-slate-100 px-3 py-1.5 text-sm font-semibold text-cardinal-500">
                   Khoa
                 </div>
                 {schools
@@ -186,7 +186,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   ))}
 
                 {/* Others section */}
-                <div className="mt-2 border-t border-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500">
+                <div className="mt-2 border-t border-slate-100 px-3 py-1.5 text-sm font-semibold text-cardinal-500">
                   Khác
                 </div>
                 {schools

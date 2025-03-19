@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, Users, Lightbulb, Flag } from "lucide-react";
+import { Calendar, Users, Flag, Handshake } from "lucide-react";
 import { motion } from "motion/react";
 
-type StatLabel = "Câu lạc bộ" | "Thành viên" | "Dự án" | "Sự kiện";
+type StatLabel = "Câu lạc bộ" | "Thành viên" | "Đối tác" | "Sự kiện";
 
 interface Stat {
   value: string;
@@ -18,7 +18,7 @@ interface HeroProps {
 const icons = {
   "Câu lạc bộ": Calendar,
   "Thành viên": Users,
-  "Dự án": Lightbulb,
+  "Đối tác": Handshake,
   "Sự kiện": Flag,
 } as const;
 

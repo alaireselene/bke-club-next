@@ -81,19 +81,36 @@ export function Partners({ partners }: PartnersProps) {
 
         {/* Partners Grid */}
         {partners.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {partners.map((partner, index) => (
-              <motion.div
-                key={partner.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+          <>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 h-[280px]">
+              {partners
+                .filter((partner) => partner.featuredImage)
+                .slice(0, 4)
+                .map((partner, index) => (
+                  <motion.div
+                    key={partner.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 * index }}
+                    className="h-full"
+                  >
+                    <PartnerCard partner={partner} />
+                  </motion.div>
+                ))}
+            </div>
+            {partners.length > 4 && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.2 * index }}
+                transition={{ delay: 0.8 }}
+                className="text-center mt-8 text-slate-600"
               >
-                <PartnerCard partner={partner} />
-              </motion.div>
-            ))}
-          </div>
+                Và {partners.length - 4} đối tác khác
+              </motion.p>
+            )}
+          </>
         ) : (
           <div className="text-center py-16 text-base-content/60 bg-white/50 rounded-xl backdrop-blur-sm border border-slate-200/60">
             <div className="text-5xl mb-4">🤝</div>

@@ -6,7 +6,7 @@ import {
   Cpu,
   PillBottle,
   ChartPie,
-  Hammer,
+  ZapIcon,
   BookOpen,
   Globe2,
   Calculator,
@@ -86,14 +86,14 @@ const researchAreas = [
       { name: "Khoa VLKT", code: "SEP" },
     ],
   },
-];
+].sort((a, b) => a.title.localeCompare(b.title, "vi"));
 
 const icons = {
   settings2: Settings2,
   cpu: Cpu,
   flask: PillBottle,
   chartPieSlice: ChartPie,
-  hammer: Hammer,
+  hammer: ZapIcon,
   bookOpen: BookOpen,
   globe2: Globe2,
   calculator: Calculator,
