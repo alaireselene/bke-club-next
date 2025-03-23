@@ -1,16 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
 # Student Research Clubs Network Portal - Guidelines
 
 ## Overview
 
 - Purpose: Centralized platform for HUST research club activities, events, and resources
-- Core Features: Dynamic homepage, news, schedules, resource sharing, Vietnamese support, CMS, member/club management
-
-## Design
-
-- Theme: Modern, minimalist design with bold visual storytelling
-- Colors: Cardinal Red (#CE1628), Navy Blue (#003366), Sunflower Yellow (#F3C108), Charcoal Gray (#232020)
-- Typography: Bold sans-serif for headings, clean sans-serif for body, emphasis on contrast and hierarchy
-- Layout: Full-width sections, dynamic grid system, immersive imagery, data visualization cards, scroll-based content reveals
+- Core Features: Dynamic homepage, news, schedules, resource sharing, Vietnamese support
 
 ## Tech Stack
 
@@ -18,8 +16,6 @@
 - Backend: WordPress (Headless CMS), WPGraphQL plugin
 - Cloud: Vercel (frontend), WordPress hosting (backend), Cloudinary (images)
 - Styling: Tailwind CSS 4.x, DaisyUI, lucide-react icons
-- Security: Auth.js, WordPress authentication
-- Visualization: D3.js v7
 
 ## Development Approach
 
@@ -70,50 +66,14 @@
 - Separate business logic from UI
 - Follow YAGNI and KISS to avoid over-engineering
 
-## Styling
-
-- Use Tailwind utilities with DaisyUI components
-- Implement full-width hero sections with dynamic typography
-- Design interactive data visualization cards
-- Create scroll-based content reveals and transitions
-- Maintain bold typography hierarchy with institutional colors
-- Use full-width imagery and parallax effects
-- Design mobile-first with responsive scaling
-- Implement infographic elements for statistics
-- Theme Lucide icons with institutional colors
-
 ## Security
-
 - Sanitize and validate content with DOMPurify
 
 ## Data Fetching
-
 - Use GraphQL fragments for reusable queries
 - Implement cursor-based pagination
-- Cache responses with Apollo Client
+- Cache responses with Apollo Client, but only with page that not need so much changes, like clubs
 - Handle loading and error states
-
-## Storage
-
-- Store media in WordPress media library
-- Use WordPress image sizes for optimization
-- Cloudinary for enhanced image delivery
-- Secure media access through WordPress
-
-## UI Components
-
-- Build with DaisyUI components
-- Ensure accessibility (ARIA)
-- Use WordPress Gutenberg blocks for rich content
-- Implement loading states with Suspense
-
-## Quality & Testing
-
-- Unit test React components
-- Test GraphQL queries and mutations
-- Integration test WordPress interactions
-- Verify authentication flows
-- Document edge cases with examples
 
 ## Performance
 
@@ -121,8 +81,3 @@
 - Implement query batching
 - Use React Suspense for loading states
 - Configure proper WordPress caching
-
-## Vietnamese Support
-
-- Use WordPress multilingual support
-- Vietnamese date/time formats

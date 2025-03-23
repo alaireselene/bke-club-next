@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getClient } from "@/lib/apollo-client";
 import { GET_CLUB_BY_SLUG, GET_NAVIGATION_DATA } from "@/lib/graphql/queries";
-import { PageHeader } from "@/app/components/ui/PageHeader";
-import { ClubDetails } from "@/app/components/network/ClubDetails";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
+import { ClubDetails } from "@/features/network/components/ClubDetails";
 import type { Club } from "@/types/wordpress";
 
 interface Props {

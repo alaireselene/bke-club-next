@@ -1,5 +1,5 @@
-import { PageHeader } from "../components/ui/PageHeader";
-import { WeekCalendar } from "../components/calendar/WeekCalendar";
+import { PageHeader } from "../../components/layout/PageHeader/PageHeader";
+import { WeekCalendar } from "../../features/calendar/components/WeekCalendar";
 
 type EventType =
   | "workshop"

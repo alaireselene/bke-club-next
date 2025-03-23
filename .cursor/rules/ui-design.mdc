@@ -1,0 +1,34 @@
+---
+description: Component styling, UI design
+globs: 
+alwaysApply: false
+---
+
+# UI Design
+
+CSS file will be put in [globals.css](mdc:src/app/globals.css). It use Tailwind v4 syntax. 
+
+## General theme
+- Theme: Modern, minimalist design with bold visual storytelling
+- Colors: Cardinal Red (#CE1628), Navy Blue (#003366), Sunflower Yellow (#F3C108), Charcoal Gray (#232020)
+- Typography: Bold sans-serif for headings, clean sans-serif for body, emphasis on contrast and hierarchy
+- Layout: Full-width sections, dynamic grid system, immersive imagery, data visualization cards, scroll-based content reveals
+
+## Specific TailwindCSS rules:
+- Use Tailwind utilities with DaisyUI components
+- Implement full-width hero sections with dynamic typography
+- Design interactive data visualization cards
+- Create scroll-based content reveals and transitions
+- Maintain bold typography hierarchy with institutional colors
+- Use full-width imagery and parallax effects
+- Design mobile-first with responsive scaling
+- Implement infographic elements for statistics
+- Theme Lucide icons with institutional colors
+
+## UI Components
+
+- Build with DaisyUI components
+- Ensure accessibility (ARIA)
+- Use WordPress Gutenberg blocks for rich content
+- Implement loading states with Suspense
+- Instead of reinvent the wheel, just use shadcn components

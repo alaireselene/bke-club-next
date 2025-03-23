@@ -6,11 +6,11 @@ import {
   GET_CLUBS,
   GET_PARTNERS,
 } from "@/lib/graphql/queries";
-import { Hero } from "@/app/components/Hero";
-import { FeaturedNews } from "@/app/components/FeaturedNews";
-import { FeaturedEvents } from "@/app/components/FeaturedEvents";
-import { ResearchAreas } from "@/app/components/ResearchAreas";
-import { QuickAbout } from "@/app/components/QuickAbout";
+import { Hero } from "@/features/homepage/components/Hero";
+import { FeaturedNews } from "@/features/news/components/FeaturedNews/FeaturedNews";
+import { FeaturedEvents } from "@/features/events/components/FeaturedEvents";
+import { ResearchAreas } from "@/features/homepage/components/ResearchAreas";
+import { QuickAbout } from "@/features/homepage/components/QuickAbout";
 import { Partners } from "@/app/components/partners/Partners";
 import { Club } from "@/types/wordpress";
 

@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
 import { GET_POSTS, GET_CATEGORIES } from "@/lib/graphql/queries";
-import { PageHeader } from "@/app/components/ui/PageHeader";
-import { NewsFilter } from "@/app/components/news/NewsFilter";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
+import { NewsFilter } from "@/features/news/components/NewsFilter";
 import type { Post } from "@/types/wordpress";
 
 export const metadata: Metadata = {

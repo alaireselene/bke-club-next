@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
 import { GET_PARTNERS } from "@/lib/graphql/queries";
-import { PageHeader } from "@/app/components/ui/PageHeader";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { PartnersList } from "@/app/components/partners/PartnersList";
 import type { Partner } from "@/types/wordpress";
 

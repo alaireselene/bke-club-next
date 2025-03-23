@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
 import { GET_NAVIGATION_DATA } from "@/lib/graphql/queries";
-import { NetworkContent } from "@/app/components/network/NetworkContent";
-import { PageHeader } from "@/app/components/ui/PageHeader";
+import { NetworkContent } from "@/features/network/components/NetworkContent";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import type { School } from "@/types/wordpress";
 
 export const metadata: Metadata = {
