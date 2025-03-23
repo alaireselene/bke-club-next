@@ -4,7 +4,8 @@ import Link from "next/link";
 import { X, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { School } from "@/types/wordpress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 
 interface Props {
   isOpen: boolean;
@@ -28,6 +29,24 @@ export function MobileMenu({
   const [expandedSchools, setExpandedSchools] = useState<Set<string>>(
     new Set()
   );
+  const { unlockScroll } = useScrollLock();
+
+  // Reset body overflow when component unmounts
+  useEffect(() => {
+    // Fix for mobile scrolling issues
+    if (!isOpen) {
+      unlockScroll();
+    }
+
+    return () => {
+      unlockScroll();
+    };
+  }, [isOpen, unlockScroll]);
+
+  const handleClose = () => {
+    unlockScroll();
+    onClose();
+  };
 
   const toggleSchool = (schoolId: string) => {
     setExpandedSchools((prev) => {
@@ -57,7 +76,7 @@ export function MobileMenu({
         className={`absolute inset-0 bg-cardinal-900/60 backdrop-blur-sm transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "opacity-0"
         }`}
-        onClick={onClose}
+        onClick={handleClose}
         aria-hidden="true"
       />
 
@@ -86,7 +105,7 @@ export function MobileMenu({
             )}
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="rounded-full p-2 text-cardinal-600 transition-all duration-200 hover:bg-cardinal-50/50 hover:text-cardinal-700 focus:outline-none focus:ring-2 focus:ring-cardinal-500 focus:ring-offset-2"
             aria-label="Close menu"
           >
@@ -111,7 +130,7 @@ export function MobileMenu({
                     ? "bg-cardinal-50/50 text-cardinal-600"
                     : "text-slate-600 hover:bg-slate-50/50 hover:text-cardinal-600"
                 }`}
-                onClick={onClose}
+                onClick={handleClose}
               >
                 {text}
               </Link>
@@ -166,7 +185,7 @@ export function MobileMenu({
                                   key={club.id}
                                   href={`/network/${club.slug}`}
                                   className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
-                                  onClick={onClose}
+                                  onClick={handleClose}
                                 >
                                   <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
                                     {club.title}
@@ -233,7 +252,7 @@ export function MobileMenu({
                                   key={club.id}
                                   href={`/network/${club.slug}`}
                                   className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
-                                  onClick={onClose}
+                                  onClick={handleClose}
                                 >
                                   <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
                                     {club.title}
@@ -306,7 +325,7 @@ export function MobileMenu({
                                   key={club.id}
                                   href={`/network/${club.slug}`}
                                   className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
-                                  onClick={onClose}
+                                  onClick={handleClose}
                                 >
                                   <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
                                     {club.title}
@@ -343,7 +362,7 @@ export function MobileMenu({
                     ? "bg-cardinal-50 text-cardinal-600"
                     : "text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
                 }`}
-                onClick={onClose}
+                onClick={handleClose}
               >
                 {text}
               </Link>
@@ -354,7 +373,7 @@ export function MobileMenu({
               <Link
                 href="/admin"
                 className="flex items-center rounded-lg px-3 py-2 text-base font-medium text-slate-600 hover:bg-slate-50 hover:text-cardinal-600"
-                onClick={onClose}
+                onClick={handleClose}
               >
                 <Settings className="h-5 w-5 mr-2" />
                 Quản trị
@@ -370,7 +389,7 @@ export function MobileMenu({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between rounded-full px-4 py-2.5 text-base font-medium text-slate-600 transition-all duration-200 hover:bg-cardinal-50/30 hover:text-cardinal-600"
-                onClick={onClose}
+                onClick={handleClose}
               >
                 <span>eHUST</span>
                 <span className="text-xs text-slate-500">

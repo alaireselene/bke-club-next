@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu } from "lucide-react";
 import { Logo } from "@/app/components/navigation/Logo";
 import { NavigationMenu } from "@/app/components/navigation/NavigationMenu";
 import { MobileMenu } from "@/app/components/navigation/MobileMenu";
 import { DesktopMenu } from "@/app/components/navigation/DesktopMenu";
 import type { School } from "@/types/wordpress";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 
 type Props = {
   schools: School[];
@@ -16,12 +17,38 @@ export function Header({ schools }: Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState("VI");
   const [scrolled, setScrolled] = useState(false);
+  const hasMounted = useRef(false);
+  const { lockScroll, unlockScroll } = useScrollLock();
+
+  // Fix for iOS Safari scroll issues
+  useEffect(() => {
+    // Mark as mounted
+    hasMounted.current = true;
+
+    // Force enable scrolling when component mounts
+    unlockScroll();
+
+    // Ensure we have scrolling enabled
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    }
+  }, [unlockScroll]);
 
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-    if (typeof document !== "undefined") {
-      document.body.style.overflow = !mobileMenuOpen ? "hidden" : "";
-    }
+    if (!hasMounted.current) return;
+
+    setMobileMenuOpen((prev) => {
+      const newState = !prev;
+
+      if (newState) {
+        lockScroll();
+      } else {
+        unlockScroll();
+      }
+
+      return newState;
+    });
   };
 
   const toggleLanguage = () => {
