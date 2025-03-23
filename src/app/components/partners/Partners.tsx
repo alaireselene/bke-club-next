@@ -48,35 +48,18 @@ export function Partners({ partners }: PartnersProps) {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center justify-center px-4 py-1.5 mb-3 rounded-full bg-sunflower-50 text-sunflower-600 text-sm font-medium"
-          >
+          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-3 rounded-full bg-sunflower-50 text-sunflower-600 text-sm font-medium">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-sunflower-500 mr-2"></span>
             Đối tác
-          </motion.div>
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-4xl font-bold mb-6 bg-gradient-to-r from-sunflower-600 to-sunflower-400 bg-clip-text text-transparent"
-          >
+          <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-sunflower-600 to-sunflower-400 bg-clip-text text-transparent">
             Đơn vị đồng hành
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="text-lg text-slate-600 max-w-2xl mx-auto"
-          >
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Kết nối và phát triển cùng các đối tác chiến lược
-          </motion.p>
+          </p>
         </div>
 
         {/* Partners Grid */}
@@ -87,28 +70,15 @@ export function Partners({ partners }: PartnersProps) {
                 .filter((partner) => partner.featuredImage)
                 .slice(0, 4)
                 .map((partner, index) => (
-                  <motion.div
-                    key={partner.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 * index }}
-                    className="h-full"
-                  >
+                  <div key={partner.id} className="h-full">
                     <PartnerCard partner={partner} />
-                  </motion.div>
+                  </div>
                 ))}
             </div>
             {partners.length > 4 && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.8 }}
-                className="text-center mt-8 text-slate-600"
-              >
+              <p className="text-center mt-8 text-slate-600">
                 Và {partners.length - 4} đối tác khác
-              </motion.p>
+              </p>
             )}
           </>
         ) : (
@@ -119,13 +89,7 @@ export function Partners({ partners }: PartnersProps) {
         )}
 
         {/* Join Us Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="mt-16 text-center"
-        >
+        <div className="mt-16 text-center">
           <a
             href="/contact"
             className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden rounded-full bg-gradient-to-r from-sunflower-500 to-sunflower-400 text-white font-semibold shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-sunflower-400 focus:ring-offset-2"
@@ -135,7 +99,7 @@ export function Partners({ partners }: PartnersProps) {
             <span className="absolute -end-full -start-full top-1/2 h-48 -translate-y-1/2 translate-x-0 bg-white/10 transition-all duration-500 ease-out group-hover:translate-x-full"></span>
             <span className="relative">Trở thành đối tác</span>
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

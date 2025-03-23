@@ -26,19 +26,9 @@ export function PartnerCard({ partner }: PartnerCardProps) {
   const type = partner.partnerData.type[0];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="w-full h-full"
-    >
+    <div className="w-full h-full">
       <Link href={partner.partnerData.website} className="block h-full">
-        <motion.article
-          whileHover={{ y: -4 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          className="group h-full flex flex-col bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden"
-        >
+        <article className="group h-full flex flex-col bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden">
           {partner.featuredImage?.node.sourceUrl && (
             <div className="relative h-32 w-full overflow-hidden bg-white">
               <Image
@@ -52,56 +42,26 @@ export function PartnerCard({ partner }: PartnerCardProps) {
           <div className="flex-1 p-6">
             <div className="flex flex-col h-full">
               {/* Region & Type Tags */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="flex flex-wrap gap-2 mb-4"
-              >
+              <div className="flex flex-wrap gap-2 mb-4">
                 {region && (
-                  <motion.span
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600"
-                  >
+                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
                     <MapPinned className="h-3 w-3" />
                     {regionLabels[region]}
-                  </motion.span>
+                  </span>
                 )}
                 {type && (
-                  <motion.span
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 17,
-                      delay: 0.1,
-                    }}
-                    className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600"
-                  >
+                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
                     {typeLabels[type]}
-                  </motion.span>
+                  </span>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.h3
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-lg font-semibold line-clamp-2 group-hover:text-cardinal-600 transition-colors"
-              >
+              <h3 className="text-lg font-semibold line-clamp-2 group-hover:text-cardinal-600 transition-colors">
                 {partner.title}
-              </motion.h3>
+              </h3>
 
               {partner.partnerData.website && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="flex items-center gap-2 text-sm text-slate-600 mt-auto"
-                >
+                <div className="flex items-center gap-2 text-sm text-slate-600 mt-auto">
                   <Globe className="h-4 w-4 text-cardinal-500" />
                   <span className="truncate">
                     {new URL(partner.partnerData.website).hostname.replace(
@@ -109,12 +69,12 @@ export function PartnerCard({ partner }: PartnerCardProps) {
                       ""
                     )}
                   </span>
-                </motion.div>
+                </div>
               )}
             </div>
           </div>
-        </motion.article>
+        </article>
       </Link>
-    </motion.div>
+    </div>
   );
 }
