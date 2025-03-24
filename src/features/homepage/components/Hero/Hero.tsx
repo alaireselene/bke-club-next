@@ -4,17 +4,6 @@ import Link from "next/link";
 import { Calendar, Users, Flag, Handshake } from "lucide-react";
 import { motion } from "motion/react";
 
-type StatLabel = "Câu lạc bộ" | "Thành viên" | "Đối tác" | "Sự kiện";
-
-interface Stat {
-  value: string;
-  label: StatLabel;
-}
-
-interface HeroProps {
-  stats: Stat[];
-}
-
 const icons = {
   "Câu lạc bộ": Calendar,
   "Thành viên": Users,

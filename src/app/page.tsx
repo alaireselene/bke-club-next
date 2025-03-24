@@ -6,7 +6,7 @@ import {
   GET_CLUBS,
   GET_PARTNERS,
 } from "@/lib/graphql/queries";
-import { Hero } from "@/features/homepage/components/Hero";
+import { Hero } from "@/features/homepage/components/Hero/Hero";
 import { FeaturedNews } from "@/features/news/components/FeaturedNews/FeaturedNews";
 import { FeaturedEvents } from "@/features/events/components/FeaturedEvents";
 import { ResearchAreas } from "@/features/homepage/components/ResearchAreas";
