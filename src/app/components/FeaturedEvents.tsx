@@ -5,7 +5,6 @@ import { EventCard } from "./ui/EventCard";
 import { CategoryTabs } from "./ui/CategoryTabs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import type { Event } from "@/types/wordpress";
 
 type FeaturedEventsProps = {
@@ -86,7 +85,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
             {/* Small Events Grid */}
             <div className="grid grid-rows-2 gap-8 lg:col-span-5 h-full">
               <div className="grid grid-cols-2 gap-8 h-full">
-                {smallEvents.slice(0, 2).map((event, index) => (
+                {smallEvents.slice(0, 2).map((event) => (
                   <div key={event.id} className="h-full">
                     <div className="h-full">
                       <EventCard event={event} />
@@ -95,7 +94,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-8 h-full">
-                {smallEvents.slice(2, 4).map((event, index) => (
+                {smallEvents.slice(2, 4).map((event) => (
                   <div key={event.id} className="h-full">
                     <div className="h-full">
                       <EventCard event={event} />

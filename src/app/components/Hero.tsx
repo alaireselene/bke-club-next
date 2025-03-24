@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Calendar, Users, Flag, Handshake } from "lucide-react";
-import { motion } from "motion/react";
 
 type StatLabel = "Câu lạc bộ" | "Thành viên" | "Đối tác" | "Sự kiện";
 
@@ -99,7 +98,7 @@ export function Hero({ stats }: HeroProps) {
 
           {/* Stats Grid */}
           <div className="mx-auto mt-20 grid max-w-4xl grid-cols-2 gap-8 sm:gap-x-16 md:grid-cols-4">
-            {stats.map(({ label, value }, index) => {
+            {stats.map(({ label, value }) => {
               const Icon = icons[label];
               return (
                 <div key={label} className="group relative text-center">

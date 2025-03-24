@@ -5,7 +5,6 @@ import { NewsCard } from "./ui/NewsCard";
 import { CategoryTabs } from "./ui/CategoryTabs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import type { Post } from "@/types/wordpress";
 
 type FeaturedNewsProps = {
@@ -90,60 +89,58 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
           </div>
         </div>
 
-        <AnimatePresence mode="wait">
-          {filteredPosts.length > 0 ? (
-            <div className="grid gap-8 lg:grid-cols-12">
-              {/* Hero Article */}
-              {heroPost && (
-                <div className="lg:col-span-7">
+        {filteredPosts.length > 0 ? (
+          <div className="grid gap-8 lg:grid-cols-12">
+            {/* Hero Article */}
+            {heroPost && (
+              <div className="lg:col-span-7">
+                <NewsCard
+                  post={{
+                    slug: heroPost.slug,
+                    title: heroPost.title,
+                    summary: heroPost.excerpt || "",
+                    publishedAt: heroPost.date,
+                    category: heroPost.categories.nodes[0]?.slug || "",
+                    categoryName: heroPost.categories.nodes[0]?.name || "",
+                    featuredImage: heroPost.featuredImage,
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Small Articles Grid */}
+            <div className="grid gap-6 lg:col-span-5 lg:grid-cols-2">
+              {smallPosts.map((post) => (
+                <div key={post.id}>
                   <NewsCard
                     post={{
-                      slug: heroPost.slug,
-                      title: heroPost.title,
-                      summary: heroPost.excerpt || "",
-                      publishedAt: heroPost.date,
-                      category: heroPost.categories.nodes[0]?.slug || "",
-                      categoryName: heroPost.categories.nodes[0]?.name || "",
-                      featuredImage: heroPost.featuredImage,
+                      slug: post.slug,
+                      title: post.title,
+                      summary: post.excerpt || "",
+                      publishedAt: post.date,
+                      category: post.categories.nodes[0]?.slug || "",
+                      categoryName: post.categories.nodes[0]?.name || "",
+                      featuredImage: post.featuredImage,
                     }}
                   />
                 </div>
-              )}
-
-              {/* Small Articles Grid */}
-              <div className="grid gap-6 lg:col-span-5 lg:grid-cols-2">
-                {smallPosts.map((post, index) => (
-                  <div key={post.id}>
-                    <NewsCard
-                      post={{
-                        slug: post.slug,
-                        title: post.title,
-                        summary: post.excerpt || "",
-                        publishedAt: post.date,
-                        category: post.categories.nodes[0]?.slug || "",
-                        categoryName: post.categories.nodes[0]?.name || "",
-                        featuredImage: post.featuredImage,
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
-          ) : (
-            <div
-              key="empty"
-              className="text-center py-16 text-base-content/60 bg-white/80 rounded-xl backdrop-blur-md border border-slate-200/60 shadow-sm hover:shadow-md hover:bg-white/90"
-            >
-              <div className="text-5xl mb-4">📰</div>
-              <p className="text-lg font-medium">
-                Không tìm thấy bài viết nào trong danh mục này.
-              </p>
-              <p className="mt-2 text-sm text-slate-500">
-                Vui lòng thử chọn danh mục khác
-              </p>
-            </div>
-          )}
-        </AnimatePresence>
+          </div>
+        ) : (
+          <div
+            key="empty"
+            className="text-center py-16 text-base-content/60 bg-white/80 rounded-xl backdrop-blur-md border border-slate-200/60 shadow-sm hover:shadow-md hover:bg-white/90"
+          >
+            <div className="text-5xl mb-4">📰</div>
+            <p className="text-lg font-medium">
+              Không tìm thấy bài viết nào trong danh mục này.
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Vui lòng thử chọn danh mục khác
+            </p>
+          </div>
+        )}
 
         <div className="mt-16 text-center">
           <div>

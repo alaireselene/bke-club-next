@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "motion/react";
 import { PartnerCard } from "./PartnerCard";
 import type { Partner } from "@/types/wordpress";
 
@@ -69,7 +68,7 @@ export function Partners({ partners }: PartnersProps) {
               {partners
                 .filter((partner) => partner.featuredImage)
                 .slice(0, 4)
-                .map((partner, index) => (
+                .map((partner) => (
                   <div key={partner.id} className="h-full">
                     <PartnerCard partner={partner} />
                   </div>

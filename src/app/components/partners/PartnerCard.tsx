@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPinned, Globe } from "lucide-react";
-import { motion } from "motion/react";
+
 import type { Partner, PartnerRegion, PartnerType } from "@/types/wordpress";
 
 interface PartnerCardProps {
