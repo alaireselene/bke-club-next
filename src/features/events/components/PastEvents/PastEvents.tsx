@@ -5,13 +5,7 @@ import { EventCard } from "@/features/events/components/EventCard/EventCard";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { loadMoreEvents } from "@/app/events/actions";
-import type { Event } from "@/types/wordpress";
-
-interface PastEventsProps {
-  initialEvents: Event[];
-  initialHasMore: boolean;
-  initialCursor: string;
-}
+import type { PastEventsProps } from "./types";
 
 export function PastEvents({
   initialEvents,

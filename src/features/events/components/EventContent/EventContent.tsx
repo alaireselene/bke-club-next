@@ -1,11 +1,7 @@
 "use client";
 
 import { AlertTriangle } from "lucide-react";
-
-interface EventContentProps {
-  content: string;
-  isAiTranslated?: boolean;
-}
+import type { EventContentProps } from "./types";
 
 export function EventContent({ content, isAiTranslated }: EventContentProps) {
   return (

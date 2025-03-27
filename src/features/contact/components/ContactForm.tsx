@@ -1,3 +1,5 @@
+// TODO: Use API/Implement some way to send email to stkn@hust.edu.vn after filled the form
+
 "use client";
 
 import { useState } from "react";

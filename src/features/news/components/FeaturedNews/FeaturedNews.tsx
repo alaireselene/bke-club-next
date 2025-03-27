@@ -5,8 +5,9 @@ import { NewsCard } from "../NewsCard/NewsCard";
 import { CategoryTabs } from "@/components/shared/CategoryTabs/CategoryTabs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import type { FeaturedNewsProps, CategoryType } from "./types";
+import { News } from "../../types";
 
 const categories = [
   { slug: "scholarship", name: "Học bổng - Trao đổi" },
@@ -15,19 +16,19 @@ const categories = [
   { slug: "announcement", name: "Thông báo" },
 ];
 
-export function FeaturedNews({ posts }: FeaturedNewsProps) {
+export function FeaturedNews({ news }: FeaturedNewsProps) {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
     null
   );
 
-  const filteredNewss = !selectedCategory
-    ? posts
-    : posts.filter((post) =>
-        post.categories?.nodes.some((cat) => cat.slug === selectedCategory)
+  const filteredNews = !selectedCategory
+    ? news
+    : news.filter((article: News) =>
+        article.categories?.nodes.some((cat) => cat.slug === selectedCategory)
       );
 
-  const heroNews = filteredNewss[0];
-  const smallNewss = filteredNewss.slice(1, 5);
+  const heroNews = filteredNews[0];
+  const smallNews = filteredNews.slice(1, 5);
 
   return (
     <section className="relative py-16 overflow-hidden">
@@ -132,89 +133,67 @@ export function FeaturedNews({ posts }: FeaturedNewsProps) {
           </motion.div>
         </motion.div>
 
-        <AnimatePresence mode="wait">
-          {filteredNewss.length > 0 ? (
-            <motion.div
-              key="posts"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="grid gap-8 lg:grid-cols-12"
-            >
-              {/* Hero Article */}
-              {heroNews && (
-                <motion.div
-                  layout
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="lg:col-span-7"
-                >
-                  <NewsCard
-                    post={{
-                      slug: heroNews.slug,
-                      title: heroNews.title,
-                      summary: heroNews.excerpt || "",
-                      publishedAt: heroNews.date,
-                      category: heroNews.categories.nodes[0]?.slug || "",
-                      categoryName: heroNews.categories.nodes[0]?.name || "",
-                      featuredImage: heroNews.featuredImage,
-                    }}
-                  />
-                </motion.div>
-              )}
-
-              {/* Small Articles Grid */}
-              <div className="grid gap-6 lg:col-span-5 lg:grid-cols-2">
-                {smallNewss.map((post, index) => (
-                  <motion.div
-                    key={post.databaseId}
-                    layout
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                  >
-                    <NewsCard
-                      post={{
-                        slug: post.slug,
-                        title: post.title,
-                        summary: post.excerpt || "",
-                        publishedAt: post.date,
-                        category: post.categories.nodes[0]?.slug || "",
-                        categoryName: post.categories.nodes[0]?.name || "",
-                        featuredImage: post.featuredImage,
-                      }}
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="empty"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4 }}
-              className="text-center py-16 text-base-content/60 bg-white/80 rounded-xl backdrop-blur-md border border-slate-200/60 shadow-sm hover:shadow-md hover:bg-white/90"
-            >
+        {filteredNews.length > 0 ? (
+          <motion.div
+            key="posts"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="grid gap-8 lg:grid-cols-12"
+          >
+            {/* Hero Article */}
+            {heroNews && (
               <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-5xl mb-4"
+                layout
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="lg:col-span-7"
               >
-                📰
+                <NewsCard news={heroNews} />
               </motion.div>
-              <p className="text-lg font-medium">
-                Không tìm thấy bài viết nào trong danh mục này.
-              </p>
-              <p className="mt-2 text-sm text-slate-500">
-                Vui lòng thử chọn danh mục khác
-              </p>
+            )}
+
+            {/* Small Articles Grid */}
+            <div className="grid gap-6 lg:col-span-5 lg:grid-cols-2">
+              {smallNews.map((article, index) => (
+                <motion.div
+                  key={article.databaseId}
+                  layout
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <NewsCard news={article} />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.4 }}
+            className="text-center py-16 text-base-content/60 bg-white/80 rounded-xl backdrop-blur-md border border-slate-200/60 shadow-sm hover:shadow-md hover:bg-white/90"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-5xl mb-4"
+            >
+              📰
             </motion.div>
-          )}
-        </AnimatePresence>
+            <p className="text-lg font-medium">
+              Không tìm thấy bài viết nào trong danh mục này.
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Vui lòng thử chọn danh mục khác
+            </p>
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

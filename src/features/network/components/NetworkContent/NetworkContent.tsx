@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { SearchFilter } from "@/features/network/components/SearchFilter";
-import { SchoolCard } from "@/features/network/components/SchoolCard";
-import type { School } from "@/types/wordpress";
+import { SearchFilter } from "@/features/network/components/SearchFilter/SearchFilter";
+import { SchoolCard } from "@/features/network/components/SchoolCard/SchoolCard";
+import type { NetworkContentProps } from "./types";
+
 import { useSearchParams } from "next/navigation";
 import {
   Compass,
@@ -13,11 +14,6 @@ import {
   Microscope,
   Rocket,
 } from "lucide-react";
-
-interface NetworkContentProps {
-  schools: School[];
-  initialSchoolFilter?: string;
-}
 
 const SCIENTIFIC_ICONS = [Atom, Beaker, Microscope, Rocket, Network, Compass];
 

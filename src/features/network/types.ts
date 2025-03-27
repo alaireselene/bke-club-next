@@ -1,4 +1,4 @@
-import type { Node, WithFeaturedImage, WithContent } from "@/types/wordpress";
+import type { Node, WithFeaturedImage, WithContent, WithTitle } from "@/types/wordpress";
 
 interface School extends Node, WithFeaturedImage {
   name: string;
@@ -8,7 +8,7 @@ interface School extends Node, WithFeaturedImage {
   };
 }
 
-interface Club extends WithContent, WithFeaturedImage {
+interface Club extends Node, WithTitle, WithContent, WithFeaturedImage {
   clubData: {
     establishedYear: string;
     membersCount: number;

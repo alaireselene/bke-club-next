@@ -1,24 +1,10 @@
+// TODO: Render this from Wordpress instead of write it from scratch shit.
+// TODO: Move this component to seperate folder instead of leave it alone, then add types.ts and index.ts
 "use client";
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-type Event = {
-  id: string;
-  title: string;
-  startDate: Date;
-  endDate: Date;
-  location: string;
-  type: EventType;
-  slug: string;
-};
-
-type EventType =
-  | "workshop"
-  | "competition"
-  | "cultural"
-  | "research"
-  | "synposium";
+import type { EventType, Event } from "./types";
 
 const eventStyles: Record<EventType, string> = {
   workshop: "bg-cardinal-50 border-cardinal-400 text-cardinal-800",

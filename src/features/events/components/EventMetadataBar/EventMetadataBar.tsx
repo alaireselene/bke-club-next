@@ -2,13 +2,7 @@
 
 import { Calendar, MapPin, Users, Globe } from "lucide-react";
 import { formatDatetime } from "@/lib/utils/date";
-
-interface EventMetadataBarProps {
-  startDate: Date | number;
-  endDate: Date | number;
-  location: string;
-  isOnline?: boolean;
-}
+import type { EventMetadataBarProps } from "./types";
 
 export function EventMetadataBar({
   startDate,

@@ -1,21 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { PartnerCard } from "./PartnerCard/PartnerCard";
-import type { Partner, PartnerRegion, PartnerType } from "@/types/wordpress";
+import { PartnerCard } from "../PartnerCard";
+import type { RegionFilter, TypeFilter, PartnersListProps } from "./types";
+import type { PartnerRegion, PartnerType } from "../../types";
 import { MapPin, Building2 } from "lucide-react";
-
-interface RegionFilter {
-  id: PartnerRegion;
-  name: string;
-  icon: typeof MapPin;
-}
-
-interface TypeFilter {
-  id: PartnerType;
-  name: string;
-  icon: typeof Building2;
-}
 
 const regions: RegionFilter[] = [
   { id: "local", name: "Việt Nam", icon: MapPin },
@@ -27,10 +16,6 @@ const types: TypeFilter[] = [
   { id: "business", name: "Doanh nghiệp", icon: Building2 },
   { id: "organization", name: "Tổ chức", icon: Building2 },
 ];
-
-interface PartnersListProps {
-  partners: Partner[];
-}
 
 export function PartnersList({ partners }: PartnersListProps) {
   const [selectedRegion, setSelectedRegion] = useState<PartnerRegion | null>(

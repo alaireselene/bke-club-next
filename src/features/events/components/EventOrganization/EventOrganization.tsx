@@ -2,17 +2,7 @@
 
 import Image from "next/image";
 
-interface EventOrganizationProps {
-  host?: {
-    name: string;
-    role?: string;
-    avatarUrl?: string;
-  };
-  sponsors?: Array<{
-    name: string;
-    logoUrl?: string;
-  }>;
-}
+import type { EventOrganizationProps } from "./types";
 
 export function EventOrganization({ host, sponsors }: EventOrganizationProps) {
   return (

@@ -34,3 +34,5 @@ interface EventData {
 interface Event extends News {
   eventData: EventData
 }
+
+export type { Event }

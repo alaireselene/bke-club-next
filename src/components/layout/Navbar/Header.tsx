@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
-import { Logo } from "@/app/components/navigation/Logo";
-import { NavigationMenu } from "@/app/components/navigation/NavigationMenu";
-import { MobileMenu } from "@/app/components/navigation/MobileMenu";
-import { DesktopMenu } from "@/app/components/navigation/DesktopMenu";
-import type { School } from "@/types/wordpress";
+import { Logo } from "./Logo";
+import { NavigationMenu } from "./NavigationMenu";
+import { MobileMenu } from "./MobileMenu";
+import { DesktopMenu } from "./DesktopMenu";
+import type { School } from "@/features/network";
 
 type Props = {
   schools: School[];

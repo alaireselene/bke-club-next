@@ -1,16 +1,18 @@
 import { gql } from '@apollo/client';
 
+import { FEATURED_IMAGE_FIELDS } from '@/lib/graphql/fragments';
+
 export const NEWS_FIELDS = gql`
   fragment NewsFields on Post {
-    id
     title
     slug
     excerpt
-    featuredImage {
-      node {
-        sourceUrl
-        altText
+    ...FeaturedImageFields
+    categories {
+      nodes {
+        name
       }
     }
-  }
+  },
+  ${FEATURED_IMAGE_FIELDS}
 `;

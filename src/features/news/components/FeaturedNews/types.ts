@@ -1,7 +1,7 @@
 import type { News } from "../../types";
 
 type FeaturedNewsProps = {
-  posts: News[];
+  news: News[];
 };
 
 type CategoryType =

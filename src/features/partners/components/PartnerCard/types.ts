@@ -1,6 +1,6 @@
-import type { AcademicPartner, BusinessPartner } from "../../types";
+import type { Partner } from "../../types";
 
 export type PartnerCardProps = {
-  partner: AcademicPartner | BusinessPartner;
+  partner: Partner;
   className?: string;
 };

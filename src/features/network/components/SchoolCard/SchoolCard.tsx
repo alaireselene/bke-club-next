@@ -1,14 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import type { School, Club } from "@/types/wordpress";
+import type { SchoolCardProps } from "./types";
 
-interface Props {
-  school: School;
-  clubs: Club[];
-}
-
-export function SchoolCard({ school, clubs }: Props) {
+export function SchoolCard({ school, clubs }: SchoolCardProps) {
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between space-y-0 p-6">
@@ -40,7 +35,7 @@ export function SchoolCard({ school, clubs }: Props) {
         <div className="divide-y divide-slate-100">
           {clubs.map((club) => (
             <Link
-              key={club.id}
+              key={club.databaseId}
               href={`/network/${club.slug}`}
               className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
             >

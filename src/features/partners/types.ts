@@ -1,38 +1,17 @@
-import type { WithContent, WithFeaturedImage } from "@/types/wordpress";
-
-interface BasePartner {
-  logo: string;
-  name: string;
-  description: string;
-  website: string;
-};
-
-interface AcademicPartner extends BasePartner {
-  type: "academic";
-  details: {
-    region: string;
-  };
-};
-
-type BusinessPartner = BasePartner & {
-  type: "business";
-  details: {
-    industry: string;
-    cooperationType: string;
-    internshipInfo?: string;
-  };
-};
+import type { WithContent, WithFeaturedImage, Node } from "@/types/wordpress";
 
 type PartnerRegion = 'local' | 'global';
 type PartnerType = 'academic' | 'business' | 'organization';
 
-interface Partner extends WithContent, WithFeaturedImage {
-  partnerData: {
-    region: PartnerRegion[];
-    type: PartnerType[];
-    website: string;
-  };
+interface PartnerData {
+  region: Array<PartnerRegion>
+  type: Array<PartnerType>
+  website: string
+};
+
+interface Partner extends Node, WithContent, WithFeaturedImage {
+  partnerData: PartnerData
 }
 
 
-export type { AcademicPartner, BusinessPartner, Partner }
+export type { Partner, PartnerRegion, PartnerType }

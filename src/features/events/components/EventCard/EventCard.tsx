@@ -2,11 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { CalendarDays, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import type { Event } from "@/types/wordpress";
 
-interface EventCardProps {
-  event: Event;
-}
+import type { EventCardProps } from "./types";
 
 const stripHtml = (html: string) => {
   return html.replace(/<[^>]*>/g, "");

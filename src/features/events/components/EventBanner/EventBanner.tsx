@@ -1,13 +1,7 @@
 "use client";
 
 import Image from "next/image";
-
-interface EventBannerProps {
-  title: string;
-  summary: string;
-  imageUrl?: string;
-  categoryName?: string;
-}
+import type { EventBannerProps } from "./types";
 
 export function EventBanner({
   title,

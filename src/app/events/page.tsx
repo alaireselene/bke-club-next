@@ -3,7 +3,7 @@ import { getClient } from "@/lib/apollo-client";
 import { GET_EVENTS } from "@/lib/graphql/queries";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { EventCard } from "@/features/events/components/EventCard/EventCard";
-import { PastEvents } from "@/features/events/components/PastEvent/PastEvents";
+import { PastEvents } from "@/features/events/components/PastEvents/PastEvents";
 import { Suspense } from "react";
 import type { Event } from "@/types/wordpress";
 

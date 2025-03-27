@@ -8,16 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { School } from "@/types/wordpress";
+import type { SearchFilterProps } from "./types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-
-interface SearchFilterProps {
-  schools: School[];
-  onSearch: (query: string) => void;
-  onSchoolChange: (schoolId: string) => void;
-  className?: string;
-}
 
 export function SearchFilter({
   schools,
@@ -60,7 +53,10 @@ export function SearchFilter({
         <SelectContent>
           <SelectItem value="all">Tất cả</SelectItem>
           {schools.map((school) => (
-            <SelectItem key={school.id} value={school.databaseId.toString()}>
+            <SelectItem
+              key={school.databaseId}
+              value={school.databaseId.toString()}
+            >
               <div className="flex justify-between items-center gap-2">
                 <span>{school.name}</span>
                 {school.slug && (

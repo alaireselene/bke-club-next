@@ -6,26 +6,28 @@ interface Node {
   parents?: Array<Node>;
 }
 
-interface MediaItem extends Node {
+interface MediaItem {
   sourceUrl: string;
   altText?: string;
   title?: string;
-}
-
-interface FeaturedImage {
-  node: MediaItem;
 }
 
 interface WithTitle extends Node {
   title: string;
 }
 
-interface WithContent extends WithTitle {
+interface WithContent extends Node {
   content: string;
 }
 
-interface WithFeaturedImage {
-  featuredImage?: FeaturedImage;
+interface WithExcerpt extends Node {
+  excerpt: string
+}
+
+interface WithFeaturedImage extends Node {
+  featuredImage?: {
+    node: MediaItem
+  }
 }
 
 interface WithDate {
@@ -33,7 +35,7 @@ interface WithDate {
   modified: string;
 }
 
-interface WithAuthor {
+interface WithAuthor extends Node {
   author?: {
     node: {
       name: string;
@@ -59,4 +61,6 @@ interface QueryResponse<T> {
   error?: any;
 }
 
-export type { Node, WithTitle, WithContent, WithFeaturedImage, WithDate, WithAuthor }
+export type {
+  Node, WithTitle, WithContent, WithFeaturedImage, WithDate, WithAuthor, WithExcerpt, Connection, QueryResponse
+}

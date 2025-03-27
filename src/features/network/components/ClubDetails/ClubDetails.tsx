@@ -1,6 +1,7 @@
 "use client";
 
-import type { Club } from "@/types/wordpress";
+import type { ClubDetailsProps } from "./types";
+
 import {
   CalendarHeart,
   FlagTriangleRight,
@@ -10,25 +11,6 @@ import {
   BookOpen,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
-interface SchoolBasicInfo {
-  id: string;
-  databaseId: number;
-  name: string;
-  slug: string;
-  featuredImage?: {
-    node: {
-      sourceUrl: string;
-      altText?: string;
-    };
-  };
-}
-
-interface ClubDetailsProps {
-  club: Club;
-  school: SchoolBasicInfo | null;
-  className?: string;
-}
 
 export function ClubDetails({
   club,

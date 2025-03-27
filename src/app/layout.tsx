@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
+import { Header } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 import { getClient } from "@/lib/apollo-client";
 import { GET_NAVIGATION_DATA } from "../lib/graphql/queries";
 import { Toaster } from "@/components/ui/sonner";
+import { ApolloWrapper } from "./ApolloWrapper";
 
 // Revalidate all pages every 60 seconds
 export const revalidate = 60;
@@ -70,7 +71,7 @@ export default async function RootLayout({
         {/* Main Content */}
         <main className="mt-28 flex-grow pb-20 transition-all duration-300 sm:mt-32">
           <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-            {children}
+            <ApolloWrapper>{children}</ApolloWrapper>
           </div>
         </main>
 
