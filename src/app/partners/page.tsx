@@ -1,9 +1,8 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
-import { GET_PARTNERS } from "@/lib/graphql/queries";
-import { PageHeader } from "@/app/components/ui/PageHeader";
-import { PartnersList } from "@/app/components/partners/PartnersList";
-import type { Partner } from "@/types/wordpress";
+import { GET_PARTNERS } from "@/features/partners/graphql/queries";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
+import { type Partner, PartnersList } from "@/features/partners";
 
 export const metadata: Metadata = {
   title: "Đối tác | HUST Research Clubs Network",

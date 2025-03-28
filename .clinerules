@@ -84,9 +84,6 @@
 
 ## Security
 
-- WordPress authentication for admin access
-- Next.js session management for client
-- Implement role-based access via WordPress roles
 - Sanitize and validate content with DOMPurify
 
 ## Data Fetching

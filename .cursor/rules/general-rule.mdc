@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Student Research Clubs Network Portal - Guidelines
+
+## Overview
+
+- Purpose: Centralized platform for HUST research club activities, events, and resources
+- Core Features: Dynamic homepage, news, schedules, resource sharing, Vietnamese support
+
+## Tech Stack
+
+- Core: Next.js 14, TypeScript 5.x, React Server Components, Apollo Client, GraphQL
+- Backend: WordPress (Headless CMS), WPGraphQL plugin
+- Cloud: Vercel (frontend), WordPress hosting (backend), Cloudinary (images)
+- Styling: Tailwind CSS 4.x, DaisyUI, lucide-react icons
+
+## Development Approach
+
+- Progressive: Build in stages, pause after key components for review
+- Scope: Implement only what's requested; clarify ambiguity with minimal viable solutions
+- Communication: Summarize completed work, classify changes (Small/Medium/Large), outline plans for Large changes
+
+## Architecture
+
+- Patterns: GraphQL (data), Service (logic), Factory (objects), Observer (updates), Strategy (algorithms), Adapter (integration), Facade (simplicity)
+- Principles: YAGNI (avoid unnecessary features), KISS (keep solutions simple)
+
+## Business Logic
+
+- CMS: WordPress handles all content management (clubs, users, events, resources, posts)
+- Clubs: Create/update clubs and roles via WordPress admin interface
+- Resources: Upload media through WordPress media library
+- Events: Manage events with custom post type and ACF fields
+- Access: WordPress roles and capabilities for content management
+
+## Next.js Patterns
+
+- Data Fetching: Use Apollo Client with Server/Client components
+- Route Handlers: Map dynamic routes to WordPress slugs
+- Caching: Apollo Client caching with Next.js ISR
+- Components: Build with Server/Client component pattern
+- State Management: Apollo Client cache and React Context
+- Middleware: Handle auth and routing with Next.js middleware
+
+## Complex Implementation Tactics
+
+- Break Down Components: Split large features into smaller components (max 200 lines each)
+- GraphQL Integration: Use fragments and type-safe queries
+- Incremental Builds: Start with static data, add dynamic features later
+- Facade Pattern: Use Apollo hooks to simplify data access
+- Type Safety: Generate TypeScript types from GraphQL schema
+- Mock Data: Test with WordPress staging environment
+- Documentation: Document GraphQL queries and component usage
+- Refactor Early: Keep code simple and maintainable
+
+## Code Guidelines
+
+- Use TypeScript with strict typing
+- Follow Next.js app router conventions
+- Keep components <200 lines
+- Apply SOLID principles and DI
+- Write self-documenting code with usage examples
+- Separate business logic from UI
+- Follow YAGNI and KISS to avoid over-engineering
+
+## Security
+- Sanitize and validate content with DOMPurify
+
+## Data Fetching
+- Use GraphQL fragments for reusable queries
+- Implement cursor-based pagination
+- Cache responses with Apollo Client, but only with page that not need so much changes, like clubs
+- Handle loading and error states
+
+## Performance
+
+- Optimize GraphQL queries
+- Implement query batching
+- Use React Suspense for loading states
+- Configure proper WordPress caching

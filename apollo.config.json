@@ -1,0 +1,8 @@
+{
+  "client": {
+    "service": {
+      "name": "bke-club-graphql",
+      "url": "https://test.sena.id.vn/graphql"
+    }
+  }
+}

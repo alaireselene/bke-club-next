@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getClient } from "@/lib/apollo-client";
-import { GET_CLUB_BY_SLUG, GET_NAVIGATION_DATA } from "@/lib/graphql/queries";
-import { PageHeader } from "@/app/components/ui/PageHeader";
-import { ClubDetails } from "@/app/components/network/ClubDetails";
-import type { Club } from "@/types/wordpress";
+import { GET_CLUB_BY_SLUG } from "@/features/network/graphql/queries";
+import { GET_NAVIGATION_DATA } from "@/features/navbar/graphql/queries";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
+import { ClubDetails } from "@/features/network/components/ClubDetails/ClubDetails";
+import type { Club } from "@/features/network";
 
 interface Props {
   params: {

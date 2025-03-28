@@ -1,4 +1,4 @@
-import { PageHeader } from "@/app/components/ui/PageHeader";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 
 export default function ClubLoading() {
   return (

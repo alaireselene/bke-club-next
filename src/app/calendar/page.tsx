@@ -1,12 +1,6 @@
-import { PageHeader } from "../components/ui/PageHeader";
-import { WeekCalendar } from "../components/calendar/WeekCalendar";
-
-type EventType =
-  | "workshop"
-  | "competition"
-  | "cultural"
-  | "research"
-  | "synposium";
+import { PageHeader } from "../../components/layout/PageHeader/PageHeader";
+import { WeekCalendar } from "../../features/calendar/components/WeekCalendar/WeekCalendar";
+import type { EventType } from "@/features/calendar/components/WeekCalendar/types";
 
 const eventStyles: Record<EventType, string> = {
   workshop: "bg-green-100 border-green-300 text-green-800",

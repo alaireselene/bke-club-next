@@ -1,18 +1,21 @@
+// FIXME: Partners card is not configure right
+// FIXME: Events card is screw up, not follow 2x2 layout
+
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
-import {
-  GET_POSTS,
-  GET_EVENTS,
-  GET_CLUBS,
-  GET_PARTNERS,
-} from "@/lib/graphql/queries";
-import { Hero } from "@/app/components/Hero";
-import { FeaturedNews } from "@/app/components/FeaturedNews";
-import { FeaturedEvents } from "@/app/components/FeaturedEvents";
-import { ResearchAreas } from "@/app/components/ResearchAreas";
-import { QuickAbout } from "@/app/components/QuickAbout";
-import { Partners } from "@/app/components/partners/Partners";
-import { Club } from "@/types/wordpress";
+import { GET_ALL_EVENTS } from "@/features/events/graphql/queries";
+import { GET_CLUBS } from "@/features/network/graphql/queries";
+
+import { GET_ALL_NEWS } from "@/features/news/graphql/queries";
+import { GET_PARTNERS } from "@/features/partners/graphql/queries";
+
+import { Hero } from "@/features/homepage/components/Hero/Hero";
+import { FeaturedNews } from "@/features/news/components/FeaturedNews/FeaturedNews";
+import { FeaturedEvents } from "@/features/events/components/FeaturedEvents/FeaturedEvents";
+import { ResearchAreas } from "@/features/homepage/components/ResearchAreas/ResearchAreas";
+import { QuickAbout } from "@/features/homepage/components/QuickAbout/QuickAbout";
+import { PartnersPreview } from "@/features/partners/components/PartnersPreview";
+import type { Club } from "@/features/network/types";
 
 export const metadata: Metadata = {
   title: "Trang chủ | HUST Research Clubs Network",
@@ -42,13 +45,14 @@ async function getHomePageData() {
   const client = getClient();
 
   // Get data in parallel
-  const [postsData, eventsData, clubsData, partnersData] = await Promise.all([
+  const [newsData, eventsData, clubsData, partnersData] = await Promise.all([
     client.query({
-      query: GET_POSTS,
+      query: GET_ALL_NEWS,
       variables: { first: 5 },
+      fetchPolicy: "no-cache",
     }),
     client.query({
-      query: GET_EVENTS,
+      query: GET_ALL_EVENTS,
       variables: { first: 5 },
     }),
     client.query({
@@ -57,7 +61,7 @@ async function getHomePageData() {
     }),
     client.query({
       query: GET_PARTNERS,
-      variables: { first: 100 },
+      fetchPolicy: "no-cache",
     }),
   ]);
 
@@ -79,14 +83,14 @@ async function getHomePageData() {
 
   return {
     stats,
-    featuredPosts: postsData.data.posts.nodes,
+    featuredNews: newsData.data.posts.nodes,
     upcomingEvents: eventsData.data.posts.nodes,
     partners: partnersData.data.partners.nodes,
   };
 }
 
 export default async function HomePage() {
-  const { stats, featuredPosts, upcomingEvents, partners } =
+  const { stats, featuredNews, upcomingEvents, partners } =
     await getHomePageData();
 
   return (
@@ -100,10 +104,10 @@ export default async function HomePage() {
       <ResearchAreas />
 
       {/* Featured News */}
-      <FeaturedNews posts={featuredPosts} />
+      <FeaturedNews news={featuredNews} />
 
       {/* Partners Section */}
-      <Partners partners={partners} />
+      <PartnersPreview partners={partners} />
 
       {/* Featured Events */}
       <FeaturedEvents events={upcomingEvents} />

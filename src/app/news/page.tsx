@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
-import { GET_POSTS, GET_CATEGORIES } from "@/lib/graphql/queries";
-import { PageHeader } from "@/app/components/ui/PageHeader";
-import { NewsFilter } from "@/app/components/news/NewsFilter";
-import type { Post } from "@/types/wordpress";
+import { GET_ALL_NEWS, GET_CATEGORIES } from "@/features/news/graphql/queries";
+import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
+import { NewsFilter } from "@/features/news/components/NewsFilter";
+import type { News } from "@/features/news";
 
 export const metadata: Metadata = {
   title: "Tin tức | HUST Research Clubs Network",
@@ -24,7 +24,7 @@ interface CategoryNode {
 
 interface NewsData {
   posts: {
-    nodes: Post[];
+    nodes: Array<News>;
     pageInfo: {
       hasNextPage: boolean;
       endCursor: string;
@@ -37,11 +37,8 @@ interface NewsData {
 
 async function getNewsData() {
   const { data } = await getClient().query<NewsData>({
-    query: GET_POSTS,
-    variables: {
-      first: 12,
-      after: null,
-    },
+    query: GET_ALL_NEWS,
+    fetchPolicy: "no-cache",
   });
 
   const { data: categoryData } = await getClient().query<NewsData>({
@@ -63,14 +60,14 @@ async function getNewsData() {
   });
 
   return {
-    posts: data.posts.nodes,
+    news: data.posts.nodes,
     pageInfo: data.posts.pageInfo,
     categories,
   };
 }
 
 export default async function NewsPage() {
-  const { posts, pageInfo, categories } = await getNewsData();
+  const { news, pageInfo, categories } = await getNewsData();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-base-200/20 to-transparent">
@@ -91,7 +88,7 @@ export default async function NewsPage() {
           <div className="relative">
             <NewsFilter
               categories={categories}
-              posts={posts}
+              news={news}
               hasMore={pageInfo.hasNextPage}
               endCursor={pageInfo.endCursor}
             />
