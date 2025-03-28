@@ -49,7 +49,6 @@ async function getHomePageData() {
     client.query({
       query: GET_ALL_NEWS,
       variables: { first: 5 },
-      fetchPolicy: "no-cache",
     }),
     client.query({
       query: GET_ALL_EVENTS,
@@ -61,7 +60,6 @@ async function getHomePageData() {
     }),
     client.query({
       query: GET_PARTNERS,
-      fetchPolicy: "no-cache",
     }),
   ]);
 

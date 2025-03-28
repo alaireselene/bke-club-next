@@ -38,7 +38,6 @@ interface NewsData {
 async function getNewsData() {
   const { data } = await getClient().query<NewsData>({
     query: GET_ALL_NEWS,
-    fetchPolicy: "no-cache",
   });
 
   const { data: categoryData } = await getClient().query<NewsData>({

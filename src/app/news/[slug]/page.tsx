@@ -6,6 +6,7 @@ import { GET_NEWS_BY_SLUG } from "@/features/news/graphql/queries";
 import type { News } from "@/features/news";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { parseDate, formatDate, toISOString } from "@/lib/utils/date";
 
 interface Props {
   params: { slug: string };
@@ -52,18 +53,7 @@ export default async function NewsPage({ params }: Props) {
   }
 
   const post = data.post;
-
-  // Validate date and provide fallback
-  let publishDate: Date;
-  try {
-    publishDate = new Date(post.date);
-    // Check if date is valid
-    if (isNaN(publishDate.getTime())) {
-      publishDate = new Date();
-    }
-  } catch {
-    publishDate = new Date();
-  }
+  const publishDate = parseDate(post.date);
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
@@ -89,12 +79,8 @@ export default async function NewsPage({ params }: Props) {
               {post.categories.nodes[0].name}
             </span>
           )}
-          <time dateTime={publishDate.toISOString()}>
-            {new Intl.DateTimeFormat("vi-VN", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            }).format(publishDate)}
+          <time dateTime={toISOString(publishDate)}>
+            {formatDate(publishDate)}
           </time>
         </div>
         <h1 className="mb-4 font-sans text-4xl text-slate-900">{post.title}</h1>

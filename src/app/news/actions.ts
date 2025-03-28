@@ -6,7 +6,6 @@ import { GET_ALL_NEWS } from "@/features/news/graphql/queries";
 export async function loadMorePosts() {
   const { data } = await getClient().query({
     query: GET_ALL_NEWS,
-    fetchPolicy: "no-cache",
   });
 
   return {

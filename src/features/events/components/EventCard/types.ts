@@ -1,9 +1,10 @@
-import type {
-  Event
+import type { Event } from "../../types";
 
-} from "../../types";
 interface EventCardProps {
   event: Event;
+  className?: string;
+  showOrganizer?: boolean;
+  showCapacity?: boolean;
 }
 
 export type { EventCardProps }

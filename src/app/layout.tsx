@@ -40,7 +40,6 @@ export const metadata: Metadata = {
 async function getNavigationData() {
   const { data } = await getClient().query({
     query: GET_NAVIGATION_DATA,
-    fetchPolicy: "no-cache",
   });
 
   return {

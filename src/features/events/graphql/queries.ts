@@ -5,10 +5,11 @@ import { EVENT_DATA_FIELDS } from './fragments';
 import { PAGE_INFO_FIELDS } from '@/lib/graphql/fragments';
 
 const GET_ALL_EVENTS = gql`
-query GetAllEvents($first: Int, $after: String) {
+query GetAllEvents($first: Int, $after: String, $status: PostStatusEnum) {
   posts(first: $first, after: $after, where: {
     categoryName: "event"
     orderby: { field: DATE, order: DESC }
+    status: $status
     }) {
     nodes {
       ...NewsFields
@@ -34,8 +35,12 @@ const GET_EVENT_BY_SLUG = gql`
       author {
         node {
           name
+          avatar {
+            url
+          }
         }
       }
+      status
     }
   }
   ${NEWS_FIELDS}
