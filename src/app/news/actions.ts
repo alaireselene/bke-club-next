@@ -1,15 +1,12 @@
 "use server";
 
 import { getClient } from "@/lib/apollo-client";
-import { GET_POSTS } from "@/lib/graphql/queries";
+import { GET_ALL_NEWS } from "@/features/news/graphql/queries";
 
-export async function loadMorePosts(cursor: string) {
+export async function loadMorePosts() {
   const { data } = await getClient().query({
-    query: GET_POSTS,
-    variables: {
-      first: 12,
-      after: cursor,
-    },
+    query: GET_ALL_NEWS,
+    fetchPolicy: "no-cache",
   });
 
   return {

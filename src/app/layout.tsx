@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "@/components/layout/Navbar";
+import { Header } from "@/features/navbar/components";
 import { Footer } from "@/components/layout/Footer";
 import { getClient } from "@/lib/apollo-client";
-import { GET_NAVIGATION_DATA } from "../lib/graphql/queries";
+import { GET_NAVIGATION_DATA } from "@/features/navbar/graphql/queries";
 import { Toaster } from "@/components/ui/sonner";
 import { ApolloWrapper } from "./ApolloWrapper";
 
@@ -40,6 +40,7 @@ export const metadata: Metadata = {
 async function getNavigationData() {
   const { data } = await getClient().query({
     query: GET_NAVIGATION_DATA,
+    fetchPolicy: "no-cache",
   });
 
   return {

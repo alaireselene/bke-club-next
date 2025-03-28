@@ -8,8 +8,13 @@ const GET_ALL_NEWS = gql`
       categoryName: "news"
       orderby: { field: DATE, order: DESC }
       }) {
-      
       nodes {
+        categories {
+          nodes {
+            databaseId
+            name
+          }
+        }
         ...ContentNodeFields
         ...NewsFields
       }
@@ -26,6 +31,12 @@ const GET_ALL_NEWS = gql`
 const GET_NEWS_BY_SLUG = gql`
   query GetNewsBySlug($slug: ID!) {
     post(id: $slug, idType: SLUG) {
+      categories {
+        nodes {
+          databaseId
+          name
+        }
+      }
       ...ContentNodeFields
       ...NewsFields
       content
@@ -35,4 +46,20 @@ const GET_NEWS_BY_SLUG = gql`
   ${CONTENT_NODE_FIELDS}
 `;
 
-export { GET_ALL_NEWS, GET_NEWS_BY_SLUG }
+const GET_CATEGORIES = gql`
+ query GetCategories {
+  categories {
+    nodes {
+      slug
+      name
+      ancestors {
+        nodes {
+          slug
+        }
+      }
+    }
+  }
+ }
+`
+
+export { GET_ALL_NEWS, GET_NEWS_BY_SLUG, GET_CATEGORIES }

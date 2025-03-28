@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Calendar, Users, Flag, Handshake } from "lucide-react";
 import { motion } from "motion/react";
+import type { HeroProps } from "./types";
 
 const icons = {
   "Câu lạc bộ": Calendar,

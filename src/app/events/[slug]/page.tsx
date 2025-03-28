@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getClient } from "@/lib/apollo-client";
-import { GET_EVENT_BY_SLUG } from "@/lib/graphql/queries";
+import { GET_EVENT_BY_SLUG } from "@/features/events/graphql/queries";
 import { Calendar, MapPin, Users, Globe, ExternalLink } from "lucide-react";
-import type { Event } from "@/types/wordpress";
+import type { Event } from "@/features/events";
 
 interface Props {
   params: { slug: string };

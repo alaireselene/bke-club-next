@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
-import { GET_NAVIGATION_DATA } from "@/lib/graphql/queries";
+import { GET_NAVIGATION_DATA } from "@/features/navbar/graphql/queries";
 import { NetworkContent } from "@/features/network/components/NetworkContent/NetworkContent";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import type { School } from "@/features/network";

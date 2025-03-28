@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { getClient } from "@/lib/apollo-client";
-import { GET_EVENTS } from "@/lib/graphql/queries";
+import { GET_ALL_EVENTS } from "@/features/events/graphql/queries";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { EventCard } from "@/features/events/components/EventCard/EventCard";
 import { PastEvents } from "@/features/events/components/PastEvents/PastEvents";
 import { Suspense } from "react";
-import type { Event } from "@/types/wordpress";
+import type { Event } from "@/features/events";
 
 export const metadata: Metadata = {
   title: "Sự kiện | HUST Research Clubs Network",
@@ -26,7 +26,7 @@ interface EventsData {
 
 async function getEventsData() {
   const { data } = await getClient().query<EventsData>({
-    query: GET_EVENTS,
+    query: GET_ALL_EVENTS,
     variables: {
       first: 12,
       after: null,

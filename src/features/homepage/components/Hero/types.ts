@@ -9,3 +9,5 @@ interface Stat {
 interface HeroProps {
   stats: Stat[];
 }
+
+export type { HeroProps }

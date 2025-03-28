@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { School } from "@/types/wordpress";
+import type { School } from "@/features/network";
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
@@ -108,7 +108,10 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                 {schools
                   .filter((school) => school.name?.startsWith("Trường"))
                   .map((school) => (
-                    <div key={school.id} className="group/school relative">
+                    <div
+                      key={school.databaseId}
+                      className="group/school relative"
+                    >
                       <Link
                         href={`/network?school=${school.slug?.toUpperCase()}`}
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
@@ -125,7 +128,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                         <div className="py-1">
                           {(school.clubs?.nodes || []).map((club) => (
                             <Link
-                              key={club.id}
+                              key={club.databaseId}
                               href={`/network/${club.slug}`}
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                             >
@@ -150,7 +153,10 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                 {schools
                   .filter((school) => school.name?.startsWith("Khoa"))
                   .map((school) => (
-                    <div key={school.id} className="group/school relative">
+                    <div
+                      key={school.databaseId}
+                      className="group/school relative"
+                    >
                       <Link
                         href={`/network?school=${school.slug?.toUpperCase()}`}
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
@@ -167,7 +173,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                         <div className="py-1">
                           {(school.clubs?.nodes || []).map((club) => (
                             <Link
-                              key={club.id}
+                              key={club.databaseId}
                               href={`/network/${club.slug}`}
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                             >
@@ -196,7 +202,10 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                       !school.name?.startsWith("Khoa")
                   )
                   .map((school) => (
-                    <div key={school.id} className="group/school relative">
+                    <div
+                      key={school.databaseId}
+                      className="group/school relative"
+                    >
                       <Link
                         href={`/network?school=${school.slug?.toUpperCase()}`}
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
@@ -213,7 +222,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                         <div className="py-1">
                           {(school.clubs?.nodes || []).map((club) => (
                             <Link
-                              key={club.id}
+                              key={club.databaseId}
                               href={`/network/${club.slug}`}
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                             >

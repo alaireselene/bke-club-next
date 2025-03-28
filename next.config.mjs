@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: "test.sena.id.vn",
         pathname: "/wp-content/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+        pathname: "/**",
+      },
     ],
   },
 };

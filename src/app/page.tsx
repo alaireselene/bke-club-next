@@ -61,7 +61,7 @@ async function getHomePageData() {
     }),
     client.query({
       query: GET_PARTNERS,
-      variables: { first: 100 },
+      fetchPolicy: "no-cache",
     }),
   ]);
 

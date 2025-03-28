@@ -5,7 +5,6 @@ import { Calendar } from "lucide-react";
 import type { NewsCardProps } from "./types";
 
 export function NewsCard({ news }: NewsCardProps) {
-  console.log(news);
   const publishDate = new Date(news.date);
   const formattedDate = new Intl.DateTimeFormat("vi-VN", {
     year: "numeric",

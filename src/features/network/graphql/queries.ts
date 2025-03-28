@@ -49,4 +49,3 @@ export const GET_CLUB_BY_SLUG = gql`
   ${CLUB_DATA_FIELDS}
   ${SCHOOL_FIELDS}
 `;
-

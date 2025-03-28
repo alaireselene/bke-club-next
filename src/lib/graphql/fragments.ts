@@ -1,12 +1,5 @@
 import { gql } from '@apollo/client';
 
-// Fragment cơ bản cho Node
-export const NODE_FIELDS = gql`
-  fragment NodeFields on Node {
-    id
-  }
-`;
-
 // Fragment cho DatabaseIdentifier
 export const DATABASE_IDENTIFIER_FIELDS = gql`
   fragment DatabaseIdentifierFields on DatabaseIdentifier {
@@ -27,13 +20,11 @@ export const PAGE_INFO_FIELDS = gql`
 // Fragment cho MediaItem
 export const MEDIA_ITEM_FIELDS = gql`
   fragment MediaItemFields on MediaItem {
-    ...NodeFields
     ...DatabaseIdentifierFields
     sourceUrl
     altText
     title
   }
-  ${NODE_FIELDS}
   ${DATABASE_IDENTIFIER_FIELDS}
 `;
 
@@ -52,13 +43,11 @@ export const FEATURED_IMAGE_FIELDS = gql`
 // Fragment cho ContentNode
 export const CONTENT_NODE_FIELDS = gql`
   fragment ContentNodeFields on ContentNode {
-    ...NodeFields
     ...DatabaseIdentifierFields
     slug
     date
     modified
   }
-  ${NODE_FIELDS}
   ${DATABASE_IDENTIFIER_FIELDS}
 `;
 

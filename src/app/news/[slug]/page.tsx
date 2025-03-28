@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getClient } from "@/lib/apollo-client";
-import { GET_POST_BY_SLUG } from "@/lib/graphql/queries";
-import type { Post } from "@/types/wordpress";
+import { GET_NEWS_BY_SLUG } from "@/features/news/graphql/queries";
+import type { News } from "@/features/news";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -11,13 +11,13 @@ interface Props {
   params: { slug: string };
 }
 
-interface PostData {
-  post: Post;
+interface NewsData {
+  post: News;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { data } = await getClient().query<PostData>({
-    query: GET_POST_BY_SLUG,
+  const { data } = await getClient().query<NewsData>({
+    query: GET_NEWS_BY_SLUG,
     variables: { slug: params.slug },
   });
 
@@ -42,8 +42,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NewsPage({ params }: Props) {
-  const { data } = await getClient().query<PostData>({
-    query: GET_POST_BY_SLUG,
+  const { data } = await getClient().query<NewsData>({
+    query: GET_NEWS_BY_SLUG,
     variables: { slug: params.slug },
   });
 

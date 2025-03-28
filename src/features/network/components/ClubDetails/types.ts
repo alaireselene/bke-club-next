@@ -1,7 +1,6 @@
 import type { Club } from "../../types"
 
 interface SchoolBasicInfo {
-  id: string;
   databaseId: number;
   name: string;
   slug: string;

@@ -3,13 +3,7 @@
 "use client";
 
 import { useState } from "react";
-
-interface FormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
+import type { FormData } from "./types";
 
 export function ContactForm() {
   const [formData, setFormData] = useState<FormData>({

@@ -1,6 +1,6 @@
 import { Phone, MapPin, Mail, Globe } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
-import { ContactForm } from "@/features/contact/components/ContactForm";
+import { ContactForm } from "@/features/contact/components/ContactForm/ContactForm";
 
 export const metadata = {
   title: "Contact Us - Student Research Clubs Network",
