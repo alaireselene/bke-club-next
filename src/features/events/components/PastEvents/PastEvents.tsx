@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { loadMoreEvents } from "@/app/events/actions";
 import type { PastEventsProps } from "./types";
+import { parseISO, isBefore } from "date-fns";
 
 export function PastEvents({
   initialEvents,
@@ -24,20 +25,17 @@ export function PastEvents({
       setIsLoading(true);
       const data = await loadMoreEvents(cursor);
 
-      const currentTime = Date.UTC(
-        new Date().getUTCFullYear(),
-        new Date().getUTCMonth(),
-        new Date().getUTCDate(),
-        new Date().getUTCHours(),
-        new Date().getUTCMinutes(),
-        new Date().getUTCSeconds()
-      );
-
       const pastEvents = data.events.filter((event) => {
-        const eventTime = new Date(
-          event.eventData.eventTime.eventStartTime
-        ).getTime();
-        return eventTime < currentTime;
+        if (!event?.eventData?.eventTime?.eventStartTime) return false;
+        try {
+          const eventStartTime = parseISO(
+            event.eventData.eventTime.eventStartTime
+          );
+          return isBefore(eventStartTime, new Date());
+        } catch (error) {
+          console.error("Error parsing event start time:", error);
+          return false;
+        }
       });
 
       setEvents([...events, ...pastEvents]);

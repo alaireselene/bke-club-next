@@ -6,13 +6,14 @@ import { EventCard } from "@/features/events/components/EventCard/EventCard";
 import { PastEvents } from "@/features/events/components/PastEvents/PastEvents";
 import { Suspense } from "react";
 import type { Event } from "@/features/events";
+import { parseISO, isBefore } from "date-fns";
 
 export const metadata: Metadata = {
   title: "Sự kiện | HUST Research Clubs Network",
   description: "Các sự kiện được tổ chức bởi Thành viên Mạng lưới",
 };
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 60; // Revalidate every hour
 
 interface EventsData {
   posts: {
@@ -42,28 +43,26 @@ async function getEventsData() {
 export default async function EventsPage() {
   const { events, pageInfo } = await getEventsData();
 
-  const now = new Date();
-  const currentTime = Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate(),
-    now.getUTCHours(),
-    now.getUTCMinutes(),
-    now.getUTCSeconds()
-  );
-
   const upcomingEvents = events.filter((event) => {
-    const eventTime = new Date(
-      event.eventData.eventTime.eventStartTime
-    ).getTime();
-    return eventTime >= currentTime;
+    if (!event?.eventData?.eventTime?.eventStartTime) return false;
+    try {
+      const eventStartTime = parseISO(event.eventData.eventTime.eventStartTime);
+      return !isBefore(eventStartTime, new Date());
+    } catch (error) {
+      console.error("Error parsing event start time:", error);
+      return false;
+    }
   });
 
   const pastEvents = events.filter((event) => {
-    const eventTime = new Date(
-      event.eventData.eventTime.eventStartTime
-    ).getTime();
-    return eventTime < currentTime;
+    if (!event?.eventData?.eventTime?.eventStartTime) return false;
+    try {
+      const eventStartTime = parseISO(event.eventData.eventTime.eventStartTime);
+      return isBefore(eventStartTime, new Date());
+    } catch (error) {
+      console.error("Error parsing event start time:", error);
+      return false;
+    }
   });
 
   return (

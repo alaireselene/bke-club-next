@@ -1,4 +1,4 @@
-import type { WithContent, WithFeaturedImage, Node } from "@/types/wordpress";
+import type { WithContent, WithFeaturedImage, Node, WithTitle } from "@/types/wordpress";
 
 type PartnerRegion = 'local' | 'global';
 type PartnerType = 'academic' | 'business' | 'organization';
@@ -9,7 +9,7 @@ interface PartnerData {
   website: string
 };
 
-interface Partner extends Node, WithContent, WithFeaturedImage {
+interface Partner extends Node, WithContent, WithFeaturedImage, WithTitle {
   partnerData: PartnerData
 }
 

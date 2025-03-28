@@ -13,12 +13,10 @@ export function NewsFilter({
   categories,
   news: initialNews,
   hasMore: initialHasMore,
-  endCursor: initialCursor,
 }: NewsFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [news, setNews] = useState<Array<News>>(initialNews);
   const [hasMore, setHasMore] = useState(initialHasMore);
-  const [endCursor, setEndCursor] = useState(initialCursor);
   const [isLoading, setIsLoading] = useState(false);
 
   const filteredNews = useMemo(() => {
@@ -34,10 +32,9 @@ export function NewsFilter({
 
     try {
       setIsLoading(true);
-      const data = await loadMorePosts(endCursor);
+      const data = await loadMorePosts();
       setNews([...news, ...data.posts]);
       setHasMore(data.pageInfo.hasNextPage);
-      setEndCursor(data.pageInfo.endCursor);
     } catch (error) {
       console.error("Error loading more posts:", error);
     } finally {

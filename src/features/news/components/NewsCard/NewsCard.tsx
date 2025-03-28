@@ -1,16 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
+import { formatDate, toISOString } from "@/lib/utils/date";
 
 import type { NewsCardProps } from "./types";
 
 export function NewsCard({ news }: NewsCardProps) {
-  const publishDate = new Date(news.date);
-  const formattedDate = new Intl.DateTimeFormat("vi-VN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(publishDate);
+  const publishDate = news.date;
 
   const mainCategory = news.categories.nodes.find(
     (node) => node.name !== "Tin tức"
@@ -51,8 +47,8 @@ export function NewsCard({ news }: NewsCardProps) {
             <div className="flex items-center justify-between text-sm text-slate-500">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <time dateTime={publishDate.toISOString()}>
-                  {formattedDate}
+                <time dateTime={toISOString(publishDate)}>
+                  {formatDate(publishDate)}
                 </time>
               </div>
             </div>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { X, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { usePathname } from "next/navigation";
-import type { School } from "@/types/wordpress";
+import type { School } from "@/features/network";
 import { useState } from "react";
 
 interface Props {
@@ -143,27 +143,33 @@ export function MobileMenu({
                     {schools
                       .filter((school) => school.name?.startsWith("Trường"))
                       .map((school) => (
-                        <div key={school.id} className="rounded-lg">
+                        <div key={school.databaseId} className="rounded-lg">
                           <button
-                            onClick={() => toggleSchool(school.id)}
+                            onClick={() =>
+                              toggleSchool(school.databaseId.toString())
+                            }
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
                             <span className="flex-1 text-left truncate">
                               {school.name}
                             </span>
                             <div className="flex-shrink-0">
-                              {expandedSchools.has(school.id) ? (
+                              {expandedSchools.has(
+                                school.databaseId.toString()
+                              ) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
                                 <ChevronDown className="h-4 w-4" />
                               )}
                             </div>
                           </button>
-                          {expandedSchools.has(school.id) && (
+                          {expandedSchools.has(
+                            school.databaseId.toString()
+                          ) && (
                             <div className="ml-8 mt-2 space-y-0.5 pb-2">
                               {school.clubs?.nodes.map((club) => (
                                 <Link
-                                  key={club.id}
+                                  key={club.databaseId}
                                   href={`/network/${club.slug}`}
                                   className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
                                   onClick={onClose}
@@ -210,27 +216,33 @@ export function MobileMenu({
                     {schools
                       .filter((school) => school.name?.startsWith("Khoa"))
                       .map((school) => (
-                        <div key={school.id} className="rounded-lg">
+                        <div key={school.databaseId} className="rounded-lg">
                           <button
-                            onClick={() => toggleSchool(school.id)}
+                            onClick={() =>
+                              toggleSchool(school.databaseId.toString())
+                            }
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
                             <span className="flex-1 text-left truncate">
                               {school.name}
                             </span>
                             <div className="flex-shrink-0">
-                              {expandedSchools.has(school.id) ? (
+                              {expandedSchools.has(
+                                school.databaseId.toString()
+                              ) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
                                 <ChevronDown className="h-4 w-4" />
                               )}
                             </div>
                           </button>
-                          {expandedSchools.has(school.id) && (
+                          {expandedSchools.has(
+                            school.databaseId.toString()
+                          ) && (
                             <div className="ml-8 mt-2 space-y-0.5 pb-2">
                               {school.clubs?.nodes.map((club) => (
                                 <Link
-                                  key={club.id}
+                                  key={club.databaseId}
                                   href={`/network/${club.slug}`}
                                   className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
                                   onClick={onClose}
@@ -283,27 +295,33 @@ export function MobileMenu({
                           !school.name?.startsWith("Khoa")
                       )
                       .map((school) => (
-                        <div key={school.id} className="rounded-lg">
+                        <div key={school.databaseId} className="rounded-lg">
                           <button
-                            onClick={() => toggleSchool(school.id)}
+                            onClick={() =>
+                              toggleSchool(school.databaseId.toString())
+                            }
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
                             <span className="flex-1 text-left truncate">
                               {school.name}
                             </span>
                             <div className="flex-shrink-0">
-                              {expandedSchools.has(school.id) ? (
+                              {expandedSchools.has(
+                                school.databaseId.toString()
+                              ) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
                                 <ChevronDown className="h-4 w-4" />
                               )}
                             </div>
                           </button>
-                          {expandedSchools.has(school.id) && (
+                          {expandedSchools.has(
+                            school.databaseId.toString()
+                          ) && (
                             <div className="ml-8 mt-2 space-y-0.5 pb-2">
                               {school.clubs?.nodes.map((club) => (
                                 <Link
-                                  key={club.id}
+                                  key={club.databaseId}
                                   href={`/network/${club.slug}`}
                                   className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
                                   onClick={onClose}

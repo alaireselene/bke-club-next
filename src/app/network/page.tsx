@@ -15,7 +15,7 @@ interface Props {
 }
 
 // Revalidate cache every hour
-export const revalidate = 3600;
+export const revalidate = 60;
 
 async function getNetworkData() {
   try {
