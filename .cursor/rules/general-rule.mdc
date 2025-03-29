@@ -3,6 +3,11 @@ description:
 globs: 
 alwaysApply: true
 ---
+---
+description: General guideline for all code
+globs: 
+alwaysApply: true
+---
 # Student Research Clubs Network Portal - Guidelines
 
 ## Overview
@@ -12,7 +17,7 @@ alwaysApply: true
 
 ## Tech Stack
 
-- Core: Next.js 14, TypeScript 5.x, React Server Components, Apollo Client, GraphQL
+- Core: Next.js 14 App Router, TypeScript 5.x, Apollo Client, GraphQL
 - Backend: WordPress (Headless CMS), WPGraphQL plugin
 - Cloud: Vercel (frontend), WordPress hosting (backend), Cloudinary (images)
 - Styling: Tailwind CSS 4.x, DaisyUI, lucide-react icons

@@ -1,4 +1,9 @@
 ---
+description: 
+globs: src/*.tsx,src/*.css
+alwaysApply: false
+---
+---
 description: Component styling, UI design
 globs: 
 alwaysApply: false
@@ -29,6 +34,5 @@ CSS file will be put in [globals.css](mdc:src/app/globals.css). It use Tailwind 
 
 - Build with DaisyUI components
 - Ensure accessibility (ARIA)
-- Use WordPress Gutenberg blocks for rich content
 - Implement loading states with Suspense
 - Instead of reinvent the wheel, just use shadcn components
