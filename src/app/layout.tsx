@@ -42,6 +42,8 @@ async function getNavigationData() {
     query: GET_NAVIGATION_DATA,
   });
 
+  console.log(data.schools.nodes);
+
   return {
     schools: data.schools.nodes,
   };

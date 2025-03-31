@@ -263,7 +263,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
             Tài nguyên
           </Link>
           <Link
-            href="/facility"
+            href="/facilities"
             className={`flex items-center transition-colors hover:underline text-white  uppercase font-bold relative`}
           >
             Cơ sở vật chất

@@ -13,6 +13,7 @@ export const GET_NAVIGATION_DATA = gql`
         clubs {
           nodes {
             title
+            slug
             ...ContentNodeFields
             ...ClubDataFields
             ...FeaturedImageFields
