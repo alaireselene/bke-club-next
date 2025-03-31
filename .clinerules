@@ -32,6 +32,63 @@
 - Patterns: GraphQL (data), Service (logic), Factory (objects), Observer (updates), Strategy (algorithms), Adapter (integration), Facade (simplicity)
 - Principles: YAGNI (avoid unnecessary features), KISS (keep solutions simple)
 
+## Feature Implementation
+
+### Structure
+
+```
+src/features/[feature-name]/
+├── components/     # Feature-specific components
+├── hooks/         # Custom hooks for data fetching
+├── graphql/       # GraphQL queries and mutations
+├── types.ts       # TypeScript types/interfaces
+└── index.ts       # Public API exports
+```
+
+### Guidelines
+
+- Feature Independence: Each feature should be self-contained and reusable
+- Data Flow: Use GraphQL for data fetching, Apollo Client for state management
+- Component Organization:
+  - Keep components under 200 lines
+  - Split into smaller components when needed
+  - Use composition over inheritance
+- Type Safety:
+  - Define interfaces in types.ts
+  - Generate types from GraphQL schema
+  - Use strict TypeScript checks
+- State Management:
+  - Use custom hooks for data fetching
+  - Implement proper loading states
+  - Handle errors gracefully
+- Testing:
+  - Unit test components
+  - Test GraphQL queries
+  - Mock WordPress responses
+- Documentation:
+  - Document public API in index.ts
+  - Include usage examples
+  - Document edge cases
+
+### Integration
+
+- Route Setup: Create corresponding route in src/app/
+- Data Fetching: Use Apollo Client with proper caching
+- Component Usage: Import from feature's public API
+- Error Handling: Implement proper error boundaries
+- Loading States: Use Suspense and loading.tsx
+- SEO: Implement proper metadata
+
+### Best Practices
+
+- Follow Next.js App Router conventions
+- Implement proper caching strategies
+- Optimize performance with code splitting
+- Ensure accessibility compliance
+- Maintain consistent error handling
+- Use proper TypeScript patterns
+- Follow Vietnamese language support guidelines
+
 ## Business Logic
 
 - CMS: WordPress handles all content management (clubs, users, events, resources, posts)

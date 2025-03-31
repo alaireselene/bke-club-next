@@ -56,10 +56,11 @@ async function getHomePageData() {
     }),
     client.query({
       query: GET_CLUBS,
-      variables: { first: 100 }, // Get first 100 clubs
+      variables: { first: 100 }, // Maximum clubs
     }),
     client.query({
       query: GET_PARTNERS,
+      variables: { first: 100 }, // Maximum partners
     }),
   ]);
 
