@@ -5,40 +5,29 @@
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
       "request": "launch",
-      "command": "bun dev"
+      "command": "bun run dev"
     },
     {
       "name": "Next.js: debug client-side",
-      "type": "msedge",
+      "type": "chrome",
       "request": "launch",
       "url": "http://localhost:3000"
     },
     {
-      "name": "Next.js: debug full stack",
+      "name": "Next.js: debug full stack (Bun)",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
-      "args": [
-        "dev"
-      ],
-      "runtimeArgs": [
-        "--inspect"
-      ],
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "runtimeExecutable": "bun",
+      "runtimeArgs": ["run", "--inspect", "dev"],
+      "outputCapture": "std",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"],
       "serverReadyAction": {
-        "action": "debugWithEdge",
-        "killOnServerStop": true,
-        "pattern": "- Local:\\s+(https?://\\S+)",
+        "action": "debugWithChrome",
+        "pattern": "- Local:.+(https?://.+)",
         "uriFormat": "%s",
         "webRoot": "${workspaceFolder}"
-      },
-      "env": {
-        "NODE_OPTIONS": "--inspect"
-      },
-      "console": "internalConsole",
-      // "outputCapture": "std"
+      }
     }
   ]
 }
