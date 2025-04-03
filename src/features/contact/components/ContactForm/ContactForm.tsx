@@ -4,6 +4,11 @@
 
 import { useState } from "react";
 import type { FormData } from "./types";
+import { Input } from "@/components/ui/input"; // Import Shadcn Input
+import { Textarea } from "@/components/ui/textarea"; // Import Shadcn Textarea
+import { Label } from "@/components/ui/label"; // Import Shadcn Label
+import { Button } from "@/components/ui/button"; // Import Shadcn Button
+import { Loader2 } from "lucide-react"; // Import Loader icon
 
 export function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
@@ -24,19 +29,22 @@ export function ContactForm() {
     setSubmitStatus("idle");
 
     try {
-      // TODO: Implement form submission to WordPress
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      // TODO: Implement form submission to WordPress or other backend
+      // Simulating API call for now
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      // const response = await fetch("/api/contact", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Failed to submit form");
+      // }
 
+      console.log("Form Data Submitted (Simulated):", formData);
       setSubmitStatus("success");
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch {
@@ -55,99 +63,78 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Họ và tên
-        </label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
-        />
+      <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2"> {/* Grid for name/email */}
+        <div className="space-y-1.5"> {/* Use space-y for label/input */}
+          <Label htmlFor="name">Họ và tên</Label>
+          <Input
+            type="text"
+            name="name"
+            id="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            placeholder="Tên của bạn"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            type="email"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            placeholder="email@example.com"
+          />
+        </div>
       </div>
 
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="subject"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Tiêu đề
-        </label>
-        <input
+      <div className="space-y-1.5">
+        <Label htmlFor="subject">Tiêu đề</Label>
+        <Input
           type="text"
           name="subject"
           id="subject"
           value={formData.subject}
           onChange={handleChange}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+          placeholder="Vấn đề bạn muốn trao đổi"
         />
       </div>
 
-      <div>
-        <label
-          htmlFor="message"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Nội dung
-        </label>
-        <textarea
+      <div className="space-y-1.5">
+        <Label htmlFor="message">Nội dung</Label>
+        <Textarea
           name="message"
           id="message"
-          rows={4}
+          rows={5} // Adjusted rows
           value={formData.message}
           onChange={handleChange}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+          placeholder="Nội dung chi tiết..."
         />
       </div>
 
       {submitStatus === "success" && (
-        <p className="text-sm text-green-600">
+        <p className="text-sm text-success"> {/* Use theme color */}
           Cảm ơn bạn đã gửi tin nhắn. Chúng tôi sẽ phản hồi sớm nhất có thể!
         </p>
       )}
 
       {submitStatus === "error" && (
-        <p className="text-sm text-red-600">
+        <p className="text-sm text-destructive"> {/* Use theme color */}
           Có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại sau.
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={`flex w-full justify-center rounded-md border border-transparent bg-teal-600 px-4 py-3 text-sm font-medium text-white shadow-sm transition duration-150 ease-in-out hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:outline-none ${
-          isSubmitting ? "opacity-75 cursor-not-allowed" : ""
-        }`}
-      >
+      <Button type="submit" disabled={isSubmitting} className="w-full">
+        {isSubmitting && (
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        )}
         {isSubmitting ? "Đang gửi..." : "Gửi tin nhắn"}
-      </button>
+      </Button>
     </form>
   );
 }

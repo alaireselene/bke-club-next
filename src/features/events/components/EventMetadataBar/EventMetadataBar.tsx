@@ -1,8 +1,10 @@
 "use client";
 
 import { Calendar, MapPin, Users, Globe } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card"; // Import Card
 import { formatDatetime } from "@/lib/utils/date";
 import type { EventMetadataBarProps } from "./types";
+import { cn } from "@/lib/utils"; // Import cn
 
 export function EventMetadataBar({
   startDate,
@@ -11,46 +13,50 @@ export function EventMetadataBar({
   isOnline,
 }: EventMetadataBarProps) {
   return (
-    <div className="grid gap-6 rounded-xl border border-base-200 bg-base-100 p-8 shadow-sm transition-shadow hover:shadow-md sm:grid-cols-3">
-      <div className="flex items-start gap-3 text-base-content/70">
+    <Card className="transition-shadow hover:shadow-md"> {/* Replace div with Card */}
+      <CardContent className="grid gap-4 p-6 sm:grid-cols-3 sm:gap-6 sm:p-6"> {/* Adjust padding/gap */}
+      <div className="flex items-start gap-3"> {/* Removed text color class */}
         <Calendar className="h-5 w-5 text-primary" />
         <div>
-          <span className="font-medium">Thời gian</span>
+          <span className="font-medium text-foreground">Thời gian</span> {/* Use text-foreground */}
           <br />
-          {formatDatetime(startDate)} - {formatDatetime(endDate)}
+          <span className="text-sm text-muted-foreground">{/* Use text-muted-foreground */}
+            {formatDatetime(startDate)} - {formatDatetime(endDate)}
+          </span>
         </div>
       </div>
 
-      <div className="flex items-start gap-3 text-base-content/70">
+      <div className="flex items-start gap-3"> {/* Removed text color class */}
         <MapPin className="h-5 w-5 text-primary" />
         <div>
-          <span className="font-medium">Địa điểm</span>
+          <span className="font-medium text-foreground">Địa điểm</span> {/* Use text-foreground */}
           <br />
-          {location || "Chưa xác định"}
+          <span className="text-sm text-muted-foreground">{location || "Chưa xác định"}</span> {/* Use text-muted-foreground */}
         </div>
       </div>
 
-      <div className="flex items-start gap-3 text-base-content/70">
+      <div className="flex items-start gap-3"> {/* Removed text color class */}
         {isOnline ? (
           <>
             <Globe className="h-5 w-5 text-primary" />
             <div>
-              <span className="font-medium">Thể thức</span>
+              <span className="font-medium text-foreground">Thể thức</span> {/* Use text-foreground */}
               <br />
-              Trực tuyến
+              <span className="text-sm text-muted-foreground">Trực tuyến</span> {/* Use text-muted-foreground */}
             </div>
           </>
         ) : (
           <>
             <Users className="h-5 w-5 text-primary" />
             <div>
-              <span className="font-medium">Thể thức</span>
+              <span className="font-medium text-foreground">Thể thức</span> {/* Use text-foreground */}
               <br />
-              Trực tiếp
+              <span className="text-sm text-muted-foreground">Trực tiếp</span> {/* Use text-muted-foreground */}
             </div>
           </>
         )}
       </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

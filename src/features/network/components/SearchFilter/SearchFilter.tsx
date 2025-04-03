@@ -61,7 +61,7 @@ export function SearchFilter({
               <div className="flex justify-between items-center gap-2">
                 <span>{school.name}</span>
                 {school.slug && (
-                  <span className="text-xs font-mono text-slate-500">
+                  <span className="text-xs font-mono text-muted-foreground"> {/* Use theme color */}
                     {school.slug.toUpperCase()}
                   </span>
                 )}

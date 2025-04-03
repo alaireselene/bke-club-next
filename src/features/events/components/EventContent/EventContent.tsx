@@ -8,20 +8,19 @@ export function EventContent({ content, isAiTranslated }: EventContentProps) {
     <div className="space-y-12 lg:col-span-2">
       {/* Event Content */}
       <div
-        className="prose prose-base prose-slate dark:prose-invert dark:prose-headings:text-white dark:prose-a:text-primary dark:hover:prose-a:text-primary-focus dark:prose-strong:text-white max-w-none"
+        className="prose prose-base prose-slate dark:prose-invert prose-a:text-primary hover:prose-a:text-primary/80 prose-strong:text-foreground max-w-none" // Simplified dark mode (handled by prose-invert), adjusted link hover, strong color
         dangerouslySetInnerHTML={{ __html: content ?? "" }}
       />
 
       {isAiTranslated && (
-        <div className="alert alert-warning rounded-lg">
-          <div>
-            <AlertTriangle className="h-5 w-5 mr-2" />
-            <span>
-              Nội dung được tự động dịch bởi AI, chỉ mang tính tham khảo.
-            </span>
-          </div>
+        <div className="flex items-start gap-3 rounded-lg border border-warning bg-warning/10 p-4 text-sm text-warning-content" role="alert">
+          <AlertTriangle className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+          <span className="flex-1">
+            Nội dung được tự động dịch bởi AI, chỉ mang tính tham khảo.
+          </span>
         </div>
       )}
     </div>
   );
 }
+

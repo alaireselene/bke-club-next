@@ -27,20 +27,20 @@ export function EventCard({
       href={`/events/${event.id}`} // Link using id
       className={cn("block h-full", className)}
     >
-      <Card className="group h-full transition hover:shadow-md">
+      <Card className="group h-full flex flex-col"> {/* Ensure flex column for consistency, hover handled by base Card */}
         {/* Featured Image */}
         {/* Removed featuredImage */}
 
-        <CardContent className="space-y-4 p-6">
+        <CardContent className="space-y-4 flex-grow"> {/* Removed p-6, added flex-grow */}
           {/* Title */}
-          <h3 className="text-lg font-semibold line-clamp-2 group-hover:text-cardinal-600 transition-colors">
+          <h3 className="text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors"> {/* Use text-primary for hover */}
             {event.title || "Sự kiện chưa có tiêu đề"}
           </h3>
 
           {/* Excerpt */}
           {/* Display generated excerpt */}
           {excerpt && (
-            <p className="text-sm text-slate-600 line-clamp-2">
+            <p className="text-sm text-muted-foreground line-clamp-2"> {/* Use text-muted-foreground */}
               {excerpt}
             </p>
           )}
@@ -58,20 +58,20 @@ export function EventCard({
                   className="rounded-full"
                 />
               )}
-              <span className="text-sm text-slate-600">{organizer_name}</span>
+              <span className="text-sm text-muted-foreground">{organizer_name}</span> {/* Use text-muted-foreground */}
             </div>
           )}
 
           {/* Metadata */}
-          <div className="pt-4 space-y-2 border-t border-slate-100">
+          <div className="pt-4 space-y-2 border-t border-border"> {/* Use border-border */}
             {/* Date */}
-            <div className="flex items-center text-sm text-slate-600">
+            <div className="flex items-center text-sm text-muted-foreground"> {/* Use text-muted-foreground */}
               <CalendarDays className="h-4 w-4 mr-2 text-cardinal-500" />
               <span>{startDate ? formatDate(startDate) : "Đang cập nhật"}</span>
             </div>
 
             {/* Location */}
-            <div className="flex items-center text-sm text-slate-600">
+            <div className="flex items-center text-sm text-muted-foreground"> {/* Use text-muted-foreground */}
               {isOnline ? (
                 <>
                   <Globe className="h-4 w-4 mr-2 text-cardinal-500" />
@@ -87,7 +87,7 @@ export function EventCard({
 
             {/* Capacity */}
             {showCapacity && capacity && (
-              <div className="flex items-center text-sm text-slate-600">
+              <div className="flex items-center text-sm text-muted-foreground"> {/* Use text-muted-foreground */}
                 <Users className="h-4 w-4 mr-2 text-cardinal-500" />
                 <span>{capacity ?? 'N/A'} người tham dự</span> {/* Use capacity */}
               </div>

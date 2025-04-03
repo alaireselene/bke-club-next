@@ -4,18 +4,11 @@ import { useState, useMemo, useEffect } from "react";
 import { SearchFilter } from "@/features/network/components/SearchFilter/SearchFilter";
 import { SchoolCard } from "@/features/network/components/SchoolCard/SchoolCard";
 import type { NetworkContentProps } from "./types";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; // Import Card components
+import { cn } from "@/lib/utils"; // Import cn
 
 import { useSearchParams } from "next/navigation";
-import {
-  Compass,
-  Network,
-  Atom,
-  Beaker,
-  Microscope,
-  Rocket,
-} from "lucide-react";
-
-const SCIENTIFIC_ICONS = [Atom, Beaker, Microscope, Rocket, Network, Compass];
+// Removed unused icons: Compass, Network, Atom, Beaker, Microscope, Rocket
 
 export function NetworkContent({
   schools,
@@ -30,7 +23,7 @@ export function NetworkContent({
           ?.id.toString() ?? "" // Use id instead of databaseId
       : ""
   );
-  const [isLoaded, setIsLoaded] = useState(false);
+  // Removed: isLoaded state
 
   const searchParams = useSearchParams();
 
@@ -46,14 +39,11 @@ export function NetworkContent({
         setSelectedSchoolId(matchedSchool.id.toString()); // Use id
       }
     } else {
-      setSelectedSchoolId("all");
+      setSelectedSchoolId("all"); // Default to 'all' if no param
     }
   }, [searchParams, schools]);
 
-  // Animation effect on load
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+  // Removed: useEffect for isLoaded
 
   // Filter schools based on search query and selected school
   const filteredSchools = useMemo(() => {
@@ -98,77 +88,64 @@ export function NetworkContent({
 
   return (
     <div className="relative">
-      {/* Scientific background elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 h-40 w-40 rounded-full border border-dashed border-cardinal-200/40 opacity-60"></div>
-        <div className="absolute bottom-40 right-10 h-60 w-60 rounded-full border border-dashed border-navy-200/40 opacity-60"></div>
-
-        {/* Floating scientific icons */}
-        {SCIENTIFIC_ICONS.map((Icon, index) => (
-          <div
-            key={index}
-            className="absolute opacity-10"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              transform: `rotate(${Math.random() * 360}deg)`,
-              animation: `float ${5 + Math.random() * 5}s ease-in-out infinite`,
-              animationDelay: `${index * 0.5}s`,
-            }}
-          >
-            <Icon size={24 + Math.floor(Math.random() * 24)} />
-          </div>
-        ))}
+      {/* Background elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none opacity-70"> {/* Added opacity */}
+        <div className="absolute top-20 left-10 h-40 w-40 rounded-full border border-dashed border-primary/20"></div> {/* Use theme color */}
+        <div className="absolute bottom-40 right-10 h-60 w-60 rounded-full border border-dashed border-secondary/20"></div> {/* Use theme color */}
+        {/* Removed floating icons */}
       </div>
 
       {/* Network Stats */}
       <div
-        className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 transition-all duration-700 ${
-          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={cn(
+          `grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 animate-fade-in opacity-0` // Use fade-in animation
+        )}
+        style={{ animationDuration: '0.7s', animationFillMode: 'forwards' }}
       >
-        <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200/60 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-cardinal-50 rounded-bl-full opacity-70"></div>
-          <div className="relative z-10">
-            <h3 className="text-sm font-medium text-slate-500 mb-1">
+        {/* Replaced custom divs with Card components */}
+        <Card className="relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 bg-primary/10 rounded-bl-full opacity-70"></div> {/* Use theme color */}
+          <CardContent className="relative z-10 p-4 sm:p-6"> {/* Adjusted padding */}
+            <h3 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1"> {/* Use theme color, adjusted size */}
               Trường/Khoa/Viện
             </h3>
-            <p className="text-3xl font-bold text-slate-800">
+            <p className="text-2xl sm:text-3xl font-bold text-foreground"> {/* Use theme color, adjusted size */}
               {schools.length}
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200/60 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-navy-50 rounded-bl-full opacity-70"></div>
-          <div className="relative z-10">
-            <h3 className="text-sm font-medium text-slate-500 mb-1">
+        <Card className="relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 bg-secondary/10 rounded-bl-full opacity-70"></div> {/* Use theme color */}
+          <CardContent className="relative z-10 p-4 sm:p-6"> {/* Adjusted padding */}
+            <h3 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1"> {/* Use theme color, adjusted size */}
               Câu lạc bộ
             </h3>
-            <p className="text-3xl font-bold text-slate-800">
+            <p className="text-2xl sm:text-3xl font-bold text-foreground"> {/* Use theme color, adjusted size */}
               {networkStats.totalClubs}
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white rounded-xl p-6 shadow-md border border-slate-200/60 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-sunflower-50 rounded-bl-full opacity-70"></div>
-          <div className="relative z-10">
-            <h3 className="text-sm font-medium text-slate-500 mb-1">
+        <Card className="relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 bg-accent/10 rounded-bl-full opacity-70"></div> {/* Use theme color */}
+          <CardContent className="relative z-10 p-4 sm:p-6"> {/* Adjusted padding */}
+            <h3 className="text-xs sm:text-sm font-medium text-muted-foreground mb-1"> {/* Use theme color, adjusted size */}
               Thành viên
             </h3>
-            <p className="text-3xl font-bold text-slate-800">
+            <p className="text-2xl sm:text-3xl font-bold text-foreground"> {/* Use theme color, adjusted size */}
               {networkStats.totalMembers}
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Search and Filter */}
       <div
-        className={`transition-all duration-700 delay-300 ${
-          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={cn(
+          `animate-fade-in opacity-0` // Use fade-in animation
+        )}
+        style={{ animationDuration: '0.7s', animationDelay: '0.3s', animationFillMode: 'forwards' }}
       >
         <SearchFilter
           schools={schools}
@@ -181,19 +158,16 @@ export function NetworkContent({
       {/* Network Visualization - Decorative element */}
       <div className="relative mb-10 h-16 overflow-hidden">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-dashed border-slate-200"></div>
+          <div className="w-full border-t border-dashed border-border"></div> {/* Use theme border */}
         </div>
         <div className="relative flex justify-around">
-          {filteredSchools.slice(0, 5).map((school, index) => (
+          {filteredSchools.slice(0, 7).map((school, index) => ( // Show up to 7 nodes
             <div
               key={school.id} // Use id
-              className="bg-white h-8 w-8 rounded-full border border-slate-200 flex items-center justify-center shadow-sm"
-              style={{
-                animation: `pulse 3s infinite`,
-                animationDelay: `${index * 0.5}s`,
-              }}
+              className="bg-card h-8 w-8 rounded-full border border-border flex items-center justify-center shadow-sm animate-pulse" // Use theme colors, Tailwind pulse
+              style={{ animationDelay: `${index * 0.3}s` }} // Stagger pulse
             >
-              <span className="text-xs font-bold text-cardinal-600">
+              <span className="text-xs font-bold text-primary"> {/* Use theme color */}
                 {school.slug?.substring(0, 2).toUpperCase() || ""}
               </span>
             </div>
@@ -202,14 +176,14 @@ export function NetworkContent({
       </div>
 
       {/* Schools Grid */}
-      <div className="grid gap-8">
+      <div className="grid gap-6 sm:gap-8"> {/* Adjusted gap */}
         {filteredSchools.map((school, index) => (
           <div
             key={school.id} // Use id
-            className={`transition-all duration-700 ${
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-            style={{ transitionDelay: `${300 + index * 150}ms` }}
+            className={cn(
+              `animate-fade-in opacity-0` // Use fade-in animation
+            )}
+            style={{ animationDuration: '0.7s', animationDelay: `${0.3 + index * 0.1}s`, animationFillMode: 'forwards' }} // Stagger fade-in
           >
             {/* Pass school.clubs directly */}
             <SchoolCard school={school} clubs={school.clubs} />
@@ -217,36 +191,14 @@ export function NetworkContent({
         ))}
 
         {filteredSchools.length === 0 && (
-          <div className="text-center py-16 text-base-content/60 bg-white/50 rounded-xl backdrop-blur-sm border border-slate-200/60">
-            <div className="text-5xl mb-4">🔍</div>
-            <p>Không tìm thấy câu lạc bộ nào phù hợp với tìm kiếm của bạn.</p>
+          <div className="text-center py-12 sm:py-16 text-muted-foreground bg-card rounded-lg border border-border"> {/* Use theme colors/border */}
+            <div className="text-4xl sm:text-5xl mb-4">🔍</div> {/* Adjusted size */}
+            <p className="text-base sm:text-lg">Không tìm thấy câu lạc bộ nào phù hợp với tìm kiếm của bạn.</p> {/* Adjusted size */}
           </div>
         )}
       </div>
 
-      {/* Add animation keyframes */}
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0) rotate(0);
-          }
-          50% {
-            transform: translateY(-20px) rotate(5deg);
-          }
-        }
-        @keyframes pulse {
-          0%,
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.1);
-            opacity: 0.8;
-          }
-        }
-      `}</style>
+      {/* Removed inline style block for animations */}
     </div>
   );
 }

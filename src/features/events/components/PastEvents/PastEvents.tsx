@@ -43,18 +43,10 @@ export function PastEvents({
 
   return (
     <section>
-      <h2 className="text-2xl font-bold mb-8">Sự kiện đã diễn ra</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Sự kiện đã diễn ra</h2> {/* Adjusted size/margin */}
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {events.map((event, index) => (
-          <div
-            key={event.id} // Use id
-            className="transform transition-all duration-300 hover:scale-[1.02] opacity-0 motion-safe:animate-[fadeIn_0.5s_ease-out_forwards] opacity-90 hover:opacity-100"
-            style={{
-              animationDelay: `${index * 100}ms`,
-            }}
-          >
-            <EventCard event={event} />
-          </div>
+          <EventCard key={event.id} event={event} />
         ))}
       </div>
 
@@ -65,7 +57,7 @@ export function PastEvents({
             size="lg"
             onClick={handleLoadMore}
             disabled={isLoading}
-            className="bg-white/50 hover:bg-white/80 min-w-[200px]"
+            className="min-w-[200px]" // Removed custom background styles
           >
             {isLoading ? (
               <>

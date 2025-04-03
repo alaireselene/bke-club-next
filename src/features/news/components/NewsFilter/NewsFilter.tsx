@@ -60,27 +60,18 @@ export function NewsFilter({
       <CategoryTabs
         categories={categories}
         onSelect={setSelectedCategory}
-        className="sticky top-0 z-10 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
+        className="sticky top-0 z-10 bg-background/80 backdrop-blur-md py-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8" // Use theme background
       />
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredNews.map((article, index) => (
-          <div
-            key={article.id} // Use Directus primary key 'id'
-            className="group transform transition-all duration-300 hover:scale-[1.02]"
-            style={{
-              opacity: 0,
-              animation: `fadeIn 0.5s ease-out forwards ${index * 0.1}s`,
-            }}
-          >
-            <NewsCard news={article} />
-          </div>
+          <NewsCard key={article.id} news={article} />
         ))}
 
         {filteredNews.length === 0 && (
-          <div className="col-span-full text-center py-16 text-base-content/60 bg-white/50 rounded-xl backdrop-blur-sm border border-slate-200/60">
-            <div className="text-5xl mb-4">📰</div>
-            <p>Không có bài viết nào trong danh mục này.</p>
+          <div className="col-span-full text-center py-12 sm:py-16 text-muted-foreground bg-card rounded-lg border border-border"> {/* Use theme colors/border, adjusted padding */}
+            <div className="text-4xl sm:text-5xl mb-4">📰</div> {/* Adjusted size */}
+            <p className="text-base sm:text-lg">Không có bài viết nào trong danh mục này.</p> {/* Adjusted size */}
           </div>
         )}
       </div>
@@ -92,7 +83,7 @@ export function NewsFilter({
             size="lg"
             onClick={handleLoadMore}
             disabled={isLoading}
-            className="bg-white/50 hover:bg-white/80 min-w-[200px]"
+            className="min-w-[200px]" // Removed custom background styles
           >
             {isLoading ? (
               <>
@@ -106,18 +97,7 @@ export function NewsFilter({
         </div>
       )}
 
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+      {/* Removed inline style block */}
     </div>
   );
 }

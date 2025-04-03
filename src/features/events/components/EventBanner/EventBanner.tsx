@@ -10,29 +10,29 @@ export function EventBanner({
   categoryName,
 }: EventBannerProps) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-base-300 to-base-400 p-10 text-white shadow-xl transition-all hover:shadow-2xl">
+    <div className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-muted to-background p-6 sm:p-8 text-foreground shadow-lg transition-shadow hover:shadow-xl"> {/* Adjusted rounding, gradient, padding, text color, shadow */}
       {categoryName && (
-        <div className="badge badge-neutral absolute top-6 right-6 backdrop-blur-sm transition-colors">
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 px-3 py-1 rounded-full bg-accent/80 text-accent-foreground text-xs sm:text-sm font-medium backdrop-blur-sm transition-colors"> {/* Replaced badge, adjusted position/padding/styles */}
           {categoryName}
         </div>
       )}
-      <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
-        <div className="space-y-6 lg:w-1/2">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl xl:text-5xl">
+      <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:justify-between"> {/* Adjusted gap */}
+        <div className="space-y-4 sm:space-y-6 lg:w-1/2 lg:max-w-xl"> {/* Adjusted spacing, added max-width */}
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl"> {/* Adjusted text sizes */}
             {title || "Sự kiện Trống"}
           </h1>
-          <p className="text-lg text-base-content/80">
+          <p className="text-base sm:text-lg text-muted-foreground"> {/* Adjusted text size and color */}
             {summary || "Không có mô tả"}
           </p>
         </div>
         {imageUrl && (
-          <div className="lg:w-1/3">
+          <div className="lg:w-1/3 xl:w-2/5"> {/* Adjusted width constraints */}
             <Image
               src={imageUrl}
               alt={title}
               width={400}
               height={300}
-              className="h-64 w-full rounded-lg object-cover shadow-lg"
+              className="aspect-[4/3] w-full rounded-md object-cover shadow-md sm:aspect-video lg:aspect-[4/3]" // Use aspect ratio, adjusted rounding/shadow
             />
           </div>
         )}

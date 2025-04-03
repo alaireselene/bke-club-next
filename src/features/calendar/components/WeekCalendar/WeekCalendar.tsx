@@ -3,41 +3,50 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin } from "lucide-react"; // Added MapPin
+import { Button } from "@/components/ui/button"; // Import Button
+import { cn } from "@/lib/utils"; // Import cn
 import type { EventType, Event } from "./types";
 
+// Updated eventStyles using theme colors (adjust as needed for contrast/design)
 const eventStyles: Record<EventType, string> = {
-  workshop: "bg-cardinal-50 border-cardinal-400 text-cardinal-800",
-  competition: "bg-navy-50 border-navy-400 text-navy-800",
-  cultural: "bg-sunflower-50 border-sunflower-400 text-charcoal-800",
-  research: "bg-charcoal-50 border-charcoal-400 text-charcoal-800",
-  synposium: "bg-navy-50 border-navy-400 text-navy-800",
+  workshop: "bg-primary/10 border-primary/50 text-primary-foreground", // Example: Primary
+  competition: "bg-secondary/10 border-secondary/50 text-secondary-foreground", // Example: Secondary
+  cultural: "bg-accent/10 border-accent/50 text-accent-foreground", // Example: Accent
+  research: "bg-muted border-border text-muted-foreground", // Example: Muted
+  synposium: "bg-info/10 border-info/50 text-info-foreground", // Example: Info (assuming info colors are defined)
 };
 
 export function WeekCalendar({ events }: { events: Event[] }) {
-  const [currentDate] = useState(new Date());
+  const [currentDate] = useState(new Date()); // Keep track of today
   const [currentWeek, setCurrentWeek] = useState(() => {
-    const date = new Date(currentDate);
-    date.setDate(date.getDate() - date.getDay() + 1); // Start week on Monday
+    const date = new Date(); // Start from today
+    date.setDate(date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1)); // Start week on Monday
+    date.setHours(0, 0, 0, 0); // Normalize time
     return date;
   });
 
   const nextWeek = () => {
-    const nextWeek = new Date(currentWeek);
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    setCurrentWeek(nextWeek);
+    setCurrentWeek(prevWeek => {
+      const next = new Date(prevWeek);
+      next.setDate(next.getDate() + 7);
+      return next;
+    });
   };
 
   const previousWeek = () => {
-    const prevWeek = new Date(currentWeek);
-    prevWeek.setDate(prevWeek.getDate() - 7);
-    setCurrentWeek(prevWeek);
+    setCurrentWeek(prevWeek => {
+      const prev = new Date(prevWeek);
+      prev.setDate(prev.getDate() - 7);
+      return prev;
+    });
   };
 
   const getWeekDays = () => {
     const days = [];
+    const startOfWeek = new Date(currentWeek);
     for (let i = 0; i < 7; i++) {
-      const day = new Date(currentWeek);
+      const day = new Date(startOfWeek);
       day.setDate(day.getDate() + i);
       days.push(day);
     }
@@ -45,136 +54,114 @@ export function WeekCalendar({ events }: { events: Event[] }) {
   };
 
   const getEventsForDate = (date: Date) => {
+    const dateString = date.toDateString();
     return events.filter(
-      (event) => event.startDate.toDateString() === date.toDateString()
+      (event) => event.startDate.toDateString() === dateString
     );
   };
 
   const weekDays = getWeekDays();
+  const todayString = currentDate.toDateString();
 
   return (
     <>
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <button
-            className="group rounded-lg bg-cardinal-600 px-4 py-2 text-white shadow-sm transition-all hover:bg-cardinal-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cardinal-500 focus:ring-offset-2 active:bg-cardinal-800"
-            onClick={previousWeek}
-          >
-            <span className="flex items-center gap-2">
-              <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
-              Tuần trước
-            </span>
-          </button>
-          <span className="text-xl font-bold text-charcoal-800">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2 sm:gap-4">
+          {/* Replaced custom buttons with Button component */}
+          <Button variant="outline" size="icon" onClick={previousWeek} aria-label="Tuần trước">
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          <span className="text-lg sm:text-xl font-semibold text-foreground text-center flex-grow sm:flex-grow-0">
             {currentWeek.toLocaleDateString("vi-VN", {
               month: "long",
               year: "numeric",
             })}
           </span>
-          <button
-            className="group rounded-lg bg-cardinal-600 px-4 py-2 text-white shadow-sm transition-all hover:bg-cardinal-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cardinal-500 focus:ring-offset-2 active:bg-cardinal-800"
-            onClick={nextWeek}
-          >
-            <span className="flex items-center gap-2">
-              Tuần sau
-              <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-            </span>
-          </button>
+          <Button variant="outline" size="icon" onClick={nextWeek} aria-label="Tuần sau">
+            <ChevronRight className="h-5 w-5" />
+          </Button>
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-charcoal-200 bg-white shadow-lg transition-shadow hover:shadow-xl">
+      <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm"> {/* Use theme colors/border */}
         {/* Calendar Header */}
-        <div className="grid grid-cols-7 bg-gradient-to-br from-navy-50 to-cardinal-50">
+        <div className="grid grid-cols-7 bg-muted/50"> {/* Use theme color */}
           {weekDays.map((day) => (
             <div
               key={day.toISOString()}
-              className="border-b border-charcoal-200 px-2 py-4 text-center font-semibold"
+              className="border-b border-border px-2 py-3 text-center" /* Use theme border */
             >
-              <div className="text-sm font-medium text-charcoal-600">
+              <div className="text-xs sm:text-sm font-medium text-muted-foreground"> {/* Use theme color */}
                 {day.toLocaleDateString("vi-VN", { weekday: "short" })}
               </div>
-              <div className="mt-1 text-lg text-charcoal-800">
-                {day.toLocaleDateString("vi-VN", {
-                  day: "2-digit",
-                  month: "2-digit",
-                })}
+              <div className={cn(
+                "mt-1 text-base sm:text-lg font-semibold",
+                 day.toDateString() === todayString ? "text-primary" : "text-foreground" // Highlight today's date number
+                 )}>
+                {day.getDate()} {/* Show only day number */}
               </div>
             </div>
           ))}
         </div>
 
         {/* Calendar Body */}
-        <div className="grid grid-cols-7 divide-x divide-charcoal-200">
-          {weekDays.map((day) => (
-            <div
-              key={day.toISOString()}
-              className={`group relative min-h-[150px] border-b p-4 transition-colors sm:min-h-[200px] ${
-                day.toDateString() === new Date().toDateString()
-                  ? "bg-cardinal-50/30"
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              <div className="space-y-2">
-                {getEventsForDate(day).map((event) => (
-                  <a
-                    key={event.id}
-                    href={`/events/${event.slug}`}
-                    className={`block rounded-lg border px-3 py-2 shadow-sm ${
-                      eventStyles[event.type]
-                    } transform cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cardinal-500`}
-                  >
-                    <div className="font-medium leading-snug">
-                      {event.title}
-                    </div>
-                    <div className="mt-1 flex items-center gap-2 text-sm">
-                      <span className="inline-flex items-center rounded bg-white/50 px-1.5 py-0.5 text-xs font-medium backdrop-blur-sm">
-                        {event.startDate.toLocaleTimeString("vi-VN", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                        {" - "}
-                        {event.endDate.toLocaleTimeString("vi-VN", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </div>
-                    <div className="mt-1 flex items-center gap-1 text-xs opacity-80">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3.5 w-3.5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                      {event.location}
-                    </div>
-                  </a>
-                ))}
-              </div>
-              {getEventsForDate(day).length === 0 && (
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
-                  <span className="rounded-full bg-white/80 px-3 py-1 text-sm text-charcoal-500 shadow-sm backdrop-blur-sm">
-                    No events
-                  </span>
+        <div className="grid grid-cols-7 divide-x divide-border"> {/* Use theme border */}
+          {weekDays.map((day) => {
+            const isToday = day.toDateString() === todayString;
+            return (
+              <div
+                key={day.toISOString()}
+                className={cn(
+                  `group relative min-h-[120px] border-b border-border p-2 sm:p-3 transition-colors sm:min-h-[150px]`, // Adjusted padding/min-height
+                  isToday ? "bg-primary/5" : "hover:bg-muted/50" // Use theme colors
+                )}
+              >
+                <div className="space-y-1.5"> {/* Adjusted spacing */}
+                  {getEventsForDate(day).map((event) => (
+                    <a
+                      key={event.id}
+                      href={`/events/${event.slug}`} // Assuming slug exists, otherwise use id
+                      className={cn(
+                        `block rounded border p-1.5 sm:p-2 shadow-sm text-xs sm:text-sm`, // Adjusted padding/size
+                        eventStyles[event.type] || "bg-muted border-border text-muted-foreground", // Fallback style
+                        `transform cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-md focus:outline-none focus:ring-1 focus:ring-primary` // Use theme ring
+                      )}
+                    >
+                      <div className="font-semibold leading-snug line-clamp-2"> {/* Added line-clamp */}
+                        {event.title}
+                      </div>
+                      <div className="mt-1 flex items-center gap-1 text-xs opacity-80"> {/* Adjusted gap/opacity */}
+                        <span className="inline-flex items-center rounded bg-background/50 px-1 py-0.5 text-[10px] sm:text-xs font-medium backdrop-blur-sm"> {/* Use theme background */}
+                          {event.startDate.toLocaleTimeString("vi-VN", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                          {/* Show end time only if different from start time */}
+                          {event.endDate.getTime() !== event.startDate.getTime() && ` - ${event.endDate.toLocaleTimeString("vi-VN", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}`}
+                        </span>
+                      </div>
+                      {event.location && (
+                        <div className="mt-1 flex items-center gap-1 text-[10px] sm:text-xs opacity-70"> {/* Adjusted size/opacity */}
+                          <MapPin className="h-3 w-3 flex-shrink-0" /> {/* Replaced SVG */}
+                          <span className="truncate">{event.location}</span> {/* Added truncate */}
+                        </div>
+                      )}
+                    </a>
+                  ))}
                 </div>
-              )}
-            </div>
-          ))}
+                {getEventsForDate(day).length === 0 && (
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none">
+                    <span className="rounded-full bg-background/80 px-2 py-0.5 text-xs text-muted-foreground shadow-sm backdrop-blur-sm"> {/* Use theme colors */}
+                      Trống
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

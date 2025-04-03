@@ -5,9 +5,11 @@ import { NewsCard } from "../NewsCard/NewsCard";
 import { CategoryTabs } from "@/components/shared/CategoryTabs/CategoryTabs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
+// Removed: import { motion } from "motion/react";
+import { Button } from "@/components/ui/button"; // Import Button
 import type { FeaturedNewsProps, CategoryType } from "./types";
 import { News } from "../../types";
+import { cn } from "@/lib/utils"; // Import cn
 
 const categories = [
   { slug: "scholarship", name: "Học bổng - Trao đổi" },
@@ -23,199 +25,179 @@ export function FeaturedNews({ news }: FeaturedNewsProps) {
 
   const filteredNews = !selectedCategory
     ? news
-    : news.filter((article: News) =>
-        article.categories?.nodes.some((cat) => cat.slug === selectedCategory)
-      );
+    : news.filter((article: News) => {
+        // Assuming Directus returns categories as an array of strings/objects
+        // Adjust this logic based on the actual structure of article.categories
+        if (!article.categories) return false;
+        try {
+          const parsedCategories = typeof article.categories === 'string'
+            ? JSON.parse(article.categories)
+            : article.categories; // Assume it might already be parsed
+
+          // If categories are objects with a 'slug' property:
+          // return Array.isArray(parsedCategories) && parsedCategories.some(cat => cat.slug === selectedCategory);
+
+          // If categories are just an array of strings:
+          return Array.isArray(parsedCategories) && parsedCategories.includes(selectedCategory);
+        } catch (e) {
+          console.error("Error parsing categories for news:", article.id, e);
+          return false;
+        }
+      });
+
 
   const heroNews = filteredNews[0];
   const smallNews = filteredNews.slice(1, 5);
 
   return (
-    <section className="relative py-16 overflow-hidden">
+    <section className="relative py-12 sm:py-16 overflow-hidden"> {/* Adjusted padding */}
       {/* Scientific background elements */}
-      <div className="absolute inset-0 -z-10">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 bg-gradient-to-br from-white via-navy-50/10 to-cardinal-50/10"
+      <div className="absolute inset-0 -z-10 opacity-70"> {/* Added opacity */}
+        <div
+          className="absolute inset-0 animate-fade-in bg-gradient-to-br from-white via-secondary/5 to-primary/5" // Use theme colors
+          style={{ animationDuration: '1s' }}
         />
 
         {/* Grid pattern */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2 }}
-          className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"
+        <div
+          className="absolute inset-0 animate-fade-in scale-95 opacity-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" // Use theme border color equivalent
+          style={{ animationDuration: '1.2s', animationFillMode: 'forwards', transformOrigin: 'center' }}
         />
 
-        {/* Decorative elements */}
-        <motion.div
-          initial={{ opacity: 0, rotate: -90 }}
-          animate={{ opacity: 0.6, rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute right-10 top-20 h-40 w-40 rounded-full border border-dashed border-navy-200/40"
+        {/* Decorative elements - Simplified animation */}
+        <div
+          className="absolute right-10 top-20 h-40 w-40 rounded-full border border-dashed border-secondary/20 animate-spin" // Use theme color, basic spin
+          style={{ animationDuration: '20s', animationTimingFunction: 'linear', animationIterationCount: 'infinite' }}
         />
-        <motion.div
-          initial={{ opacity: 0, rotate: 90 }}
-          animate={{ opacity: 0.6, rotate: -360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute left-10 bottom-20 h-60 w-60 rounded-full border border-dashed border-cardinal-200/40"
+        <div
+          className="absolute left-10 bottom-20 h-60 w-60 rounded-full border border-dashed border-primary/20 animate-spin" // Use theme color, basic spin
+          style={{ animationDuration: '25s', animationTimingFunction: 'linear', animationIterationCount: 'infinite', animationDirection: 'reverse' }}
         />
 
         {/* Scientific formulas - subtle background text */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 0.2, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="absolute top-40 left-20 text-[10px] text-navy-300 rotate-12 select-none backdrop-blur-sm"
+        <div
+          className="absolute top-40 left-20 text-[10px] text-secondary/30 rotate-12 select-none backdrop-blur-sm animate-fade-in opacity-0" // Use theme color
+          style={{ animationDuration: '0.8s', animationDelay: '0.5s', animationFillMode: 'forwards' }}
         >
           <div className="space-y-1">
             <div>∇ × E = -∂B/∂t</div>
             <div>F = ma</div>
             <div>E = mc²</div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 flex flex-col items-center text-center"
+        <div
+          className="mb-12 sm:mb-16 flex flex-col items-center text-center animate-fade-in opacity-0" // Adjusted margin
+          style={{ animationDuration: '0.6s', animationFillMode: 'forwards' }}
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            className="inline-flex items-center justify-center mb-3 px-4 py-1.5 rounded-full bg-navy-50/50 text-navy-600 text-sm font-medium backdrop-blur-sm"
+          <div
+            className="inline-flex items-center justify-center mb-4 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs sm:text-sm font-medium transition-transform hover:scale-105" // Use theme color (secondary for news)
           >
-            <motion.span
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="inline-block h-1.5 w-1.5 rounded-full bg-navy-500 mr-2"
+            <span
+              className="inline-block h-1.5 w-1.5 rounded-full bg-secondary mr-2 animate-pulse" // Use theme color, basic pulse
+              style={{ animationDuration: '2s' }}
             />
             Tin tức
-          </motion.div>
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-4xl font-bold mb-6 bg-gradient-to-br from-navy-600 to-cardinal-600 bg-clip-text text-transparent"
+          <h2
+            className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 bg-gradient-to-br from-secondary to-primary bg-clip-text text-transparent animate-fade-in opacity-0" // Adjusted size & color
+            style={{ animationDuration: '0.6s', animationDelay: '0.2s', animationFillMode: 'forwards' }}
           >
             Tin tức mới nhất
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-base-content/70 text-lg max-w-2xl leading-relaxed"
+          <p
+            className="text-muted-foreground text-base sm:text-lg max-w-2xl leading-relaxed animate-fade-in opacity-0" // Use theme color, adjusted size
+            style={{ animationDuration: '0.6s', animationDelay: '0.3s', animationFillMode: 'forwards' }}
           >
             Cập nhật các thông tin mới nhất từ Mạng lưới các CLB sinh viên
             nghiên cứu
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+          <div
+            className="animate-fade-in opacity-0"
+            style={{ animationDuration: '0.6s', animationDelay: '0.4s', animationFillMode: 'forwards' }}
           >
             <CategoryTabs
-              categories={categories.filter((cat) => cat.slug !== "All")}
+              categories={categories.filter((cat) => cat.slug !== "All")} // Ensure 'All' isn't passed if not needed
               defaultSelected={null}
               onSelect={(categoryId) =>
                 setSelectedCategory(categoryId as CategoryType | null)
               }
-              className="mt-8"
+              className="mt-6 sm:mt-8" // Adjusted margin
             />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {filteredNews.length > 0 ? (
-          <motion.div
+          <div
             key="posts"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="grid gap-8 lg:grid-cols-12"
+            className="grid gap-6 sm:gap-8 lg:grid-cols-12 animate-fade-in opacity-0" // Adjusted gap
+            style={{ animationDuration: '0.4s', animationFillMode: 'forwards' }}
           >
             {/* Hero Article */}
             {heroNews && (
-              <motion.div
-                layout
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                className="lg:col-span-7"
+              <div
+                className="lg:col-span-7 animate-fade-in opacity-0"
+                style={{ animationDuration: '0.6s', animationFillMode: 'forwards' }}
               >
                 <NewsCard news={heroNews} />
-              </motion.div>
+              </div>
             )}
 
             {/* Small Articles Grid */}
-            <div className="grid gap-6 lg:col-span-5 lg:grid-cols-2">
-              {smallNews.map((article, index) => (
-                <motion.div
-                  key={article.databaseId}
-                  layout
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <NewsCard news={article} />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+            {smallNews.length > 0 && (
+              <div className="grid gap-6 sm:gap-8 lg:col-span-5 lg:grid-cols-2"> {/* Adjusted gap */}
+                {smallNews.map((article, index) => (
+                  <div
+                    key={article.id} // Use ID if available, otherwise databaseId
+                    className="animate-fade-in opacity-0"
+                    style={{ animationDuration: '0.6s', animationDelay: `${0.1 + index * 0.1}s`, animationFillMode: 'forwards' }}
+                  >
+                    <NewsCard news={article} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         ) : (
-          <motion.div
+          <div
             key="empty"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.4 }}
-            className="text-center py-16 text-base-content/60 bg-white/80 rounded-xl backdrop-blur-md border border-slate-200/60 shadow-sm hover:shadow-md hover:bg-white/90"
+            className="text-center py-12 sm:py-16 text-muted-foreground bg-card rounded-lg border border-border animate-fade-in opacity-0" // Use theme colors/border
+            style={{ animationDuration: '0.4s', animationFillMode: 'forwards' }}
           >
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-5xl mb-4"
+            <div
+              className="text-4xl sm:text-5xl mb-4 animate-pulse" // Basic pulse
+              style={{ animationDuration: '2s' }}
             >
               📰
-            </motion.div>
-            <p className="text-lg font-medium">
+            </div>
+            <p className="text-base sm:text-lg font-medium"> {/* Adjusted size */}
               Không tìm thấy bài viết nào trong danh mục này.
             </p>
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               Vui lòng thử chọn danh mục khác
             </p>
-          </motion.div>
+          </div>
         )}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 text-center"
+        <div
+          className="mt-12 sm:mt-16 text-center animate-fade-in opacity-0" // Adjusted margin
+          style={{ animationDuration: '0.6s', animationDelay: '0.8s', animationFillMode: 'forwards' }}
         >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              href="/news"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-cardinal-600 text-white font-medium shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-cardinal-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-cardinal-500 focus:ring-offset-2"
-            >
-              <span className="relative">Xem tất cả tin tức</span>
-              <motion.span
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                <ArrowRight className="h-5 w-5" />
-              </motion.span>
-            </Link>
-          </motion.div>
-        </motion.div>
+          {/* Replaced custom Link with standard Button */}
+          <Link href="/news" passHref legacyBehavior>
+            <Button size="lg" variant="default" asChild className="transition-transform hover:scale-105">
+              <a>
+                Xem tất cả tin tức
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </Button>
+          </Link>
+        </div>
       </div>
     </section>
   );

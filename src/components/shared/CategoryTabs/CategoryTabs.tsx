@@ -20,7 +20,7 @@ export function CategoryTabs({
   const baseClasses =
     "relative inline-flex items-center gap-1.5 transition-all duration-200";
   const focusClasses =
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-cardinal-500 focus-visible:ring-offset-2";
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"; // Use theme ring color
 
   const sizeClasses = {
     sm: "px-3 py-1 text-sm",
@@ -33,28 +33,28 @@ export function CategoryTabs({
       nav: "flex flex-wrap gap-2",
       tab: {
         default:
-          "rounded-full hover:text-cardinal-600 backdrop-blur-sm transition-all duration-200",
+          "rounded-full hover:text-primary backdrop-blur-sm transition-all duration-200", // Use theme color
         selected:
-          "bg-cardinal-600/90 text-white rounded-full hover:bg-cardinal-600 shadow-md hover:shadow-lg hover:scale-[1.02]",
+          "bg-primary/90 text-primary-foreground rounded-full hover:bg-primary shadow-md hover:shadow-lg hover:scale-[1.02]", // Use theme colors
         notSelected:
-          "bg-white/80 text-charcoal-600 hover:bg-white/90 shadow-sm hover:shadow-md hover:scale-[1.02]",
+          "bg-background/80 text-muted-foreground hover:bg-background/90 shadow-sm hover:shadow-md hover:scale-[1.02]", // Use theme colors
       },
     },
     underline: {
-      nav: "flex overflow-x-auto scrollbar-none -mx-4 px-4 border-b border-charcoal-200",
+      nav: "flex overflow-x-auto scrollbar-none -mx-4 px-4 border-b border-border", // Use theme border color
       tab: {
         default: "border-b-2 border-transparent -mb-px",
-        selected: "border-cardinal-600 text-cardinal-600",
+        selected: "border-primary text-primary", // Use theme color
         notSelected:
-          "text-charcoal-600 hover:text-cardinal-600 hover:border-cardinal-300",
+          "text-muted-foreground hover:text-primary hover:border-primary/50", // Use theme colors
       },
     },
     minimal: {
       nav: "flex flex-wrap gap-1",
       tab: {
         default: "rounded-lg",
-        selected: "bg-cardinal-50 text-cardinal-600 font-medium",
-        notSelected: "text-charcoal-600 hover:bg-charcoal-50",
+        selected: "bg-primary/10 text-primary font-medium", // Use theme color
+        notSelected: "text-muted-foreground hover:bg-muted/50", // Use theme colors
       },
     },
   };
@@ -95,8 +95,8 @@ export function CategoryTabs({
             className={cn(
               "ml-1 rounded-full px-1.5 py-0.5 text-xs font-medium",
               isSelected
-                ? "bg-white/20 text-white"
-                : "bg-charcoal-100 text-charcoal-600"
+                ? "bg-primary-foreground/20 text-primary-foreground" // Use theme colors
+                : "bg-muted text-muted-foreground" // Use theme colors
             )}
           >
             {category.count}
