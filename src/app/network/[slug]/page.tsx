@@ -1,72 +1,60 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getClient } from "@/lib/apollo-client";
-import { GET_CLUB_BY_SLUG } from "@/features/network/graphql/queries";
-import { GET_NAVIGATION_DATA } from "@/features/navbar/graphql/queries";
+import { directus, Club, School } from "@/lib/directus"; // Import directus client and types
+import { readItem, readItems } from "@directus/sdk"; // Import SDK functions
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ClubDetails } from "@/features/network/components/ClubDetails/ClubDetails";
-import type { Club } from "@/features/network";
+import type { Club as FeatureClub } from "@/features/network"; // Keep feature's Club type alias if needed by ClubDetails initially
+import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt util
 
+// Assuming the directory is renamed from [slug] to [id]
 interface Props {
-  params: {
-    slug: string;
-  };
+  params: { id: string }; // Expect 'id' instead of 'slug'
 }
 
-interface ClubData {
-  club: Club;
-}
+// Remove GraphQL specific ClubData interface
 
-async function getClubData(slug: string): Promise<ClubData | null> {
+// Helper function to fetch club data
+async function getClubData(id: string): Promise<Club | null> {
   try {
-    const { data } = await getClient().query<ClubData>({
-      query: GET_CLUB_BY_SLUG,
-      variables: {
-        slug: slug,
-      },
-      context: {
-        fetchOptions: {
-          next: {
-            tags: ["clubs"],
-          },
-        },
-      },
-    });
-
-    return data;
+    // Use correct syntax to fetch related school fields
+    const clubData = await directus.request(readItem('club', id, {
+      fields: ['*', { school_id: ['*'] }], // Fetch all club fields and all related school fields
+    }));
+    // The SDK should return the school_id field as a School object if fetched correctly,
+    // or as a number (the ID) if not fetched deeply, or potentially undefined/null if empty.
+    // No need for manual type assertion or null assignment here if the fetch is correct.
+    return clubData as Club;
   } catch (error) {
-    console.error("Failed to fetch club data:", error);
-    return null;
+    // Directus readItem throws error if not found
+    console.error(`Error fetching club ${id}:`, error);
+    return null; // Return null if club not found or other error
   }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const data = await getClubData(params.slug);
+  const club = await getClubData(params.id);
 
-  if (!data) {
+  if (!club) {
     return {
       title: "Không tìm thấy câu lạc bộ | HUST Research Clubs Network",
-      description: "Câu lạc bộ này không tồn tại, hoặc đã bị xóa.",
+      description: "Câu lạc bộ này không tồn tại hoặc đã bị xóa.",
     };
   }
 
   return {
-    title: `${data.club.title} | HUST Research Clubs Network`,
-    description: data.club.content
-      ? data.club.content.slice(0, 160).replace(/<[^>]*>/g, "")
-      : `Chi tiết về CLB ${data.club.title}`,
-    openGraph: data.club.featuredImage
-      ? {
-          images: [data.club.featuredImage.node.sourceUrl],
-        }
-      : undefined,
+    title: `${club.name} | HUST Research Clubs Network`, // Use club.name
+    // Generate description from club.description (assuming HTML)
+    description: createExcerpt(club.description, 25), // Longer excerpt for description
+    // Remove openGraph image as Club schema doesn't have one
+    openGraph: undefined,
   };
 }
 
 export default async function ClubPage({ params }: Props) {
-  const data = await getClubData(params.slug);
+  const club = await getClubData(params.id);
 
-  if (!data) {
+  if (!club) {
     notFound();
   }
 
@@ -77,12 +65,12 @@ export default async function ClubPage({ params }: Props) {
         <div className="relative mb-12">
           <div className="absolute inset-0 bg-[#003366] opacity-5 -rotate-1" />
           <PageHeader
-            title={data.club.title}
+            title={club.name} // Use club.name
             breadcrumbItems={[
               { label: "Mạng lưới thành viên", href: "/network" },
               {
-                label: data.club.title,
-                href: `/network/${data.club.slug}`,
+                label: club.name, // Use club.name
+                href: `/network/${club.id}`, // Use club.id
                 current: true,
               },
             ]}
@@ -90,32 +78,29 @@ export default async function ClubPage({ params }: Props) {
           />
         </div>
 
-        <ClubDetails club={data.club} school={data.club.school?.node || null} />
+        {/* Pass club and the fetched school object (if available) */}
+        {/* Pass club and the fetched school object (which might be null/undefined/number if fetch failed/empty) */}
+        {/* We cast club to FeatureClub for now, assuming ClubDetails still needs refactoring */}
+        <ClubDetails club={club as FeatureClub} school={club.school_id as School | null} />
       </div>
     </main>
   );
 }
 
-// Generate static params for initial build
+// Generate static params for initial build using Directus
 export async function generateStaticParams() {
-  const { data } = await getClient().query<{
-    schools: {
-      nodes: Array<{
-        clubs: {
-          nodes: Array<{ slug: string }>;
-        };
-      }>;
-    };
-  }>({
-    query: GET_NAVIGATION_DATA,
-    variables: {
-      first: 100, // Get up to 100 clubs for static paths
-    },
-  });
-
-  return data.schools.nodes
-    .flatMap((school) => school.clubs.nodes)
-    .map((club) => ({
-      slug: club.slug,
+ try {
+    const clubsData = await directus.request(readItems('club', {
+      fields: ['id'], // Only need id
+      limit: -1 // Fetch all
     }));
+    const clubs = clubsData as Pick<Club, 'id'>[];
+
+    return clubs.map((club) => ({
+      id: club.id.toString(), // Param should be string
+    }));
+  } catch (error) {
+    console.error("Failed to fetch clubs for static params:", error);
+    return [];
+  }
 }

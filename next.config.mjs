@@ -2,6 +2,7 @@
 
 const nextConfig = {
   images: {
+    unoptimized: true, // Add this line to disable image optimization
     remotePatterns: [
       {
         protocol: "https",
@@ -10,8 +11,8 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "test.sena.id.vn",
-        pathname: "/wp-content/uploads/**",
+        hostname: "bke-cms.sena.id.vn",
+        pathname: "/assets/**",
       },
       {
         protocol: "https",

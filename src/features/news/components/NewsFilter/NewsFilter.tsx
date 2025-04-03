@@ -22,9 +22,20 @@ export function NewsFilter({
   const filteredNews = useMemo(() => {
     if (!selectedCategory) return news;
 
-    return news.filter((article) =>
-      article.categories.nodes.some((cat) => cat.slug === selectedCategory)
-    );
+    return news.filter((article) => {
+      try {
+        // Parse the JSON string from Directus 'categories' field
+        const parsedCategories = typeof article.categories === 'string'
+          ? JSON.parse(article.categories)
+          : article.categories; // Assume it might already be parsed if fetched differently later
+
+        // Check if the resulting array includes the selected category
+        return Array.isArray(parsedCategories) && parsedCategories.includes(selectedCategory);
+      } catch (e) {
+        console.error("Error parsing categories for article:", article.id, e);
+        return false; // Exclude if categories JSON is invalid
+      }
+    });
   }, [news, selectedCategory]);
 
   const handleLoadMore = async () => {
@@ -32,7 +43,9 @@ export function NewsFilter({
 
     try {
       setIsLoading(true);
-      const data = await loadMorePosts();
+      // Calculate the offset based on the number of currently loaded posts
+      const currentOffset = news.length;
+      const data = await loadMorePosts(currentOffset);
       setNews([...news, ...data.posts]);
       setHasMore(data.pageInfo.hasNextPage);
     } catch (error) {
@@ -53,7 +66,7 @@ export function NewsFilter({
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredNews.map((article, index) => (
           <div
-            key={article.databaseId}
+            key={article.id} // Use Directus primary key 'id'
             className="group transform transition-all duration-300 hover:scale-[1.02]"
             style={{
               opacity: 0,

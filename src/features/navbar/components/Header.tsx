@@ -6,10 +6,19 @@ import { Logo } from "./Logo";
 import { NavigationMenu } from "./NavigationMenu";
 import { MobileMenu } from "./MobileMenu";
 import { DesktopMenu } from "./DesktopMenu";
-import type { School } from "@/features/network";
+// Import the base Directus School type for reference if needed,
+// but define the expected props locally for clarity.
+// import type { School as DirectusSchool } from "@/lib/directus";
+
+// Define the expected shape for schools passed to the Header
+interface NavSchool {
+  id: number;
+  name: string;
+  slug: string;
+}
 
 type Props = {
-  schools: School[];
+  schools: NavSchool[]; // Expect an array of the simplified NavSchool type
 };
 
 export function Header({ schools }: Props) {

@@ -3,14 +3,21 @@
 import Link from "next/link";
 import { X, Settings, ChevronDown, ChevronUp } from "lucide-react";
 import { usePathname } from "next/navigation";
-import type { School } from "@/features/network";
+// Remove School import from features/network
 import { useState, useEffect } from "react";
 import { useScrollLock } from "@/hooks/useScrollLock";
+
+// Define the expected simplified school type for navigation
+interface NavSchool {
+  id: number;
+  name: string;
+  slug: string;
+}
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  schools: School[];
+  schools: NavSchool[]; // Expect the simplified type
   currentLang?: string;
   onToggleLanguage?: () => void;
   isAdmin?: boolean;
@@ -162,10 +169,11 @@ export function MobileMenu({
                     {schools
                       .filter((school) => school.name?.startsWith("Trường"))
                       .map((school) => (
-                        <div key={school.databaseId} className="rounded-lg">
+                        <div key={school.id} className="rounded-lg"> {/* Use id */}
+                          {/* Update toggleSchool to use id */}
                           <button
                             onClick={() =>
-                              toggleSchool(school.databaseId.toString())
+                              toggleSchool(school.id.toString())
                             }
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
@@ -174,7 +182,7 @@ export function MobileMenu({
                             </span>
                             <div className="flex-shrink-0">
                               {expandedSchools.has(
-                                school.databaseId.toString()
+                                school.id.toString()
                               ) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
@@ -182,35 +190,8 @@ export function MobileMenu({
                               )}
                             </div>
                           </button>
-                          {expandedSchools.has(
-                            school.databaseId.toString()
-                          ) && (
-                            <div className="ml-8 mt-2 space-y-0.5 pb-2">
-                              {school.clubs?.nodes.map((club) => (
-                                <Link
-                                  key={club.databaseId}
-                                  href={`/network/${club.slug}`}
-                                  className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
-                                  onClick={handleClose}
-                                >
-                                  <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
-                                    {club.title}
-                                  </span>
-                                  {club.clubData?.membersCount && (
-                                    <span className="ml-2 rounded-full bg-slate-100/80 px-2 py-0.5 text-xs text-slate-500 transition-colors group-hover:bg-cardinal-100/50 group-hover:text-cardinal-600">
-                                      {club.clubData.membersCount} thành viên
-                                    </span>
-                                  )}
-                                </Link>
-                              ))}
-                              {(!school.clubs?.nodes ||
-                                school.clubs.nodes.length === 0) && (
-                                <div className="mx-4 flex items-center justify-center rounded-full bg-slate-50/50 px-4 py-3 text-sm text-slate-500 italic backdrop-blur-sm">
-                                  Chưa có CLB
-                                </div>
-                              )}
-                            </div>
-                          )}
+                          {/* Remove club expansion logic */}
+                          {/* {expandedSchools.has(school.id.toString()) && ( ... )} */}
                         </div>
                       ))}
                   </div>
@@ -235,10 +216,11 @@ export function MobileMenu({
                     {schools
                       .filter((school) => school.name?.startsWith("Khoa"))
                       .map((school) => (
-                        <div key={school.databaseId} className="rounded-lg">
+                        <div key={school.id} className="rounded-lg"> {/* Use id */}
+                          {/* Update toggleSchool to use id */}
                           <button
                             onClick={() =>
-                              toggleSchool(school.databaseId.toString())
+                              toggleSchool(school.id.toString())
                             }
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
@@ -247,7 +229,7 @@ export function MobileMenu({
                             </span>
                             <div className="flex-shrink-0">
                               {expandedSchools.has(
-                                school.databaseId.toString()
+                                school.id.toString()
                               ) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
@@ -255,35 +237,8 @@ export function MobileMenu({
                               )}
                             </div>
                           </button>
-                          {expandedSchools.has(
-                            school.databaseId.toString()
-                          ) && (
-                            <div className="ml-8 mt-2 space-y-0.5 pb-2">
-                              {school.clubs?.nodes.map((club) => (
-                                <Link
-                                  key={club.databaseId}
-                                  href={`/network/${club.slug}`}
-                                  className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
-                                  onClick={handleClose}
-                                >
-                                  <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
-                                    {club.title}
-                                  </span>
-                                  {club.clubData?.membersCount && (
-                                    <span className="ml-2 rounded-full bg-slate-100/80 px-2 py-0.5 text-xs text-slate-500 transition-colors group-hover:bg-cardinal-100/50 group-hover:text-cardinal-600">
-                                      {club.clubData.membersCount} thành viên
-                                    </span>
-                                  )}
-                                </Link>
-                              ))}
-                              {(!school.clubs?.nodes ||
-                                school.clubs.nodes.length === 0) && (
-                                <div className="mx-4 flex items-center justify-center rounded-full bg-slate-50/50 px-4 py-3 text-sm text-slate-500 italic backdrop-blur-sm">
-                                  Chưa có CLB
-                                </div>
-                              )}
-                            </div>
-                          )}
+                          {/* Remove club expansion logic */}
+                          {/* {expandedSchools.has(school.id.toString()) && ( ... )} */}
                         </div>
                       ))}
                   </div>
@@ -314,10 +269,11 @@ export function MobileMenu({
                           !school.name?.startsWith("Khoa")
                       )
                       .map((school) => (
-                        <div key={school.databaseId} className="rounded-lg">
+                        <div key={school.id} className="rounded-lg"> {/* Use id */}
+                          {/* Update toggleSchool to use id */}
                           <button
                             onClick={() =>
-                              toggleSchool(school.databaseId.toString())
+                              toggleSchool(school.id.toString())
                             }
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
@@ -326,7 +282,7 @@ export function MobileMenu({
                             </span>
                             <div className="flex-shrink-0">
                               {expandedSchools.has(
-                                school.databaseId.toString()
+                                school.id.toString()
                               ) ? (
                                 <ChevronUp className="h-4 w-4" />
                               ) : (
@@ -334,30 +290,8 @@ export function MobileMenu({
                               )}
                             </div>
                           </button>
-                          {expandedSchools.has(
-                            school.databaseId.toString()
-                          ) && (
-                            <div className="ml-8 mt-2 space-y-0.5 pb-2">
-                              {school.clubs?.nodes.map((club) => (
-                                <Link
-                                  key={club.databaseId}
-                                  href={`/network/${club.slug}`}
-                                  className="flex items-center justify-between rounded-full px-4 py-2 text-sm transition-all duration-200 hover:bg-cardinal-50/30"
-                                  onClick={handleClose}
-                                >
-                                  <span className="flex-1 text-slate-600 font-medium transition-colors hover:text-cardinal-600">
-                                    {club.title}
-                                  </span>
-                                </Link>
-                              ))}
-                              {(!school.clubs?.nodes ||
-                                school.clubs.nodes.length === 0) && (
-                                <div className="mx-4 flex items-center justify-center rounded-full bg-slate-50/50 px-4 py-3 text-sm text-slate-500 italic backdrop-blur-sm">
-                                  Chưa có CLB
-                                </div>
-                              )}
-                            </div>
-                          )}
+                          {/* Remove club expansion logic */}
+                          {/* {expandedSchools.has(school.id.toString()) && ( ... )} */}
                         </div>
                       ))}
                   </div>

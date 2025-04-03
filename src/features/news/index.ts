@@ -1,5 +1,5 @@
 export * from "./types"
-export * from "./hooks/useNews"
+// Removed export for unused useNews hook
 export * from "./components/FeaturedNews"
 export * from "./components/NewsCard"
 export * from "./components/NewsFilter"

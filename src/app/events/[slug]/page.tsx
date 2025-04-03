@@ -1,89 +1,102 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getClient } from "@/lib/apollo-client";
-import { GET_EVENT_BY_SLUG } from "@/features/events/graphql/queries";
+import { directus, Event } from "@/lib/directus"; // Import directus client and Event type
+import { readItem, readItems } from "@directus/sdk"; // Import SDK functions
 import { Calendar, MapPin, Users, Globe, ExternalLink } from "lucide-react";
-import type { Event } from "@/features/events";
-import { parseDate, formatDatetime, isValidDate } from "@/lib/utils/date";
+// Event type is already updated in features/events/types.ts
+import { formatDatetime, isValidDate } from "@/lib/utils/date"; // Keep existing date utils
+import { parseISO } from "date-fns"; // Import parseISO directly from date-fns
+import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt util
 
+// Assuming the directory is renamed from [slug] to [id]
 interface Props {
-  params: { slug: string };
+  params: { id: string }; // Expect 'id' instead of 'slug'
+}
+
+// Helper function to fetch event data
+async function getEventData(id: string): Promise<Event | null> {
+  try {
+    const eventData = await directus.request(readItem('event', id, {
+      fields: ['*'], // Fetch all fields
+    }));
+    return eventData as Event;
+  } catch (error) {
+    console.error(`Error fetching event ${id}:`, error);
+    return null; // Return null if event not found or other error
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  try {
-    const { data } = await getClient().query({
-      query: GET_EVENT_BY_SLUG,
-      variables: { slug: params.slug },
-    });
+  const event = await getEventData(params.id);
 
-    if (!data?.post) {
-      return {
-        title: "Không tìm thấy sự kiện",
-        description: "Sự kiện này không tồn tại, hoặc đã bị xóa.",
-      };
-    }
-
-    const event = data.post as Event;
-
+  if (!event) {
     return {
-      title: `${event.title || "Sự kiện"} | HUST Research Clubs Network`,
-      description: event.excerpt || event.title || "Chi tiết sự kiện",
-      openGraph: event.featuredImage?.node?.sourceUrl
-        ? {
-            images: [event.featuredImage.node.sourceUrl],
-          }
-        : undefined,
-    };
-  } catch (error) {
-    console.error("Error generating metadata:", error);
-    return {
-      title: "Lỗi | HUST Research Clubs Network",
-      description: "Đã xảy ra lỗi khi tải thông tin sự kiện",
+      title: "Không tìm thấy sự kiện",
+      description: "Sự kiện này không tồn tại hoặc đã bị xóa.",
     };
   }
+
+  return {
+    title: `${event.title || "Sự kiện"} | HUST Research Clubs Network`,
+    description: createExcerpt(event.description, 25) || "Chi tiết sự kiện", // Use excerpt util
+    // Remove openGraph image
+    openGraph: undefined,
+  };
 }
 
 export default async function EventPage({ params }: Props) {
   try {
-    const { data } = await getClient().query({
-      query: GET_EVENT_BY_SLUG,
-      variables: { slug: params.slug },
-    });
+    const event = await getEventData(params.id);
 
-    if (!data?.post) {
+    if (!event) {
       notFound();
     }
 
-    const event = data.post as Event;
-    if (!event?.eventData?.eventTime) {
-      notFound();
-    }
-
+    // Destructure directly from the Directus Event object
     const {
-      eventTime,
+      title,
+      description,
+      event_start,
+      event_end,
       location,
       delivery,
       capacity,
-      registerLink,
-      organizer,
-      sponsors = [],
-    } = event.eventData;
+      register_url,
+      organizer_name,
+      organizer_email,
+      organizer_logo_url,
+      sponsor, // This is a JSON field
+    } = event;
 
     // Validate and parse dates
-    if (!eventTime.eventStartTime || !eventTime.eventEndTime) {
-      notFound();
+    // Validate and parse dates from event_start and event_end
+    if (!event_start || !event_end) {
+      console.error(`Event ${event.id} missing start or end date.`);
+      notFound(); // Or handle differently
     }
 
-    const startDate = parseDate(eventTime.eventStartTime);
-    const endDate = parseDate(eventTime.eventEndTime);
+    const startDate = parseISO(event_start); // Assuming ISO string
+    const endDate = parseISO(event_end);     // Assuming ISO string
 
     if (!isValidDate(startDate) || !isValidDate(endDate)) {
-      notFound();
+      console.error(`Event ${event.id} has invalid start or end date.`);
+      notFound(); // Or handle differently
     }
 
-    const isOnline = delivery === "virtual";
+    const isOnline = delivery === "virtual"; // Assuming 'virtual' is the value used
+
+    // Parse sponsors JSON
+    let sponsors: Array<{ name: string; logoUrl?: string; website?: string }> = [];
+    try {
+      const parsedSponsors = typeof sponsor === 'string' ? JSON.parse(sponsor) : sponsor;
+      if (Array.isArray(parsedSponsors)) {
+        // Assuming structure matches { name: string, logoUrl?: string, website?: string }
+        sponsors = parsedSponsors;
+      }
+    } catch (e) {
+      console.error("Error parsing sponsors JSON for event:", event.id, e);
+    }
 
     return (
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -93,25 +106,14 @@ export default async function EventPage({ params }: Props) {
             <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-6 lg:w-1/2">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl xl:text-5xl">
-                  {event.title || "Sự kiện không có tiêu đề"}
+                  {title || "Sự kiện không có tiêu đề"} {/* Use title */}
                 </h1>
-                {event.excerpt && (
-                  <p className="text-lg text-slate-200">
-                    {event.excerpt.replace(/<[^>]*>/g, "")}
-                  </p>
-                )}
+                {/* Use generated excerpt from description */}
+                <p className="text-lg text-slate-200">
+                  {createExcerpt(description)}
+                </p>
               </div>
-              {event.featuredImage?.node?.sourceUrl && (
-                <div className="lg:w-1/3">
-                  <Image
-                    src={event.featuredImage.node.sourceUrl}
-                    alt={event.title || "Ảnh sự kiện"}
-                    width={400}
-                    height={300}
-                    className="h-64 w-full rounded-lg object-cover shadow-lg"
-                  />
-                </div>
-              )}
+              {/* Removed featuredImage */}
             </div>
           </div>
 
@@ -135,7 +137,7 @@ export default async function EventPage({ params }: Props) {
                   <div>
                     <span className="font-medium">Địa điểm</span>
                     <br />
-                    {location || "Chưa cập nhật địa điểm"}
+                    {location || "Chưa cập nhật"} {/* Use location */}
                   </div>
                 </div>
 
@@ -156,7 +158,7 @@ export default async function EventPage({ params }: Props) {
                         <span className="font-medium">Thể thức</span>
                         <br />
                         Trực tiếp
-                        {capacity && ` - ${capacity} người tham dự`}
+                        {capacity ? ` - ${capacity} người tham dự` : ""} {/* Use capacity */}
                       </div>
                     </>
                   )}
@@ -164,9 +166,10 @@ export default async function EventPage({ params }: Props) {
               </div>
 
               {/* Event Content */}
-              {event.content && (
+              {/* Use description, assuming HTML */}
+              {description && (
                 <div className="prose prose-slate prose-headings:text-slate-900 prose-a:text-cardinal-600 hover:prose-a:text-cardinal-500 prose-strong:text-slate-900 max-w-none">
-                  <div dangerouslySetInnerHTML={{ __html: event.content }} />
+                  <div dangerouslySetInnerHTML={{ __html: description }} />
                 </div>
               )}
             </div>
@@ -174,17 +177,18 @@ export default async function EventPage({ params }: Props) {
             {/* Right Column: Sidebar */}
             <div className="mt-12 space-y-8 lg:mt-0">
               {/* Event Organization Details */}
-              {organizer && (
+              {/* Use organizer_name, organizer_email, organizer_logo_url */}
+              {organizer_name && (
                 <div className="space-y-8 rounded-xl border border-slate-200 bg-white p-6">
                   <div className="space-y-4">
                     <h3 className="text-base font-medium text-slate-900">
                       Đơn vị tổ chức
                     </h3>
                     <div className="flex items-center gap-4">
-                      {organizer.logo?.node?.sourceUrl && (
+                      {organizer_logo_url && (
                         <Image
-                          src={organizer.logo.node.sourceUrl}
-                          alt={organizer.name}
+                          src={organizer_logo_url}
+                          alt={organizer_name}
                           width={48}
                           height={48}
                           className="h-12 w-12 rounded-full object-cover ring-2 ring-cardinal-500 ring-offset-2"
@@ -192,11 +196,11 @@ export default async function EventPage({ params }: Props) {
                       )}
                       <div>
                         <p className="font-medium text-slate-900">
-                          {organizer.name}
+                          {organizer_name}
                         </p>
-                        {organizer.email && (
+                        {organizer_email && (
                           <p className="text-sm text-slate-600">
-                            {organizer.email}
+                            {organizer_email}
                           </p>
                         )}
                       </div>
@@ -213,14 +217,15 @@ export default async function EventPage({ params }: Props) {
                       Được tài trợ bởi
                     </h3>
                     <div className="flex flex-wrap gap-4">
+                      {/* Use parsed sponsors array */}
                       {sponsors.map((sponsor, index) => (
                         <div
-                          key={index}
+                          key={index} // Consider using a more stable key if available in sponsor data
                           className="flex items-center gap-3 rounded-lg bg-slate-50 p-3"
                         >
-                          {sponsor.logo?.node?.sourceUrl && (
+                          {sponsor.logoUrl && ( // Assuming logoUrl field in JSON
                             <Image
-                              src={sponsor.logo.node.sourceUrl}
+                              src={sponsor.logoUrl}
                               alt={sponsor.name}
                               width={32}
                               height={32}
@@ -231,7 +236,7 @@ export default async function EventPage({ params }: Props) {
                             <p className="font-medium text-slate-900">
                               {sponsor.name}
                             </p>
-                            {sponsor.website && (
+                            {sponsor.website && ( // Assuming website field in JSON
                               <a
                                 href={sponsor.website}
                                 target="_blank"
@@ -250,10 +255,11 @@ export default async function EventPage({ params }: Props) {
               )}
 
               {/* Registration Link */}
-              {registerLink && (
+              {/* Use register_url */}
+              {register_url && (
                 <div className="rounded-xl border border-slate-200 bg-white p-6">
                   <a
-                    href={registerLink}
+                    href={register_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-cardinal-600 px-6 py-3 text-white transition-colors hover:bg-cardinal-700"

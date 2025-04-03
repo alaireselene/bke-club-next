@@ -25,9 +25,9 @@ export function PartnersList({ partners }: PartnersListProps) {
 
   const filteredPartners = partners.filter((partner) => {
     const matchesRegion =
-      !selectedRegion || partner.partnerData.region.includes(selectedRegion);
+      !selectedRegion || partner.region === selectedRegion; // Use direct property access
     const matchesType =
-      !selectedType || partner.partnerData.type.includes(selectedType);
+      !selectedType || partner.type === selectedType; // Use direct property access
     return matchesRegion && matchesType;
   });
 
@@ -89,7 +89,7 @@ export function PartnersList({ partners }: PartnersListProps) {
       {/* Partners Grid */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredPartners.map((partner) => (
-          <PartnerCard key={partner.databaseId} partner={partner} />
+          <PartnerCard key={partner.id} partner={partner} />
         ))}
 
         {filteredPartners.length === 0 && (

@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import { getClient } from "@/lib/apollo-client";
-import { GET_ALL_EVENTS } from "@/features/events/graphql/queries";
+import { directus, Event } from "@/lib/directus"; // Import directus client and Event type
+import { readItems } from "@directus/sdk"; // Import readItems function
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { EventCard } from "@/features/events/components/EventCard/EventCard";
 import { PastEvents } from "@/features/events/components/PastEvents/PastEvents";
 import { Suspense } from "react";
-import type { Event } from "@/features/events";
+// Event type is already updated in features/events/types.ts
 import { parseISO, isBefore } from "date-fns";
 
 export const metadata: Metadata = {
@@ -15,39 +15,37 @@ export const metadata: Metadata = {
 
 export const revalidate = 60; // Revalidate every hour
 
-interface EventsData {
-  posts: {
-    nodes: Event[];
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor: string;
+// Remove GraphQL specific EventsData interface
+
+async function getEventsData(limit = 20) { // Fetch more initially for splitting
+  try {
+    const eventsData = await directus.request(readItems('event', {
+      fields: ['*'], // Fetch all fields needed by EventCard and splitting logic
+      sort: ['event_start'], // Sort ascending by start date
+      limit: limit,
+      // We might need more complex filtering/sorting later if we want *all* upcoming
+      // and then paginate past events separately. For now, fetch a mixed batch.
+    }));
+    return {
+      events: eventsData as Event[],
+      // No pageInfo equivalent directly, pagination handled differently
     };
-  };
-}
-
-async function getEventsData() {
-  const { data } = await getClient().query<EventsData>({
-    query: GET_ALL_EVENTS,
-    variables: {
-      first: 12,
-      after: null,
-    },
-  });
-
-  return {
-    events: data.posts.nodes,
-    pageInfo: data.posts.pageInfo,
-  };
+  } catch (error) {
+    console.error("Error fetching events from Directus:", error);
+    return { events: [] };
+  }
 }
 
 export default async function EventsPage() {
-  const { events, pageInfo } = await getEventsData();
+  const initialFetchLimit = 20; // Match the limit in getEventsData
+  const { events } = await getEventsData(initialFetchLimit);
 
   const upcomingEvents = events.filter((event) => {
-    if (!event?.eventData?.eventTime?.eventStartTime) return false;
+    // Use direct event_start field
+    if (!event?.event_start) return false;
     try {
-      const eventStartTime = parseISO(event.eventData.eventTime.eventStartTime);
-      return !isBefore(eventStartTime, new Date());
+      const eventStartTime = parseISO(event.event_start); // Assuming ISO string
+      return !isBefore(eventStartTime, new Date()); // Check if event start is not before now
     } catch (error) {
       console.error("Error parsing event start time:", error);
       return false;
@@ -55,10 +53,11 @@ export default async function EventsPage() {
   });
 
   const pastEvents = events.filter((event) => {
-    if (!event?.eventData?.eventTime?.eventStartTime) return false;
+    // Use direct event_start field
+    if (!event?.event_start) return false;
     try {
-      const eventStartTime = parseISO(event.eventData.eventTime.eventStartTime);
-      return isBefore(eventStartTime, new Date());
+      const eventStartTime = parseISO(event.event_start); // Assuming ISO string
+      return isBefore(eventStartTime, new Date()); // Check if event start is before now
     } catch (error) {
       console.error("Error parsing event start time:", error);
       return false;
@@ -87,7 +86,7 @@ export default async function EventsPage() {
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                   {upcomingEvents.map((event, index) => (
                     <div
-                      key={event.databaseId}
+                      key={event.id} // Use id
                       className="transform transition-all duration-300 hover:scale-[1.02] opacity-0 motion-safe:animate-[fadeIn_0.5s_ease-out_forwards]"
                       style={{
                         animationDelay: `${index * 100}ms`,
@@ -115,8 +114,13 @@ export default async function EventsPage() {
             <Suspense fallback={<div>Đang tải...</div>}>
               <PastEvents
                 initialEvents={pastEvents}
-                initialHasMore={pageInfo.hasNextPage}
-                initialCursor={pageInfo.endCursor}
+                // Pass initial past events. Pagination props need adjustment
+                // based on how PastEvents will be refactored (e.g., pass total fetched count or initial offset)
+                // For now, remove cursor/hasMore props derived from GraphQL pageInfo
+                // We might need to calculate if more past events *could* exist based on initial fetch
+                // Estimate initialHasMore based on whether the initial fetch returned the limit
+                initialHasMore={events.length === initialFetchLimit}
+                // Remove initialCursor prop
               />
             </Suspense>
           )}

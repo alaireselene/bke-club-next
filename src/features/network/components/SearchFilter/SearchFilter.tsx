@@ -28,10 +28,11 @@ export function SearchFilter({
         params.delete("school");
       } else {
         const school = schools.find(
-          (s) => s.databaseId.toString() === schoolId
+          (s) => s.id.toString() === schoolId // Use id
         );
         if (school?.slug) {
-          params.set("school", school.slug.toUpperCase());
+          // Use lowercase slug to match generateStaticParams and NetworkContent
+          params.set("school", school.slug.toLowerCase());
         }
       }
       router.replace(`/network?${params.toString()}`);
@@ -54,8 +55,8 @@ export function SearchFilter({
           <SelectItem value="all">Tất cả</SelectItem>
           {schools.map((school) => (
             <SelectItem
-              key={school.databaseId}
-              value={school.databaseId.toString()}
+              key={school.id} // Use id
+              value={school.id.toString()} // Use id
             >
               <div className="flex justify-between items-center gap-2">
                 <span>{school.name}</span>

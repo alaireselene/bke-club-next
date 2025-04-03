@@ -1,9 +1,9 @@
 import { Metadata } from "next";
-import { getClient } from "@/lib/apollo-client";
-import { GET_ALL_NEWS, GET_CATEGORIES } from "@/features/news/graphql/queries";
+import { directus, Post } from "@/lib/directus"; // Import directus client and Post type
+import { readItems } from "@directus/sdk"; // Import readItems function
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { NewsFilter } from "@/features/news/components/NewsFilter";
-import type { News } from "@/features/news";
+// News type will be updated later in src/features/news/types.ts
 
 export const metadata: Metadata = {
   title: "Tin tức | HUST Research Clubs Network",
@@ -12,56 +12,45 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600; // Revalidate every hour
 
-interface CategoryNode {
-  slug: string;
-  name: string;
-  ancestors?: {
-    nodes: {
-      slug: string;
-    }[];
-  };
-}
+// Remove GraphQL specific interfaces
 
-interface NewsData {
-  posts: {
-    nodes: Array<News>;
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor: string;
-    };
-  };
-  categories: {
-    nodes: CategoryNode[];
-  };
-}
+async function getNewsData(limit = 10) { // Add limit for initial fetch
+  // Fetch initial posts using Directus SDK
+  const postsData = await directus.request(readItems('post', {
+    fields: ['*', 'categories'], // Ensure categories field is fetched
+    sort: ['-date_created'], // Sort by creation date descending
+    limit: limit,
+  }));
 
-async function getNewsData() {
-  const { data } = await getClient().query<NewsData>({
-    query: GET_ALL_NEWS,
+  const news = postsData as Post[];
+
+  // Extract unique categories from the fetched posts
+  // Assuming 'categories' is a JSON array of strings in Directus
+  const allCategories = news.flatMap(post => {
+    try {
+      // Ensure categories is parsed if it's a stringified JSON
+      const parsedCategories = typeof post.categories === 'string' ? JSON.parse(post.categories) : post.categories;
+      return Array.isArray(parsedCategories) ? parsedCategories : [];
+    } catch (e) {
+      console.error("Error parsing categories for post:", post.id, e);
+      return [];
+    }
   });
+  const uniqueCategories = [...new Set(allCategories)].map(cat => ({ name: cat, slug: cat })); // Create simple category objects
 
-  const { data: categoryData } = await getClient().query<NewsData>({
-    query: GET_CATEGORIES,
-  });
-
-  // Filter categories:
-  // 1. Exclude event category and its subcategories
-  // 2. Exclude root news category
-  // 3. Only include subcategories of news
-  const categories = categoryData.categories.nodes.filter((category) => {
-    // Skip event category and its subcategories
-    if (category.slug === "event") return false;
-    const ancestors = category.ancestors?.nodes || [];
-    if (ancestors.some((ancestor) => ancestor.slug === "event")) return false;
-
-    // Only include categories that are subcategories of "news"
-    return ancestors.some((ancestor) => ancestor.slug === "news");
-  });
+  // Determine if there are more posts
+  // We need the total count for accurate pagination, fetch it separately
+  // For infinite scroll, we can just check if the number fetched equals the limit
+  const hasMore = news.length === limit;
+  // Directus doesn't use cursors like GraphQL connections. Offset/page is used.
+  // We'll pass the next offset/page number or rely on NewsFilter to manage it.
+  // Let's pass a simple hasMore flag for now.
 
   return {
-    news: data.posts.nodes,
-    pageInfo: data.posts.pageInfo,
-    categories,
+    news: news,
+    // Pass a simplified pagination indicator
+    pageInfo: { hasNextPage: hasMore, endCursor: null }, // Adapt based on NewsFilter needs
+    categories: uniqueCategories, // Pass extracted categories
   };
 }
 
@@ -89,7 +78,7 @@ export default async function NewsPage() {
               categories={categories}
               news={news}
               hasMore={pageInfo.hasNextPage}
-              endCursor={pageInfo.endCursor}
+              endCursor={null}
             />
           </div>
         </div>

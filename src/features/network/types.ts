@@ -1,29 +1,16 @@
-import type { Node, WithFeaturedImage, WithContent, WithTitle } from "@/types/wordpress";
+// Import the base Directus types
+import type { School as DirectusSchool, Club as DirectusClub } from "@/lib/directus";
 
-interface School extends Node, WithFeaturedImage {
-  name: string;
-  description?: string;
-  clubs?: {
-    nodes: Club[];
-  };
+// Define the Club type for this feature, re-exporting the Directus one
+export type Club = DirectusClub;
+
+// Define the School type for this feature, extending the Directus one
+// to include the array of clubs we added in getNetworkData
+export interface School extends DirectusSchool {
+  clubs: Club[]; // Add the clubs array
 }
 
-interface Club extends Node, WithTitle, WithContent, WithFeaturedImage {
-  clubData: {
-    establishedYear: string;
-    membersCount: number;
-    president: {
-      presidentName: string;
-      presidentEmail: string;
-    };
-    advisors: Array<{
-      advisorName: string;
-      advisorEmail: string;
-    }>;
-  };
-  school?: {
-    node: School;
-  };
-}
-
-export type { School, Club }
+// Note: The original Club type had nested 'clubData' and 'school.node'.
+// The Directus 'Club' type has fields like 'established_date', 'members_count',
+// 'president_name', 'president_email', 'advisors' (json), and 'school_id' (relation).
+// Components using these types will need to be updated accordingly.

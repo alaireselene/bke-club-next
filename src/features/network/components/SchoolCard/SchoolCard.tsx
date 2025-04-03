@@ -8,15 +8,7 @@ export function SchoolCard({ school, clubs }: SchoolCardProps) {
     <Card>
       <CardHeader className="flex-row items-center justify-between space-y-0 p-6">
         <div className="flex items-center gap-4">
-          {school.featuredImage && (
-            <Image
-              src={school.featuredImage.node.sourceUrl}
-              alt={school.name}
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
-          )}
+          {/* Removed school featuredImage as it doesn't exist in Directus schema */}
           <div>
             <h3 className="text-lg font-semibold">{school.name}</h3>
             <div className="text-sm text-slate-500">
@@ -35,24 +27,16 @@ export function SchoolCard({ school, clubs }: SchoolCardProps) {
         <div className="divide-y divide-slate-100">
           {clubs.map((club) => (
             <Link
-              key={club.databaseId}
-              href={`/network/${club.slug}`}
+              key={club.id} // Use id
+              href={`/network/${club.id}`} // Link using id
               className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                {club.featuredImage && (
-                  <Image
-                    src={club.featuredImage.node.sourceUrl}
-                    alt={club.title}
-                    width={32}
-                    height={32}
-                    className="rounded-full"
-                  />
-                )}
-                <span className="font-medium">{club.title}</span>
+                {/* Removed club featuredImage */}
+                <span className="font-medium">{club.name}</span> {/* Use club.name */}
               </div>
               <div className="text-sm text-slate-500">
-                {club.clubData?.membersCount} thành viên
+                {club.members_count ?? 0} thành viên {/* Use club.members_count */}
               </div>
             </Link>
           ))}

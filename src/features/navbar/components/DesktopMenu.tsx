@@ -1,13 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import type { School } from "@/features/network";
+// Remove School import from features/network
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
+// Define the expected simplified school type for navigation
+interface NavSchool {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 interface Props {
-  schools: School[];
+  schools: NavSchool[]; // Expect the simplified type
   scrolled: boolean;
 }
 
@@ -109,11 +116,12 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   .filter((school) => school.name?.startsWith("Trường"))
                   .map((school) => (
                     <div
-                      key={school.databaseId}
-                      className="group/school relative"
+                      key={school.id} // Use id
+                      // Remove group/school class if nested dropdown is removed
+                      className="relative"
                     >
                       <Link
-                        href={`/network?school=${school.slug?.toUpperCase()}`}
+                        href={`/network?school=${school.slug?.toLowerCase()}`} // Use lowercase slug
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                       >
                         <span>{school.name}</span>
@@ -123,26 +131,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                           </span>
                         )}
                       </Link>
-                      {/* Nested Dropdown */}
-                      <div className="absolute left-full top-0 invisible w-72 rounded-md bg-white shadow-lg opacity-0 transition-all duration-200 group-hover/school:visible group-hover/school:opacity-100">
-                        <div className="py-1">
-                          {(school.clubs?.nodes || []).map((club) => (
-                            <Link
-                              key={club.databaseId}
-                              href={`/network/${club.slug}`}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
-                            >
-                              {club.title}
-                            </Link>
-                          ))}
-                          {(!school.clubs?.nodes ||
-                            school.clubs.nodes.length === 0) && (
-                            <div className="px-4 py-2 text-sm text-slate-500 italic">
-                              Chưa có CLB
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      {/* Removed nested club dropdown */}
                     </div>
                   ))}
 
@@ -154,11 +143,12 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   .filter((school) => school.name?.startsWith("Khoa"))
                   .map((school) => (
                     <div
-                      key={school.databaseId}
-                      className="group/school relative"
+                      key={school.id} // Use id
+                      // Remove group/school class if nested dropdown is removed
+                      className="relative"
                     >
                       <Link
-                        href={`/network?school=${school.slug?.toUpperCase()}`}
+                        href={`/network?school=${school.slug?.toLowerCase()}`} // Use lowercase slug
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                       >
                         <span>{school.name}</span>
@@ -168,26 +158,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                           </span>
                         )}
                       </Link>
-                      {/* Nested Dropdown */}
-                      <div className="absolute left-full top-0 invisible w-72 rounded-md bg-white shadow-lg opacity-0 transition-all duration-200 group-hover/school:visible group-hover/school:opacity-100">
-                        <div className="py-1">
-                          {(school.clubs?.nodes || []).map((club) => (
-                            <Link
-                              key={club.databaseId}
-                              href={`/network/${club.slug}`}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
-                            >
-                              {club.title}
-                            </Link>
-                          ))}
-                          {(!school.clubs?.nodes ||
-                            school.clubs.nodes.length === 0) && (
-                            <div className="px-4 py-2 text-sm text-slate-500 italic">
-                              Chưa có CLB
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      {/* Removed nested club dropdown */}
                     </div>
                   ))}
 
@@ -203,11 +174,12 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   )
                   .map((school) => (
                     <div
-                      key={school.databaseId}
-                      className="group/school relative"
+                      key={school.id} // Use id
+                      // Remove group/school class if nested dropdown is removed
+                      className="relative"
                     >
                       <Link
-                        href={`/network?school=${school.slug?.toUpperCase()}`}
+                        href={`/network?school=${school.slug?.toLowerCase()}`} // Use lowercase slug
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                       >
                         <span>{school.name}</span>
@@ -217,26 +189,7 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                           </span>
                         )}
                       </Link>
-                      {/* Nested Dropdown */}
-                      <div className="absolute left-full top-0 invisible w-72 rounded-md bg-white shadow-lg opacity-0 transition-all duration-200 group-hover/school:visible group-hover/school:opacity-100">
-                        <div className="py-1">
-                          {(school.clubs?.nodes || []).map((club) => (
-                            <Link
-                              key={club.databaseId}
-                              href={`/network/${club.slug}`}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
-                            >
-                              {club.title}
-                            </Link>
-                          ))}
-                          {(!school.clubs?.nodes ||
-                            school.clubs.nodes.length === 0) && (
-                            <div className="px-4 py-2 text-sm text-slate-500 italic">
-                              Chưa có CLB
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      {/* Removed nested club dropdown */}
                     </div>
                   ))}
               </div>

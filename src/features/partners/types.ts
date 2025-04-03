@@ -1,17 +1,13 @@
-import type { WithContent, WithFeaturedImage, Node, WithTitle } from "@/types/wordpress";
+// Import the Partner type directly from the Directus definition
+import type { Partner as DirectusPartner } from "@/lib/directus";
 
-type PartnerRegion = 'local' | 'global';
-type PartnerType = 'academic' | 'business' | 'organization';
+// Keep these type aliases if they are used for filtering/display logic elsewhere.
+// The actual string values might need to be updated based on Directus data.
+type PartnerRegion = 'local' | 'global'; // Use string, specific values depend on Directus setup
+type PartnerType = 'academic' | 'business' | 'organization';   // Use string, specific values depend on Directus setup
 
-interface PartnerData {
-  region: Array<PartnerRegion>
-  type: Array<PartnerType>
-  website: string
-};
+// Re-export the Directus Partner type for use within this feature
+export type Partner = DirectusPartner;
 
-interface Partner extends Node, WithContent, WithFeaturedImage, WithTitle {
-  partnerData: PartnerData
-}
-
-
-export type { Partner, PartnerRegion, PartnerType }
+// Export the region and type helpers if still needed
+export type { PartnerRegion, PartnerType };

@@ -14,19 +14,22 @@ export const ResourceCard = ({ resource, onOpen }: ResourceCardProps) => {
           <FileText className="w-6 h-6 text-primary" />
           <h2 className="card-title text-lg">{resource.title}</h2>
         </div>
-        <div className="badge badge-primary">PDF</div>
-        <div className="card-actions justify-end mt-4">
-          <a
-            href="https://libopac.hust.edu.vn"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary btn-sm"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Tải xuống
-          </a>
+        {/* Removed hardcoded badge */}
+        {/* Conditionally render download button if attachment exists */}
+        {resource.attachment && (
+          <div className="card-actions justify-end mt-4">
+            <a
+              href={`${process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000"}/assets/${resource.attachment}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-sm"
+              onClick={(e) => e.stopPropagation()} // Prevent card click when clicking button
+            >
+              Tải xuống
+            </a>
+          </div>
+        )}
         </div>
       </div>
-    </div>
   );
 };

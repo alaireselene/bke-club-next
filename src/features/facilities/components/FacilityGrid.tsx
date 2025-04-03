@@ -19,7 +19,7 @@ export const FacilityGrid = ({ facilities }: FacilityGridProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {facilities.map((facility) => (
           <FacilityCard
-            key={facility.title}
+            key={facility.id} // Use Directus primary key 'id'
             facility={facility}
             onOpen={setSelectedFacility}
           />

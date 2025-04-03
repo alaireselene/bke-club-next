@@ -19,18 +19,32 @@ export function ClubDetails({
 }: ClubDetailsProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   // Extract year from establishedYear string (which could be a full date)
-  const establishedYear = club.clubData?.establishedYear
-    ? new Date(club.clubData.establishedYear).getFullYear().toString()
+  // Use Directus fields
+  const establishedYear = club.established_date
+    ? new Date(club.established_date).getFullYear().toString() // Assuming established_date is a full datetime string
     : "Chưa có";
-  const presidentName = club.clubData?.president?.presidentName || "Chưa có";
-  const membersCount = club.clubData?.membersCount || 0;
-  const advisorNames =
-    club.clubData?.advisors && club.clubData.advisors.length > 0
-      ? club.clubData.advisors
-          .map((a) => a.advisorName)
-          .filter(Boolean)
-          .join(", ")
-      : "Chưa có";
+  const presidentName = club.president_name || "Chưa có";
+  const membersCount = club.members_count ?? 0; // Use nullish coalescing for 0 members
+
+  // Parse advisors JSON (assuming it's an array of objects like { advisorName: string, advisorEmail?: string })
+  let advisorNames = "Chưa có";
+  try {
+    const parsedAdvisors = typeof club.advisors === 'string'
+      ? JSON.parse(club.advisors)
+      : club.advisors; // Assume it might already be parsed
+
+    if (Array.isArray(parsedAdvisors) && parsedAdvisors.length > 0) {
+      // Adapt based on the actual structure within the JSON
+      advisorNames = parsedAdvisors
+        .map((a: any) => a.advisorName) // Access the name property
+        .filter(Boolean)
+        .join(", ");
+      if (!advisorNames) advisorNames = "Chưa có"; // Handle case where names might be empty strings
+    }
+  } catch (e) {
+    console.error("Error parsing advisors JSON for club:", club.id, e);
+    // Keep default "Chưa có"
+  }
 
   // Animation effect on load
   useEffect(() => {
@@ -47,7 +61,8 @@ export function ClubDetails({
       "from-navy-500 to-sunflower-500",
     ];
 
-    return gradients[club.databaseId % gradients.length];
+    // Use club.id (number) for gradient calculation
+    return gradients[club.id % gradients.length];
   };
 
   const clubGradient = getClubGradient();
@@ -80,7 +95,7 @@ export function ClubDetails({
             </div>
           )}
 
-          <h1 className="text-4xl font-bold mb-4">{club.title}</h1>
+          <h1 className="text-4xl font-bold mb-4">{club.name}</h1> {/* Use club.name */}
 
           {/* Stats */}
           <div className="flex flex-wrap items-center gap-6 text-white/90">
@@ -182,10 +197,11 @@ export function ClubDetails({
             </h3>
 
             <div className="prose prose-base max-w-none prose-headings:text-cardinal-700 prose-headings:font-semibold prose-p:text-slate-600 prose-a:text-cardinal-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-img:shadow-md prose-strong:text-cardinal-700 prose-ul:text-slate-600 prose-ol:text-slate-600">
-              {club.content ? (
+              {/* Use club.description, assuming HTML */}
+              {club.description ? (
                 <div
                   className="prose"
-                  dangerouslySetInnerHTML={{ __html: club.content }}
+                  dangerouslySetInnerHTML={{ __html: club.description }}
                 />
               ) : (
                 <p className="text-slate-600">Chưa có nội dung giới thiệu.</p>

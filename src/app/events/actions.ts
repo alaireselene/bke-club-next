@@ -1,28 +1,40 @@
 "use server";
 
-import { getClient } from "@/lib/apollo-client";
-import { GET_ALL_EVENTS } from "@/features/events/graphql/queries";
-import type { Event } from "@/features/events";
+import { directus, Event } from "@/lib/directus"; // Import directus client and Event type
+import { readItems } from "@directus/sdk"; // Import readItems function
 
+// Define a simpler response type for offset pagination
 interface EventsResponse {
   events: Array<Event>;
   pageInfo: {
     hasNextPage: boolean;
-    endCursor: string;
   };
 }
 
-export async function loadMoreEvents(cursor: string): Promise<EventsResponse> {
-  const { data } = await getClient().query({
-    query: GET_ALL_EVENTS,
-    variables: {
-      first: 12,
-      after: cursor,
-    },
-  });
+const PAGE_SIZE = 12; // Define page size for past events loading
 
-  return {
-    events: data.posts.nodes,
-    pageInfo: data.posts.pageInfo,
-  };
+export async function loadMoreEvents(offset: number): Promise<EventsResponse> {
+  try {
+    const eventsData = await directus.request(readItems('event', {
+      fields: ['*'], // Fetch fields needed by EventCard
+      filter: { event_start: { _lt: "$NOW" } }, // Filter for past events
+      sort: ['-event_start'], // Sort by most recent past event first
+      offset: offset,
+      limit: PAGE_SIZE,
+    }));
+
+    const fetchedEvents = eventsData as Event[];
+    const hasMore = fetchedEvents.length === PAGE_SIZE;
+
+    return {
+      events: fetchedEvents,
+      pageInfo: { hasNextPage: hasMore },
+    };
+  } catch (error) {
+    console.error("Error loading more past events from Directus:", error);
+    return {
+      events: [],
+      pageInfo: { hasNextPage: false },
+    };
+  }
 }

@@ -1,67 +1,90 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getClient } from "@/lib/apollo-client";
-import { GET_NEWS_BY_SLUG } from "@/features/news/graphql/queries";
-import type { News } from "@/features/news";
+import { directus, Post } from "@/lib/directus"; // Import directus client and Post type
+import { readItem } from "@directus/sdk"; // Import readItem function
+import type { News } from "@/features/news"; // Keep News type alias
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { parseDate, formatDate, toISOString } from "@/lib/utils/date";
+import { formatDate, toISOString } from "@/lib/utils/date"; // Keep date utils
+import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt util
 
+// Assuming the directory is renamed from [slug] to [id]
 interface Props {
-  params: { slug: string };
+  params: { id: string }; // Expect 'id' instead of 'slug'
 }
 
-interface NewsData {
-  post: News;
+// Remove GraphQL specific NewsData interface
+
+// Helper function to fetch post data to avoid repetition
+async function getPostData(id: string): Promise<News | null> {
+  try {
+    const postData = await directus.request(readItem('post', id, {
+      fields: ['*'], // Fetch all fields
+    }));
+    return postData as News;
+  } catch (error) {
+    console.error(`Error fetching post ${id}:`, error);
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { data } = await getClient().query<NewsData>({
-    query: GET_NEWS_BY_SLUG,
-    variables: { slug: params.slug },
-  });
+  const post = await getPostData(params.id);
 
-  if (!data.post) {
+  if (!post) {
     return {
       title: "Không tìm thấy bài viết",
-      description: "Bài viết này không tồn tại, hoặc đã bị xóa.",
+      description: "Bài viết này không tồn tại hoặc đã bị xóa.",
     };
   }
 
-  const post = data.post;
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000";
+  const imageUrl = post.preview_image
+    ? `${directusUrl}/assets/${post.preview_image}`
+    : null;
+  const excerpt = createExcerpt(post.content); // Generate excerpt
 
   return {
     title: `${post.title} | HUST Research Clubs Network`,
-    description: post.excerpt || post.title,
-    openGraph: post.featuredImage
-      ? {
-          images: [post.featuredImage.node.sourceUrl],
-        }
-      : undefined,
+    description: excerpt, // Use generated excerpt
+    openGraph: imageUrl ? { images: [imageUrl] } : undefined,
   };
 }
 
 export default async function NewsPage({ params }: Props) {
-  const { data } = await getClient().query<NewsData>({
-    query: GET_NEWS_BY_SLUG,
-    variables: { slug: params.slug },
-  });
+  const post = await getPostData(params.id);
 
-  if (!data.post) {
+  if (!post) {
     notFound();
   }
 
-  const post = data.post;
-  const publishDate = parseDate(post.date);
+  const publishDate = post.date_created; // Use date_created
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000";
+  const imageUrl = post.preview_image
+    ? `${directusUrl}/assets/${post.preview_image}`
+    : null;
+
+  // Parse categories
+  let mainCategoryName = null;
+  try {
+    const parsedCategories = typeof post.categories === 'string'
+      ? JSON.parse(post.categories)
+      : post.categories;
+    if (Array.isArray(parsedCategories) && parsedCategories.length > 0) {
+      mainCategoryName = parsedCategories[0];
+    }
+  } catch (e) {
+    console.error("Error parsing categories for news detail:", post.id, e);
+  }
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Featured Image */}
-      {post.featuredImage && (
+      {imageUrl && ( // Use constructed image URL
         <div className="mb-8">
           <Image
-            src={post.featuredImage.node.sourceUrl}
+            src={imageUrl}
             alt={post.title}
             width={1200}
             height={400}
@@ -74,9 +97,9 @@ export default async function NewsPage({ params }: Props) {
       {/* Header */}
       <header className="mb-12 text-center">
         <div className="mb-4 flex items-center justify-center gap-2 text-sm text-slate-500">
-          {post.categories.nodes[0] && (
+          {mainCategoryName && ( // Use parsed category name
             <span className="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-800">
-              {post.categories.nodes[0].name}
+              {mainCategoryName}
             </span>
           )}
           <time dateTime={toISOString(publishDate)}>
@@ -88,7 +111,8 @@ export default async function NewsPage({ params }: Props) {
 
       {/* Content */}
       <div className="prose prose-slate prose-headings:text-slate-900 prose-a:text-teal-600 hover:prose-a:text-teal-500 prose-strong:text-slate-900 mx-auto">
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        {/* Assuming content is HTML */}
+        <div dangerouslySetInnerHTML={{ __html: post.content || "" }} />
       </div>
 
       {/* Navigation */}

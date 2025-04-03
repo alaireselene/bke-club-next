@@ -20,9 +20,20 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
 
   const filteredEvents = !selectedCategory
     ? events
-    : events.filter((event) =>
-        event.categories?.nodes.some((cat) => cat.slug === selectedCategory)
-      );
+    : events.filter((event) => {
+        try {
+          // Parse the JSON string/array from Directus 'categories' field
+          const parsedCategories = typeof event.categories === 'string'
+            ? JSON.parse(event.categories)
+            : event.categories; // Assume it might already be parsed
+
+          // Check if the resulting array includes the selected category
+          return Array.isArray(parsedCategories) && parsedCategories.includes(selectedCategory);
+        } catch (e) {
+          console.error("Error parsing categories for event:", event.id, e);
+          return false; // Exclude if categories JSON is invalid
+        }
+      });
 
   const heroEvent = filteredEvents[0];
   const smallEvents = filteredEvents.slice(1, 5);
@@ -78,7 +89,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
             <div className="grid grid-rows-2 gap-8 lg:col-span-5 h-full">
               <div className="grid grid-cols-2 gap-8 h-full">
                 {smallEvents.slice(0, 2).map((event) => (
-                  <div key={event.databaseId} className="h-full">
+                  <div key={event.id} className="h-full"> {/* Use id */}
                     <div className="h-full">
                       <EventCard event={event} />
                     </div>
@@ -87,7 +98,7 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
               </div>
               <div className="grid grid-cols-2 gap-8 h-full">
                 {smallEvents.slice(2, 4).map((event) => (
-                  <div key={event.databaseId} className="h-full">
+                  <div key={event.id} className="h-full"> {/* Use id */}
                     <div className="h-full">
                       <EventCard event={event} />
                     </div>

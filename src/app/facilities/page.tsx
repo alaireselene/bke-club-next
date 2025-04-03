@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { getClient } from "@/lib/apollo-client";
-import { GET_FACILITIES } from "@/features/facilities/graphql/queries";
-import { FacilityGrid } from "@/features/facilities/components/FacilityGrid";
+import { directus, Facility } from "@/lib/directus"; // Import directus client and Facility type
+import { readItems } from "@directus/sdk"; // Import readItems function
+import { FacilityGrid } from "@/features/facilities/components/FacilityGrid"; // Keep FacilityGrid import
 
 export const metadata: Metadata = {
   title: "Cơ sở vật chất | BKE Club",
@@ -9,11 +9,13 @@ export const metadata: Metadata = {
 };
 
 export default async function FacilitiesPage() {
-  const { data } = await getClient().query({
-    query: GET_FACILITIES,
-  });
+  // Fetch data using Directus SDK
+  const facilitiesData = await directus.request(readItems('facility', {
+    fields: ['*'], // Fetch all fields defined in the schema for 'facility'
+    // Add any necessary sorting or filtering here if needed
+  }));
 
-  const facilities = data.facilities.nodes;
+  const facilities = facilitiesData as Facility[]; // Assert type based on import from directus.ts
 
   return (
     <div className="container mx-auto px-4 py-8">

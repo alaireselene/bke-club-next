@@ -5,7 +5,9 @@
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
       "request": "launch",
-      "command": "bun run dev"
+      "command": "bun run dev",
+      "outputCapture": "std",
+      "internalConsoleOptions": "neverOpen"
     },
     {
       "name": "Next.js: debug client-side",

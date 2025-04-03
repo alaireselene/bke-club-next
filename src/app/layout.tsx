@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/features/navbar/components";
 import { Footer } from "@/components/layout/Footer";
-import { getClient } from "@/lib/apollo-client";
-import { GET_NAVIGATION_DATA } from "@/features/navbar/graphql/queries";
+// Remove Apollo client and query imports
+import { directus, School } from "@/lib/directus"; // Import directus client and School type
+import { readItems } from "@directus/sdk"; // Import readItems function
 import { Toaster } from "@/components/ui/sonner";
-import { ApolloWrapper } from "./ApolloWrapper";
+// Remove ApolloWrapper import
 
 // Revalidate all pages every 60 seconds
 export const revalidate = 60;
@@ -38,15 +39,33 @@ export const metadata: Metadata = {
 };
 
 async function getNavigationData() {
-  const { data } = await getClient().query({
-    query: GET_NAVIGATION_DATA,
-  });
+  try {
+    const schoolsData = await directus.request(readItems('school', {
+      fields: ['id', 'name', 'slug'], // Fetch only needed fields for header
+      limit: -1 // Fetch all
+    }));
+    const unsortedSchools = schoolsData as Pick<School, 'id' | 'name' | 'slug'>[];
 
-  console.log(data.schools.nodes);
+    // Apply sorting logic (Trường > Khoa > Other)
+    const schools = [
+      ...unsortedSchools.filter(
+        (school) => school.name?.startsWith("Trường") ?? false
+      ),
+      ...unsortedSchools.filter(
+        (school) => school.name?.startsWith("Khoa") ?? false
+      ),
+      ...unsortedSchools.filter(
+        (school) =>
+          !(school.name?.startsWith("Trường") ?? false) &&
+          !(school.name?.startsWith("Khoa") ?? false)
+      ),
+    ];
 
-  return {
-    schools: data.schools.nodes,
-  };
+    return { schools };
+  } catch (error) {
+    console.error("Error fetching navigation data:", error);
+    return { schools: [] }; // Return empty array on error
+  }
 }
 
 export default async function RootLayout({
@@ -78,7 +97,7 @@ export default async function RootLayout({
           {/* Main Content */}
           <main className="mt-28 flex-grow pb-20 transition-all duration-300 sm:mt-32">
             <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-              <ApolloWrapper>{children}</ApolloWrapper>
+              {children}
             </div>
           </main>
 

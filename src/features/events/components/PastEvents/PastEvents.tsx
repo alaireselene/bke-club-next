@@ -11,11 +11,12 @@ import { parseISO, isBefore } from "date-fns";
 export function PastEvents({
   initialEvents,
   initialHasMore,
-  initialCursor,
+  // Remove initialCursor from props
 }: PastEventsProps) {
   const [events, setEvents] = useState(initialEvents);
   const [hasMore, setHasMore] = useState(initialHasMore);
-  const [cursor, setCursor] = useState(initialCursor);
+  // Use offset state instead of cursor
+  const [offset, setOffset] = useState(initialEvents.length);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLoadMore = async () => {
@@ -23,24 +24,16 @@ export function PastEvents({
 
     try {
       setIsLoading(true);
-      const data = await loadMoreEvents(cursor);
+      // Call loadMoreEvents with the current offset
+      const data = await loadMoreEvents(offset);
 
-      const pastEvents = data.events.filter((event) => {
-        if (!event?.eventData?.eventTime?.eventStartTime) return false;
-        try {
-          const eventStartTime = parseISO(
-            event.eventData.eventTime.eventStartTime
-          );
-          return isBefore(eventStartTime, new Date());
-        } catch (error) {
-          console.error("Error parsing event start time:", error);
-          return false;
-        }
-      });
+      // The action should now only return past events, no need to filter here
+      const newPastEvents = data.events;
 
-      setEvents([...events, ...pastEvents]);
+      setEvents([...events, ...newPastEvents]);
       setHasMore(data.pageInfo.hasNextPage);
-      setCursor(data.pageInfo.endCursor);
+      // Update offset for the next fetch
+      setOffset(offset + newPastEvents.length);
     } catch (error) {
       console.error("Error loading more events:", error);
     } finally {
@@ -54,7 +47,7 @@ export function PastEvents({
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {events.map((event, index) => (
           <div
-            key={event.databaseId}
+            key={event.id} // Use id
             className="transform transition-all duration-300 hover:scale-[1.02] opacity-0 motion-safe:animate-[fadeIn_0.5s_ease-out_forwards] opacity-90 hover:opacity-100"
             style={{
               animationDelay: `${index * 100}ms`,

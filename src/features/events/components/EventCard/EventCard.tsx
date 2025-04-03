@@ -3,13 +3,12 @@ import Image from "next/image";
 import { CalendarDays, MapPin, Users, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { parseDate, formatDate } from "@/lib/utils/date";
+import { formatDate } from "@/lib/utils/date"; // Keep formatDate, remove parseDate if start date is ISO string
+import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt util
 
 import type { EventCardProps } from "./types";
 
-const stripHtml = (html: string) => {
-  return html?.replace(/<[^>]*>/g, "") || "";
-};
+// Remove stripHtml, use createExcerpt utility
 
 export function EventCard({
   event,
@@ -17,36 +16,20 @@ export function EventCard({
   showOrganizer = false,
   showCapacity = false,
 }: EventCardProps) {
-  if (!event?.eventData?.eventTime) {
-    return null;
-  }
-
-  const { eventTime, location, delivery, capacity, organizer } =
-    event.eventData;
-  const startDate = eventTime.eventStartTime
-    ? parseDate(eventTime.eventStartTime)
-    : null;
-  const isOnline = delivery === "virtual";
+  // Use direct properties from Directus Event type
+  const { location, delivery, capacity, organizer_name, organizer_logo_url, event_start, description } = event;
+  const startDate = event_start; // Assuming event_start is an ISO string
+  const isOnline = delivery === "virtual"; // Assuming 'virtual' is the value used in Directus
+  const excerpt = createExcerpt(description); // Generate excerpt from description
 
   return (
     <Link
-      href={`/events/${event.slug}`}
+      href={`/events/${event.id}`} // Link using id
       className={cn("block h-full", className)}
     >
       <Card className="group h-full transition hover:shadow-md">
         {/* Featured Image */}
-        {event.featuredImage?.node?.sourceUrl && (
-          <div className="relative h-48 w-full overflow-hidden shrink-0">
-            <Image
-              src={event.featuredImage.node.sourceUrl}
-              alt={
-                event.featuredImage.node.altText || event.title || "Ảnh sự kiện"
-              }
-              fill
-              className="object-cover transition group-hover:scale-105"
-            />
-          </div>
-        )}
+        {/* Removed featuredImage */}
 
         <CardContent className="space-y-4 p-6">
           {/* Title */}
@@ -55,25 +38,27 @@ export function EventCard({
           </h3>
 
           {/* Excerpt */}
-          {event.excerpt && (
+          {/* Display generated excerpt */}
+          {excerpt && (
             <p className="text-sm text-slate-600 line-clamp-2">
-              {stripHtml(event.excerpt)}
+              {excerpt}
             </p>
           )}
 
           {/* Organizer */}
-          {showOrganizer && organizer && (
+          {/* Use organizer_name and organizer_logo_url */}
+          {showOrganizer && organizer_name && (
             <div className="flex items-center gap-2">
-              {organizer.logo?.node?.sourceUrl && (
+              {organizer_logo_url && (
                 <Image
-                  src={organizer.logo.node.sourceUrl}
-                  alt={organizer.logo.node.altText || organizer.name}
+                  src={organizer_logo_url} // Use direct URL
+                  alt={organizer_name} // Use organizer name for alt
                   width={24}
                   height={24}
                   className="rounded-full"
                 />
               )}
-              <span className="text-sm text-slate-600">{organizer.name}</span>
+              <span className="text-sm text-slate-600">{organizer_name}</span>
             </div>
           )}
 
@@ -95,7 +80,7 @@ export function EventCard({
               ) : (
                 <>
                   <MapPin className="h-4 w-4 mr-2 text-cardinal-500" />
-                  <span>{location || "Đang cập nhật địa điểm"}</span>
+                  <span>{location || "Đang cập nhật"}</span> {/* Use location */}
                 </>
               )}
             </div>
@@ -104,7 +89,7 @@ export function EventCard({
             {showCapacity && capacity && (
               <div className="flex items-center text-sm text-slate-600">
                 <Users className="h-4 w-4 mr-2 text-cardinal-500" />
-                <span>{capacity} người tham dự</span>
+                <span>{capacity ?? 'N/A'} người tham dự</span> {/* Use capacity */}
               </div>
             )}
           </div>

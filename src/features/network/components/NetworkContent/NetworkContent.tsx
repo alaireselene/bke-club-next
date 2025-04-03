@@ -25,8 +25,9 @@ export function NetworkContent({
   const [selectedSchoolId, setSelectedSchoolId] = useState(
     initialSchoolFilter && schools.length
       ? schools
-          .find((s) => s.slug?.toUpperCase() === initialSchoolFilter)
-          ?.databaseId.toString() ?? ""
+          // Use lowercase slug for comparison, matching generateStaticParams
+          .find((s) => s.slug?.toLowerCase() === initialSchoolFilter?.toLowerCase())
+          ?.id.toString() ?? "" // Use id instead of databaseId
       : ""
   );
   const [isLoaded, setIsLoaded] = useState(false);
@@ -38,10 +39,11 @@ export function NetworkContent({
     const schoolParam = searchParams.get("school");
     if (schoolParam) {
       const matchedSchool = schools.find(
-        (s) => s.slug?.toUpperCase() === schoolParam
+        // Use lowercase slug for comparison
+        (s) => s.slug?.toLowerCase() === schoolParam?.toLowerCase()
       );
       if (matchedSchool) {
-        setSelectedSchoolId(matchedSchool.databaseId.toString());
+        setSelectedSchoolId(matchedSchool.id.toString()); // Use id
       }
     } else {
       setSelectedSchoolId("all");
@@ -59,12 +61,13 @@ export function NetworkContent({
       const matchesSchool =
         !selectedSchoolId ||
         selectedSchoolId === "all" ||
-        school.databaseId.toString() === selectedSchoolId;
+        school.id.toString() === selectedSchoolId; // Use id
       const matchesSearch =
         (searchQuery === "" ||
           school.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          school.clubs?.nodes.some((club) =>
-            club.title.toLowerCase().includes(searchQuery.toLowerCase())
+          // Iterate over school.clubs array and check club.name
+          school.clubs.some((club) =>
+            club.name.toLowerCase().includes(searchQuery.toLowerCase())
           )) ??
         false;
 
@@ -76,12 +79,13 @@ export function NetworkContent({
   const networkStats = useMemo(() => {
     return schools.reduce(
       (acc, school) => {
-        const clubCount = school.clubs?.nodes?.length ?? 0;
+        const clubCount = school.clubs.length; // Use direct array length
         const memberCount =
-          school.clubs?.nodes?.reduce(
-            (sum, club) => sum + (club.clubData?.membersCount ?? 0),
+          school.clubs.reduce(
+            // Use club.members_count from Directus type
+            (sum, club) => sum + (club.members_count ?? 0),
             0
-          ) ?? 0;
+          );
 
         return {
           totalClubs: acc.totalClubs + clubCount,
@@ -182,7 +186,7 @@ export function NetworkContent({
         <div className="relative flex justify-around">
           {filteredSchools.slice(0, 5).map((school, index) => (
             <div
-              key={school.databaseId}
+              key={school.id} // Use id
               className="bg-white h-8 w-8 rounded-full border border-slate-200 flex items-center justify-center shadow-sm"
               style={{
                 animation: `pulse 3s infinite`,
@@ -201,13 +205,14 @@ export function NetworkContent({
       <div className="grid gap-8">
         {filteredSchools.map((school, index) => (
           <div
-            key={school.databaseId}
+            key={school.id} // Use id
             className={`transition-all duration-700 ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: `${300 + index * 150}ms` }}
           >
-            <SchoolCard school={school} clubs={school.clubs?.nodes ?? []} />
+            {/* Pass school.clubs directly */}
+            <SchoolCard school={school} clubs={school.clubs} />
           </div>
         ))}
 

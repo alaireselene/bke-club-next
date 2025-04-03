@@ -1,34 +1,26 @@
 import { Metadata } from "next";
-import { getClient } from "@/lib/apollo-client";
-import { GET_PARTNERS } from "@/features/partners/graphql/queries";
+import { directus, Partner } from "@/lib/directus"; // Import directus client and Partner type
+import { readItems } from "@directus/sdk"; // Import readItems function
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
-import { type Partner, PartnersList } from "@/features/partners";
+import { PartnersList } from "@/features/partners"; // Keep PartnersList, remove feature's Partner type if redundant
 
 export const metadata: Metadata = {
   title: "Đối tác | HUST Research Clubs Network",
   description: "Đối tác trong nước và quốc tế của Mạng lưới",
 };
 
-interface PartnersData {
-  partners: {
-    nodes: Partner[];
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor: string | null;
-    };
-  };
-}
+// No longer need the GraphQL-specific PartnersData interface
 
 async function getPartnersData() {
-  const { data } = await getClient().query<PartnersData>({
-    query: GET_PARTNERS,
-    variables: {
-      first: 100,
-    },
-  });
+  // Fetch data using Directus SDK
+  const partnersData = await directus.request(readItems('partner', {
+    fields: ['*'], // Fetch all fields defined in the schema for 'partner'
+    limit: 100,   // Match the previous limit
+  }));
 
   return {
-    partners: data.partners.nodes,
+    // Directus readItems returns the array directly
+    partners: partnersData as Partner[], // Assert type based on import from directus.ts
   };
 }
 

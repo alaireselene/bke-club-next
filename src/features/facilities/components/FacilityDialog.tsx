@@ -11,30 +11,30 @@ export const FacilityDialog = ({
   if (!isOpen) return null;
 
   const statusText =
-    facility.facilityData.status === "working"
+    facility.status === "working" // Use facility.status
       ? "Đang hoạt động"
-      : "Đang xây dựng";
+      : "Đang xây dựng"; // Default to pending text
   const statusColor =
-    facility.facilityData.status === "working"
+    facility.status === "working" // Use facility.status
       ? "badge-success"
-      : "badge-warning";
+      : "badge-warning"; // Default to pending color
 
   return (
     <div className="modal modal-open">
       <div className="modal-box">
         <div className="flex items-center gap-2 mb-4">
           <Building2 className="w-6 h-6 text-primary" />
-          <h3 className="font-bold text-lg">{facility.title}</h3>
+          <h3 className="font-bold text-lg">{facility.name}</h3> {/* Use facility.name */}
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
           <MapPin className="w-4 h-4" />
-          <span>{facility.facilityData.location}</span>
+          <span>{facility.location}</span> {/* Use facility.location */}
         </div>
         <div className={`badge ${statusColor} mb-4`}>{statusText}</div>
-        <div
-          className="prose max-w-none"
-          dangerouslySetInnerHTML={{ __html: facility.content }}
-        />
+        {/* Display description if it exists */}
+        {facility.description && (
+          <div className="prose max-w-none mt-4" dangerouslySetInnerHTML={{ __html: facility.description }} />
+        )}
         <div className="modal-action">
           <button className="btn" onClick={onClose}>
             Đóng

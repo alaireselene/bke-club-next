@@ -84,4 +84,4 @@ export interface MySchema {
 }
 
 // Create and export the Directus client with rest() composable
-export const directus = createDirectus<MySchema>('https://bke-cms.sena.id.vn').with(rest());
+export const directus = createDirectus<MySchema>(process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000").with(rest());

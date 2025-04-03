@@ -1,9 +1,11 @@
 import { Metadata } from "next";
-import { getClient } from "@/lib/apollo-client";
-import { GET_NAVIGATION_DATA } from "@/features/navbar/graphql/queries";
+import { directus, School, Club } from "@/lib/directus"; // Import directus client and types
+import { readItems } from "@directus/sdk"; // Import readItems function
 import { NetworkContent } from "@/features/network/components/NetworkContent/NetworkContent";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
-import type { School } from "@/features/network";
+// School type will be updated later in src/features/network/types.ts
+// We'll define a combined type here for now
+type SchoolWithClubs = School & { clubs: Club[] };
 
 export const metadata: Metadata = {
   title: "Mạng lưới | HUST Research Clubs Network",
@@ -17,48 +19,61 @@ interface Props {
 // Revalidate cache every hour
 export const revalidate = 60;
 
-async function getNetworkData() {
+async function getNetworkData(): Promise<{ schools: SchoolWithClubs[] }> {
   try {
-    const { data } = await getClient().query({
-      query: GET_NAVIGATION_DATA,
-      variables: {
-        first: 50, // Max clubs per school
-      },
-      context: {
-        fetchOptions: {
-          next: {
-            // Tags for granular revalidation
-            tags: ["schools", "clubs"],
-          },
-        },
-      },
+    // Fetch all schools
+    const schoolsData = await directus.request(readItems('school', {
+      fields: ['*'],
+      limit: -1 // Fetch all
+    }));
+    const schools = schoolsData as School[];
+
+    // Fetch all clubs with their related school info
+    const clubsData = await directus.request(readItems('club', {
+      fields: ['*'], // Get related school fields
+    }));
+    const clubs = clubsData as Club[];
+
+    // Combine data: Add clubs array to each school
+    const schoolsWithClubs = schools.map(school => {
+      const schoolClubs = clubs.filter(club => {
+        // Check if school_id is populated and matches the current school's id
+        const schoolRelation = club.school_id as School; // Assert type based on fetch
+        return schoolRelation && schoolRelation.id === school.id;
+      });
+      return {
+        ...school,
+        clubs: schoolClubs, // Add the filtered clubs
+      };
     });
 
     return {
-      schools: data.schools.nodes as School[],
-      timestamp: new Date().toISOString(),
+      schools: schoolsWithClubs,
+      // timestamp: new Date().toISOString(), // Timestamp can be removed if not needed
     };
   } catch (error) {
-    console.error("Failed to fetch network data:", error);
-    throw new Error("Failed to fetch network data");
+    console.error("Failed to fetch network data from Directus:", error);
+    // Return empty array or throw error based on desired handling
+    return { schools: [] };
   }
 }
 
 export default async function NetworkPage({ searchParams }: Props) {
-  const { schools: unsortedSchools } = await getNetworkData();
+  const { schools: unsortedSchoolsWithClubs } = await getNetworkData();
 
   // Sort schools in the same order as DesktopMenu:
   // 1. Schools starting with "Trường"
   // 2. Schools starting with "Khoa"
   // 3. Others
+  // Apply sorting to the schools array from the combined data
   const schools = [
-    ...unsortedSchools.filter(
+    ...unsortedSchoolsWithClubs.filter(
       (school) => school.name?.startsWith("Trường") ?? false
     ),
-    ...unsortedSchools.filter(
+    ...unsortedSchoolsWithClubs.filter(
       (school) => school.name?.startsWith("Khoa") ?? false
     ),
-    ...unsortedSchools.filter(
+    ...unsortedSchoolsWithClubs.filter(
       (school) =>
         !(school.name?.startsWith("Trường") ?? false) &&
         !(school.name?.startsWith("Khoa") ?? false)
@@ -88,27 +103,22 @@ export default async function NetworkPage({ searchParams }: Props) {
 }
 
 // Generate static params for initial build
+// Generate static params for initial build using Directus
 export async function generateStaticParams() {
-  const { schools: unsortedSchools } = await getNetworkData();
+  try {
+    const schoolsData = await directus.request(readItems('school', {
+      fields: ['slug'], // Only need slug
+    }));
+    const schools = schoolsData as Pick<School, 'slug'>[]; // Use Pick for partial type
 
-  // Use the same sorting logic for consistency
-  const schools = [
-    ...unsortedSchools.filter(
-      (school) => school.name?.startsWith("Trường") ?? false
-    ),
-    ...unsortedSchools.filter(
-      (school) => school.name?.startsWith("Khoa") ?? false
-    ),
-    ...unsortedSchools.filter(
-      (school) =>
-        !(school.name?.startsWith("Trường") ?? false) &&
-        !(school.name?.startsWith("Khoa") ?? false)
-    ),
-  ];
-
-  return schools
-    .map((school) => ({
-      school: school.slug?.toUpperCase(),
-    }))
-    .filter((params) => params.school);
+    return schools
+      .map((school) => ({
+        // Use lowercase slug as param? Check NetworkContent usage. Assuming lowercase for now.
+        school: school.slug?.toLowerCase(),
+      }))
+      .filter((params): params is { school: string } => !!params.school); // Type guard for filtering null/undefined slugs
+  } catch (error) {
+    console.error("Failed to fetch schools for static params:", error);
+    return [];
+  }
 }

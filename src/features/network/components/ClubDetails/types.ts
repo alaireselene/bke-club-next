@@ -1,21 +1,12 @@
-import type { Club } from "../../types"
+import type { Club } from "../../types"; // Keep using the feature's Club type (already updated)
+import type { School } from "@/lib/directus"; // Import the Directus School type
 
-interface SchoolBasicInfo {
-  databaseId: number;
-  name: string;
-  slug: string;
-  featuredImage?: {
-    node: {
-      sourceUrl: string;
-      altText?: string;
-    };
-  };
-}
+// Remove the old SchoolBasicInfo interface
 
 interface ClubDetailsProps {
   club: Club;
-  school: SchoolBasicInfo | null;
+  school: School | null; // Use the Directus School type
   className?: string;
 }
 
-export type { SchoolBasicInfo, ClubDetailsProps }
+export type { ClubDetailsProps }; // Export only ClubDetailsProps
