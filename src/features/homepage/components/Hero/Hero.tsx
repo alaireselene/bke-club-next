@@ -42,61 +42,6 @@ export function Hero({ stats }: HeroProps) {
           className="absolute bottom-20 right-10 h-60 w-60 rounded-full border-2 border-dashed border-sunflower-200/40 opacity-0 animate-fade-in rotate-90"
           style={{ animationDuration: '1s', animationDelay: '0.4s', animationFillMode: 'forwards', transformOrigin: 'center' }} // Added opacity-0 and transform for initial state
         />
-
-        {/* Scientific formulas - enhanced typography */}
-        <div
-          className="absolute bottom-10 left-10 font-mono text-[12px] font-bold text-cardinal-300/20 rotate-12 select-none animate-fade-in opacity-0"
-          style={{ animationDuration: '0.6s', animationDelay: '0.5s', animationFillMode: 'forwards' }}
-        >
-          E = mc<sup>2</sup>
-        </div>
-        <div
-          className="absolute top-20 right-20 font-mono text-[12px] font-bold text-navy-300/20 -rotate-6 select-none animate-fade-in opacity-0"
-          style={{ animationDuration: '0.6s', animationDelay: '0.6s', animationFillMode: 'forwards' }}
-        >
-          F = ma
-        </div>
-
-        {/* DNA helix pattern - simplified animation */}
-        <div
-          className="absolute -left-20 top-1/3 h-[200px] w-[100px] opacity-0 animate-fade-in" // Fade in container
-          style={{ animationDuration: '1s', animationFillMode: 'forwards' }}
-        >
-          <div
-            className="absolute w-[2px] left-1/2 h-0 bg-gradient-to-b from-cardinal-300/0 via-cardinal-400/50 to-cardinal-300/0 animate-fade-in" // Animate height might need custom keyframes if fade-in isn't enough
-            style={{ animationDuration: '1s', animationDelay: '0.2s', animationFillMode: 'forwards', height: '100%' }} // Set final height via style
-          />
-          {[...Array(10)].map((_, i) => (
-            <div
-              key={`dna-left-${i}`}
-              className="absolute w-[10px] h-[2px] bg-cardinal-400/50 opacity-0 scale-0 animate-fade-in"
-              style={{
-                top: `${i * 20}px`,
-                left: "50%",
-                transform: `translateX(-100%) rotate(${i % 2 ? 30 : -30}deg)`,
-                animationDuration: '0.5s',
-                animationDelay: `${0.6 + i * 0.1}s`, // Stagger delay
-                animationFillMode: 'forwards',
-                transformOrigin: 'center',
-              }}
-            />
-          ))}
-          {[...Array(10)].map((_, i) => (
-            <div
-              key={`dna-right-${i}`}
-              className="absolute w-[10px] h-[2px] bg-cardinal-400/50 opacity-0 scale-0 animate-fade-in"
-              style={{
-                top: `${i * 20}px`,
-                left: "50%",
-                transform: `rotate(${i % 2 ? -30 : 30}deg)`,
-                animationDuration: '0.5s',
-                animationDelay: `${0.6 + i * 0.1}s`, // Stagger delay
-                animationFillMode: 'forwards',
-                transformOrigin: 'center',
-              }}
-            />
-          ))}
-        </div>
       </div>
 
       <div className="relative mx-auto max-w-7xl">
@@ -108,7 +53,6 @@ export function Hero({ stats }: HeroProps) {
             >
               Kết nối, Hỗ trợ,
             </span>
-            <br />
             <span
               className="block animate-fade-in bg-gradient-to-r from-cardinal-600 to-cardinal-500 bg-clip-text text-transparent opacity-0"
               style={{ animationDuration: '0.6s', animationDelay: '0.2s', animationFillMode: 'forwards' }}

@@ -9,13 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button"; // Import Button
 import type { FeaturedNewsProps, CategoryType } from "./types";
 import { News } from "../../types";
-
-const categories = [
-  { slug: "scholarship", name: "Học bổng - Trao đổi" },
-  { slug: "research-news", name: "Nghiên cứu" },
-  { slug: "achievement", name: "Thành tựu" },
-  { slug: "announcement", name: "Thông báo" },
-];
+import { newsCategories, getCategorySlug } from "../../utils/categoryUtils"; // Import shared categories and helper
 
 export function FeaturedNews({ news }: FeaturedNewsProps) {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
@@ -33,11 +27,8 @@ export function FeaturedNews({ news }: FeaturedNewsProps) {
             ? JSON.parse(article.categories)
             : article.categories; // Assume it might already be parsed
 
-          // If categories are objects with a 'slug' property:
-          // return Array.isArray(parsedCategories) && parsedCategories.some(cat => cat.slug === selectedCategory);
-
-          // If categories are just an array of strings:
-          return Array.isArray(parsedCategories) && parsedCategories.includes(selectedCategory);
+          // Check if any of the news item's categories (parsed as names) map to the selected slug
+          return Array.isArray(parsedCategories) && parsedCategories.some(catName => getCategorySlug(catName) === selectedCategory);
         } catch (e) {
           console.error("Error parsing categories for news:", article.id, e);
           return false;
@@ -72,18 +63,6 @@ export function FeaturedNews({ news }: FeaturedNewsProps) {
           className="absolute left-10 bottom-20 h-60 w-60 rounded-full border border-dashed border-primary/20 animate-spin" // Use theme color, basic spin
           style={{ animationDuration: '25s', animationTimingFunction: 'linear', animationIterationCount: 'infinite', animationDirection: 'reverse' }}
         />
-
-        {/* Scientific formulas - subtle background text */}
-        <div
-          className="absolute top-40 left-20 text-[10px] text-secondary/30 rotate-12 select-none backdrop-blur-sm animate-fade-in opacity-0" // Use theme color
-          style={{ animationDuration: '0.8s', animationDelay: '0.5s', animationFillMode: 'forwards' }}
-        >
-          <div className="space-y-1">
-            <div>∇ × E = -∂B/∂t</div>
-            <div>F = ma</div>
-            <div>E = mc²</div>
-          </div>
-        </div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -121,7 +100,7 @@ export function FeaturedNews({ news }: FeaturedNewsProps) {
             style={{ animationDuration: '0.6s', animationDelay: '0.4s', animationFillMode: 'forwards' }}
           >
             <CategoryTabs
-              categories={categories.filter((cat) => cat.slug !== "All")} // Ensure 'All' isn't passed if not needed
+              categories={newsCategories.filter((cat) => cat.slug !== "All")} // Use imported categories
               defaultSelected={null}
               onSelect={(categoryId) =>
                 setSelectedCategory(categoryId as CategoryType | null)

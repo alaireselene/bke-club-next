@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"; // Import Card
 import { formatDate, toISOString } from "@/lib/utils/date"; // Assuming these handle ISO strings
 import type { News } from "../../types"; // Import the updated News type
 import { createExcerpt } from "@/lib/utils/contentModify";
+import { getCategoryDisplayName } from "../../utils/categoryUtils"; // Import helper
 
 export function NewsCard({ news }: { news: News }) { // Use updated News type directly
   const publishDate = news.date_created; // Use date_created
@@ -46,7 +47,7 @@ export function NewsCard({ news }: { news: News }) { // Use updated News type di
           <div className="space-y-4">
             <div>
               <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary"> {/* Use theme colors */}
-                {mainCategoryName} {/* Use parsed category name */}
+                {getCategoryDisplayName(mainCategoryName)} {/* Use helper to get display name */}
               </span>
             </div>
 

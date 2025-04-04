@@ -8,6 +8,7 @@ import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { formatDate, toISOString } from "@/lib/utils/date"; // Keep date utils
 import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt util
+import { getCategoryDisplayName } from "@/features/news/utils/categoryUtils"; // Import helper
 
 // Assuming the directory is renamed from [slug] to [id]
 interface Props {
@@ -99,7 +100,7 @@ export default async function NewsPage({ params }: Props) {
         <div className="mb-4 flex items-center justify-center gap-2 text-sm text-slate-500">
           {mainCategoryName && ( // Use parsed category name
             <span className="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-800">
-              {mainCategoryName}
+              {getCategoryDisplayName(mainCategoryName)} {/* Use helper */}
             </span>
           )}
           <time dateTime={toISOString(publishDate)}>

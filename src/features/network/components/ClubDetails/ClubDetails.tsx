@@ -37,7 +37,7 @@ export function ClubDetails({
     if (Array.isArray(parsedAdvisors) && parsedAdvisors.length > 0) {
       // Adapt based on the actual structure within the JSON
       advisorNames = parsedAdvisors
-        .map((a: any) => a.advisorName) // Access the name property
+        .map((a: any) => a.advisor_name) // Access the correct property name
         .filter(Boolean)
         .join(", ");
       if (!advisorNames) advisorNames = "Chưa có"; // Handle case where names might be empty strings

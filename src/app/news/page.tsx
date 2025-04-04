@@ -3,7 +3,7 @@ import { directus, Post } from "@/lib/directus"; // Import directus client and P
 import { readItems } from "@directus/sdk"; // Import readItems function
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { NewsFilter } from "@/features/news/components/NewsFilter";
-// News type will be updated later in src/features/news/types.ts
+import { getCategorySlug, getCategoryDisplayName } from "@/features/news/utils/categoryUtils"; // Import shared categories and helpers
 
 export const metadata: Metadata = {
   title: "Tin tức | HUST Research Clubs Network",
@@ -23,10 +23,9 @@ async function getNewsData() {
 
   const news = postsData as Post[];
 
-  // Extract unique categories from the fetched posts
-  const allCategories = news.flatMap(post => {
+  // Extract unique category identifiers (could be names or slugs) from the fetched posts
+  const allCategoryIdentifiers = news.flatMap(post => {
     try {
-      // Ensure categories is parsed if it's a stringified JSON
       const parsedCategories = typeof post.categories === 'string' ? JSON.parse(post.categories) : post.categories;
       return Array.isArray(parsedCategories) ? parsedCategories : [];
     } catch (e) {
@@ -34,7 +33,16 @@ async function getNewsData() {
       return [];
     }
   });
-  const uniqueCategories = [...new Set(allCategories)].map(cat => ({ name: cat, slug: cat }));
+  const uniqueIdentifiers = [...new Set(allCategoryIdentifiers)];
+
+  // Map unique identifiers to consistent { name, slug } objects using the utility
+  const uniqueCategories = uniqueIdentifiers.map(identifier => {
+    const name = getCategoryDisplayName(identifier); // Get consistent display name
+    const slug = getCategorySlug(identifier);       // Get consistent slug
+    return { name, slug };
+  }).filter((cat, index, self) => // Ensure uniqueness based on slug after mapping
+    index === self.findIndex((c) => c.slug === cat.slug)
+  );
 
   return {
     news: news,
