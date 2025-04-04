@@ -8,8 +8,6 @@ interface Category {
 interface NewsFilterProps {
   categories: Array<Category>;
   news: Array<News>;
-  hasMore: boolean;
-  endCursor: string;
 }
 
 export type { NewsFilterProps }

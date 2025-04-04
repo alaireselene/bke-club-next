@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { directus, Event } from "@/lib/directus"; // Import directus client and Event type
-import { readItem, readItems } from "@directus/sdk"; // Import SDK functions
+import { readItem} from "@directus/sdk"; // Import SDK functions
 import { Calendar, MapPin, Users, Globe, ExternalLink } from "lucide-react";
 // Event type is already updated in features/events/types.ts
 import { formatDatetime, isValidDate } from "@/lib/utils/date"; // Keep existing date utils

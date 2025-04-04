@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription, // Use for description if not HTML
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog"; // Import Shadcn Dialog components

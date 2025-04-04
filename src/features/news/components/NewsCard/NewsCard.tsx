@@ -6,8 +6,6 @@ import { formatDate, toISOString } from "@/lib/utils/date"; // Assuming these ha
 import type { News } from "../../types"; // Import the updated News type
 import { createExcerpt } from "@/lib/utils/contentModify";
 
-import type { NewsCardProps } from "./types";
-
 export function NewsCard({ news }: { news: News }) { // Use updated News type directly
   const publishDate = news.date_created; // Use date_created
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000";

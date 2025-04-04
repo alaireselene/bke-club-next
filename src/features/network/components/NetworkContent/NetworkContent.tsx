@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { SearchFilter } from "@/features/network/components/SearchFilter/SearchFilter";
 import { SchoolCard } from "@/features/network/components/SchoolCard/SchoolCard";
 import type { NetworkContentProps } from "./types";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; // Import Card components
+import { Card, CardContent } from "@/components/ui/card"; // Import Card components
 import { cn } from "@/lib/utils"; // Import cn
 
 import { useSearchParams } from "next/navigation";
@@ -154,27 +154,6 @@ export function NetworkContent({
           className="mb-10"
         />
       </div>
-
-      {/* Network Visualization - Decorative element */}
-      <div className="relative mb-10 h-16 overflow-hidden">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-dashed border-border"></div> {/* Use theme border */}
-        </div>
-        <div className="relative flex justify-around">
-          {filteredSchools.slice(0, 7).map((school, index) => ( // Show up to 7 nodes
-            <div
-              key={school.id} // Use id
-              className="bg-card h-8 w-8 rounded-full border border-border flex items-center justify-center shadow-sm animate-pulse" // Use theme colors, Tailwind pulse
-              style={{ animationDelay: `${index * 0.3}s` }} // Stagger pulse
-            >
-              <span className="text-xs font-bold text-primary"> {/* Use theme color */}
-                {school.slug?.substring(0, 2).toUpperCase() || ""}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Schools Grid */}
       <div className="grid gap-6 sm:gap-8"> {/* Adjusted gap */}
         {filteredSchools.map((school, index) => (

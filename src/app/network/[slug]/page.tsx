@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { directus, Club, School } from "@/lib/directus"; // Import directus client and types
-import { readItem, readItems } from "@directus/sdk"; // Import SDK functions
+import { readItems } from "@directus/sdk"; // Import SDK functions
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ClubDetails } from "@/features/network/components/ClubDetails/ClubDetails";
 import type { Club as FeatureClub } from "@/features/network"; // Keep feature's Club type alias if needed by ClubDetails initially
@@ -9,31 +9,35 @@ import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt uti
 
 // Assuming the directory is renamed from [slug] to [id]
 interface Props {
-  params: { id: string }; // Expect 'id' instead of 'slug'
+  params: { slug: string };
 }
 
 // Remove GraphQL specific ClubData interface
 
 // Helper function to fetch club data
-async function getClubData(id: string): Promise<Club | null> {
+async function getClubData(slug: string): Promise<Club | null> {
   try {
-    // Use correct syntax to fetch related school fields
-    const clubData = await directus.request(readItem('club', id, {
-      fields: ['*', { school_id: ['*'] }], // Fetch all club fields and all related school fields
+    const clubs = await directus.request(readItems('club', {
+      fields: ['*', { school_id: ['*'] }],
+      filter: {
+        slug: { _eq: slug }
+      },
+      limit: 1
     }));
-    // The SDK should return the school_id field as a School object if fetched correctly,
-    // or as a number (the ID) if not fetched deeply, or potentially undefined/null if empty.
-    // No need for manual type assertion or null assignment here if the fetch is correct.
-    return clubData as Club;
+    
+    if (!clubs || clubs.length === 0) {
+      return null;
+    }
+    
+    return clubs[0] as Club;
   } catch (error) {
-    // Directus readItem throws error if not found
-    console.error(`Error fetching club ${id}:`, error);
-    return null; // Return null if club not found or other error
+    console.error(`Error fetching club with slug ${slug}:`, error);
+    return null;
   }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const club = await getClubData(params.id);
+  const club = await getClubData(params.slug);
 
   if (!club) {
     return {
@@ -52,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ClubPage({ params }: Props) {
-  const club = await getClubData(params.id);
+  const club = await getClubData(params.slug);
 
   if (!club) {
     notFound();
@@ -70,7 +74,7 @@ export default async function ClubPage({ params }: Props) {
               { label: "Mạng lưới thành viên", href: "/network" },
               {
                 label: club.name, // Use club.name
-                href: `/network/${club.id}`, // Use club.id
+                href: `/network/${club.slug}`,
                 current: true,
               },
             ]}
@@ -89,15 +93,15 @@ export default async function ClubPage({ params }: Props) {
 
 // Generate static params for initial build using Directus
 export async function generateStaticParams() {
- try {
+  try {
     const clubsData = await directus.request(readItems('club', {
-      fields: ['id'], // Only need id
+      fields: ['slug'],
       limit: -1 // Fetch all
     }));
-    const clubs = clubsData as Pick<Club, 'id'>[];
+    const clubs = clubsData as Pick<Club, 'slug'>[];
 
     return clubs.map((club) => ({
-      id: club.id.toString(), // Param should be string
+      slug: club.slug
     }));
   } catch (error) {
     console.error("Failed to fetch clubs for static params:", error);

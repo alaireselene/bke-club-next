@@ -35,17 +35,10 @@ async function getNetworkData(): Promise<{ schools: SchoolWithClubs[] }> {
     const clubs = clubsData as Club[];
 
     // Combine data: Add clubs array to each school
-    const schoolsWithClubs = schools.map(school => {
-      const schoolClubs = clubs.filter(club => {
-        // Check if school_id is populated and matches the current school's id
-        const schoolRelation = club.school_id as School; // Assert type based on fetch
-        return schoolRelation && schoolRelation.id === school.id;
-      });
-      return {
-        ...school,
-        clubs: schoolClubs, // Add the filtered clubs
-      };
-    });
+    const schoolsWithClubs = schools.map(school => ({
+      ...school,
+      clubs: clubs.filter(club => club.school_id === school.id)
+    }));
 
     return {
       schools: schoolsWithClubs,

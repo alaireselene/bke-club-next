@@ -14,18 +14,16 @@ export const revalidate = 3600; // Revalidate every hour
 
 // Remove GraphQL specific interfaces
 
-async function getNewsData(limit = 10) { // Add limit for initial fetch
-  // Fetch initial posts using Directus SDK
+async function getNewsData() {
+  // Fetch all posts using Directus SDK
   const postsData = await directus.request(readItems('post', {
-    fields: ['*', 'categories'], // Ensure categories field is fetched
-    sort: ['-date_created'], // Sort by creation date descending
-    limit: limit,
+    fields: ['*', 'categories'],
+    sort: ['-date_created'],
   }));
 
   const news = postsData as Post[];
 
   // Extract unique categories from the fetched posts
-  // Assuming 'categories' is a JSON array of strings in Directus
   const allCategories = news.flatMap(post => {
     try {
       // Ensure categories is parsed if it's a stringified JSON
@@ -36,26 +34,16 @@ async function getNewsData(limit = 10) { // Add limit for initial fetch
       return [];
     }
   });
-  const uniqueCategories = [...new Set(allCategories)].map(cat => ({ name: cat, slug: cat })); // Create simple category objects
-
-  // Determine if there are more posts
-  // We need the total count for accurate pagination, fetch it separately
-  // For infinite scroll, we can just check if the number fetched equals the limit
-  const hasMore = news.length === limit;
-  // Directus doesn't use cursors like GraphQL connections. Offset/page is used.
-  // We'll pass the next offset/page number or rely on NewsFilter to manage it.
-  // Let's pass a simple hasMore flag for now.
+  const uniqueCategories = [...new Set(allCategories)].map(cat => ({ name: cat, slug: cat }));
 
   return {
     news: news,
-    // Pass a simplified pagination indicator
-    pageInfo: { hasNextPage: hasMore, endCursor: null }, // Adapt based on NewsFilter needs
-    categories: uniqueCategories, // Pass extracted categories
+    categories: uniqueCategories,
   };
 }
 
 export default async function NewsPage() {
-  const { news, pageInfo, categories } = await getNewsData();
+  const { news, categories } = await getNewsData();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-base-200/20 to-transparent">
@@ -77,8 +65,6 @@ export default async function NewsPage() {
             <NewsFilter
               categories={categories}
               news={news}
-              hasMore={pageInfo.hasNextPage}
-              endCursor={null}
             />
           </div>
         </div>
@@ -86,3 +72,4 @@ export default async function NewsPage() {
     </main>
   );
 }
+

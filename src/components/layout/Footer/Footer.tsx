@@ -34,7 +34,7 @@ export function Footer() {
                 height={120}
                 className="h-30 w-auto"
               />
-              <p className="text-base text-slate-600">
+              <p className="text-base text-charcoal-800"> {/* Use base text color */}
                 Trung tâm Sáng tạo và Khởi nghiệp Sinh viên
                 <br />
                 Đại học Bách khoa Hà Nội
@@ -42,7 +42,7 @@ export function Footer() {
               <div className="flex space-x-4">
                 <a
                   href="https://www.facebook.com/BKEntrepreneurshipCenter"
-                  className="hover:text-cardinal-600 text-slate-500 transition-colors"
+                  className="hover:text-cardinal-600 text-charcoal-600 transition-colors"
                   aria-label="Follow us on Facebook"
                 >
                   <Facebook className="h-6 w-6" />
@@ -52,7 +52,7 @@ export function Footer() {
 
             {/* Quick Links */}
             <div>
-              <h3 className="text-cardinal-900 font-sans text-sm font-bold tracking-wide uppercase">
+              <h3 className="text-cardinal-600 font-sans text-sm font-bold tracking-wide uppercase">
                 Liên kết nhanh
               </h3>
               <ul className="mt-6 space-y-3">
@@ -60,7 +60,7 @@ export function Footer() {
                   <li key={href}>
                     <Link
                       href={href}
-                      className="hover:text-cardinal-600 text-sm text-slate-600 transition-colors"
+                      className="hover:text-cardinal-600 text-sm text-charcoal-800 transition-colors"
                     >
                       {text}
                     </Link>
@@ -71,7 +71,7 @@ export function Footer() {
 
             {/* Resources */}
             <div>
-              <h3 className="text-cardinal-900 font-sans text-sm font-bold tracking-wide uppercase">
+              <h3 className="text-cardinal-600 font-sans text-sm font-bold tracking-wide uppercase">
                 Tài nguyên
               </h3>
               <ul className="mt-6 space-y-3">
@@ -79,7 +79,7 @@ export function Footer() {
                   <li key={href}>
                     <Link
                       href={href}
-                      className="hover:text-cardinal-600 text-sm text-slate-600 transition-colors"
+                      className="hover:text-cardinal-600 text-sm text-charcoal-800 transition-colors"
                     >
                       {text}
                     </Link>
@@ -90,12 +90,12 @@ export function Footer() {
 
             {/* Contact Info */}
             <div>
-              <h3 className="text-cardinal-900 font-sans text-sm font-bold tracking-wide uppercase">
+              <h3 className="text-cardinal-600 font-sans text-sm font-bold tracking-wide uppercase">
                 Liên hệ
               </h3>
-              <ul className="mt-6 space-y-4 text-sm text-slate-600">
+              <ul className="mt-6 space-y-4 text-sm text-charcoal-800">
                 <li className="flex items-start">
-                  <MapPin className="mr-3 h-5 w-5 text-slate-400" />
+                  <MapPin className="mr-3 h-5 w-5 text-charcoal-500" />
                   <div>
                     Tầng 2, Tòa Digital Hub
                     <br />
@@ -105,7 +105,7 @@ export function Footer() {
                   </div>
                 </li>
                 <li className="flex items-center">
-                  <Mail className="mr-3 h-5 w-5 text-slate-400" />
+                  <Mail className="mr-3 h-5 w-5 text-charcoal-500" />
                   <a
                     href="mailto:stkn@hust.edu.vn"
                     className="hover:text-cardinal-600 transition-colors"
@@ -114,7 +114,7 @@ export function Footer() {
                   </a>
                 </li>
                 <li className="flex items-center">
-                  <Phone className="mr-3 h-5 w-5 text-slate-400" />
+                  <Phone className="mr-3 h-5 w-5 text-charcoal-500" />
                   <a
                     href="tel:0911550986"
                     className="hover:text-cardinal-600 transition-colors"
@@ -123,7 +123,7 @@ export function Footer() {
                   </a>
                 </li>
                 <li className="flex items-center">
-                  <Phone className="mr-3 h-5 w-5 text-slate-400" />
+                  <Phone className="mr-3 h-5 w-5 text-charcoal-500" />
                   <a
                     href="tel:0983900429"
                     className="hover:text-cardinal-600 transition-colors"
@@ -138,18 +138,18 @@ export function Footer() {
           {/* Bottom Bar */}
           <div className="border-cardinal-100 mt-16 border-t pt-8">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-charcoal-800">
                 © {new Date().getFullYear()} Đại học Bách khoa Hà Nội. Bảo lưu
                 mọi quyền.
               </p>
-              <div className="flex items-center space-x-4 text-sm text-slate-600">
+              <div className="flex items-center space-x-4 text-sm text-charcoal-800">
                 <Link
                   href="/privacy"
                   className="hover:text-cardinal-600 transition-colors"
                 >
                   Chính sách bảo mật
                 </Link>
-                <span className="text-cardinal-200">|</span>
+                <span className="text-charcoal-400">|</span>
                 <Link
                   href="/terms"
                   className="hover:text-cardinal-600 transition-colors"

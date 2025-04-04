@@ -14,7 +14,7 @@ const icons = {
 
 export function Hero({ stats }: HeroProps) {
   return (
-    <section className="relative -mt-8 overflow-hidden bg-gradient-radial from-[#CE1628]/5 via-white to-[#F3C108]/10 px-4 pt-16 pb-16 sm:px-6 sm:pt-24 sm:pb-24 lg:px-8"> {/* Adjusted vertical padding for mobile */}
+    <section className="relative -mt-8 overflow-hidden bg-gradient-radial from-cardinal-600/5 via-white to-sunflower-500/10 section-spacing container-padding">
       {/* Scientific Background Elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         {/* Enhanced grid pattern */}
@@ -101,16 +101,16 @@ export function Hero({ stats }: HeroProps) {
 
       <div className="relative mx-auto max-w-7xl">
         <div className="relative z-10 text-center">
-          <h1 className="relative font-sans text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
+          <h1>
             <span
-              className="block animate-fade-in opacity-0" // Added block display
+              className="block animate-fade-in opacity-0 text-brand-secondary"
               style={{ animationDuration: '0.6s', animationFillMode: 'forwards' }}
             >
               Kết nối, Hỗ trợ,
             </span>
             <br />
             <span
-              className="block animate-fade-in bg-gradient-to-r from-cardinal-600 to-cardinal-500 bg-clip-text text-transparent opacity-0" // Added block display
+              className="block animate-fade-in bg-gradient-to-r from-cardinal-600 to-cardinal-500 bg-clip-text text-transparent opacity-0"
               style={{ animationDuration: '0.6s', animationDelay: '0.2s', animationFillMode: 'forwards' }}
             >
               Thúc đẩy Phát triển
@@ -129,7 +129,7 @@ export function Hero({ stats }: HeroProps) {
             </div>
           </h1>
           <p
-            className="mx-auto mt-6 max-w-2xl text-xl leading-relaxed text-slate-600 sm:mt-8 animate-fade-in opacity-0" // Adjusted top margin for mobile
+            className="mx-auto mt-6 max-w-2xl content-spacing animate-fade-in opacity-0"
             style={{ animationDuration: '0.6s', animationDelay: '0.4s', animationFillMode: 'forwards' }}
           >
             Mạng lưới kết nối các CLB sinh viên nghiên cứu, thúc đẩy sáng tạo và
@@ -159,13 +159,13 @@ export function Hero({ stats }: HeroProps) {
                     <Icon className="relative z-10 h-10 w-10 text-cardinal-600 transition-all duration-300 group-hover:-translate-y-1" />
                   </div>
                   <p
-                    className="mt-6 font-sans text-4xl font-bold text-slate-900 animate-fade-in opacity-0"
+                    className="mt-6 text-3xl md:text-4xl font-bold text-brand-primary animate-fade-in opacity-0"
                     style={{ animationDuration: '0.3s', animationDelay: `${0.8 + index * 0.1}s`, animationFillMode: 'forwards' }}
                   >
                     {value}
                   </p>
                   <p
-                    className="mt-2 text-base font-medium text-slate-600 animate-fade-in opacity-0"
+                    className="mt-2 text-base md:text-lg font-medium text-brand-secondary animate-fade-in opacity-0"
                     style={{ animationDuration: '0.3s', animationDelay: `${0.9 + index * 0.1}s`, animationFillMode: 'forwards' }}
                   >
                     {label}
@@ -182,7 +182,7 @@ export function Hero({ stats }: HeroProps) {
             <div className="transition-transform duration-300 hover:scale-105"> {/* Added hover scale effect */}
               <Link
                 href="/network"
-                className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-cardinal-600 to-cardinal-500 px-8 py-3 font-bold text-white transition-all duration-300 hover:shadow-xl" // Adjusted padding (closer to lg button size) and added height
+                className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full bg-brand-primary px-8 py-3 font-bold text-white transition-all duration-300 hover:shadow-xl"
               >
                 {/* Button glow effect */}
                 <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-cardinal-600 to-cardinal-500"></span>

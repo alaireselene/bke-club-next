@@ -3,7 +3,6 @@
 import { FileText, Download } from "lucide-react"; // Added Download icon
 import { Card, CardContent } from "@/components/ui/card"; // Import Card
 import { Button } from "@/components/ui/button"; // Import Button
-import { cn } from "@/lib/utils"; // Import cn
 import { ResourceCardProps } from "../types";
 
 export const ResourceCard = ({ resource, onOpen }: ResourceCardProps) => {

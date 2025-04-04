@@ -1,8 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
+import { Users } from "lucide-react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import type { SchoolCardProps } from "./types";
-import { cn } from "@/lib/utils"; // Import cn
 
 export function SchoolCard({ school, clubs }: SchoolCardProps) {
   return (
@@ -17,27 +16,23 @@ export function SchoolCard({ school, clubs }: SchoolCardProps) {
             </div>
           </div>
         </div>
-        {school.slug && (
-          <div className="text-xs font-mono font-medium text-primary bg-primary/10 px-2 py-0.5 rounded"> {/* Use theme colors, adjusted size/padding */}
-            {school.slug.toUpperCase()}
-          </div>
-        )}
       </CardHeader>
 
       <CardContent className="p-0">
         <div className="divide-y divide-border"> {/* Use theme border color */}
           {clubs.map((club) => (
             <Link
-              key={club.id} // Use id
-              href={`/network/${club.id}`} // Link using id
-              className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors" // Use theme hover color
+              key={club.id}
+              href={`/network/${club.slug}`}
+              className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors"
             >
               <div className="flex items-center gap-3">
                 {/* Removed club featuredImage */}
                 <span className="font-medium">{club.name}</span> {/* Use club.name */}
               </div>
-              <div className="text-sm text-muted-foreground"> {/* Use theme color */}
-                {club.members_count ?? 0} thành viên {/* Use club.members_count */}
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Users className="h-4 w-4" />
+                <span>{(club.members_count || club.members_count !== 0) ? club.members_count : "N/A"}</span>
               </div>
             </Link>
           ))}

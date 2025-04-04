@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { loadMoreEvents } from "@/app/events/actions";
 import type { PastEventsProps } from "./types";
-import { parseISO, isBefore } from "date-fns";
 
 export function PastEvents({
   initialEvents,
@@ -45,7 +44,7 @@ export function PastEvents({
     <section>
       <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Sự kiện đã diễn ra</h2> {/* Adjusted size/margin */}
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {events.map((event, index) => (
+        {events.map((event) => (
           <EventCard key={event.id} event={event} />
         ))}
       </div>

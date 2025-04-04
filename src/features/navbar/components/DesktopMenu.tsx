@@ -1,17 +1,10 @@
 "use client";
 
 import Link from "next/link";
-// Remove School import from features/network
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-
-// Define the expected simplified school type for navigation
-interface NavSchool {
-  id: number;
-  name: string;
-  slug: string;
-}
+import { NavSchool } from "../types"; // Import shared type
 
 interface Props {
   schools: NavSchool[]; // Expect the simplified type
@@ -116,22 +109,37 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   .filter((school) => school.name?.startsWith("Trường"))
                   .map((school) => (
                     <div
-                      key={school.id} // Use id
-                      // Remove group/school class if nested dropdown is removed
-                      className="relative"
+                      key={school.id}
+                      className="group/school relative"
                     >
                       <Link
-                        href={`/network?school=${school.slug?.toLowerCase()}`} // Use lowercase slug
+                        href={`/network?school=${school.slug?.toLowerCase()}`}
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                       >
                         <span>{school.name}</span>
-                        {school.slug && (
-                          <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
-                            {school.slug.toUpperCase()}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {school.slug && (
+                            <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                              {school.slug.toUpperCase()}
+                            </span>
+                          )}
+                        </div>
                       </Link>
-                      {/* Removed nested club dropdown */}
+                      {school.clubs.length > 0 && (
+                        <div className="absolute left-full top-0 ml-0.5 w-72 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-200 invisible opacity-0 group-hover/school:visible group-hover/school:opacity-100">
+                          <div className="py-1">
+                            {school.clubs.map((club) => (
+                              <Link
+                                key={club.id}
+                                href={`/network/${club.slug}`}
+                                className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                              >
+                                <span>{club.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
 
@@ -143,22 +151,37 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   .filter((school) => school.name?.startsWith("Khoa"))
                   .map((school) => (
                     <div
-                      key={school.id} // Use id
-                      // Remove group/school class if nested dropdown is removed
-                      className="relative"
+                      key={school.id}
+                      className="group/school relative"
                     >
                       <Link
-                        href={`/network?school=${school.slug?.toLowerCase()}`} // Use lowercase slug
+                        href={`/network?school=${school.slug?.toLowerCase()}`}
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                       >
                         <span>{school.name}</span>
-                        {school.slug && (
-                          <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
-                            {school.slug.toUpperCase()}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {school.slug && (
+                            <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                              {school.slug.toUpperCase()}
+                            </span>
+                          )}
+                        </div>
                       </Link>
-                      {/* Removed nested club dropdown */}
+                      {school.clubs.length > 0 && (
+                        <div className="absolute left-full top-0 ml-0.5 w-72 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-200 invisible opacity-0 group-hover/school:visible group-hover/school:opacity-100">
+                          <div className="py-1">
+                            {school.clubs.map((club) => (
+                              <Link
+                                key={club.id}
+                                href={`/network/${club.slug}`}
+                                className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                              >
+                                <span>{club.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
 
@@ -174,22 +197,37 @@ export function DesktopMenu({ schools, scrolled }: Props) {
                   )
                   .map((school) => (
                     <div
-                      key={school.id} // Use id
-                      // Remove group/school class if nested dropdown is removed
-                      className="relative"
+                      key={school.id}
+                      className="group/school relative"
                     >
                       <Link
-                        href={`/network?school=${school.slug?.toLowerCase()}`} // Use lowercase slug
+                        href={`/network?school=${school.slug?.toLowerCase()}`}
                         className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
                       >
                         <span>{school.name}</span>
-                        {school.slug && (
-                          <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
-                            {school.slug.toUpperCase()}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {school.slug && (
+                            <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                              {school.slug.toUpperCase()}
+                            </span>
+                          )}
+                        </div>
                       </Link>
-                      {/* Removed nested club dropdown */}
+                      {school.clubs.length > 0 && (
+                        <div className="absolute left-full top-0 ml-0.5 w-72 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-200 invisible opacity-0 group-hover/school:visible group-hover/school:opacity-100">
+                          <div className="py-1">
+                            {school.clubs.map((club) => (
+                              <Link
+                                key={club.id}
+                                href={`/network/${club.slug}`}
+                                className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-cardinal-50 hover:text-cardinal-600"
+                              >
+                                <span>{club.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
               </div>

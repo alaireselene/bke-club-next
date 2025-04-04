@@ -3,21 +3,15 @@
 import { useState, useMemo } from "react";
 import { CategoryTabs } from "@/components/shared/CategoryTabs";
 import { NewsCard } from "@/features/news/components/NewsCard";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { loadMorePosts } from "@/app/news/actions";
 import type { News } from "../../types";
 import type { NewsFilterProps } from "./types";
 
 export function NewsFilter({
   categories,
   news: initialNews,
-  hasMore: initialHasMore,
 }: NewsFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [news, setNews] = useState<Array<News>>(initialNews);
-  const [hasMore, setHasMore] = useState(initialHasMore);
-  const [isLoading, setIsLoading] = useState(false);
+  const [news] = useState<Array<News>>(initialNews);
 
   const filteredNews = useMemo(() => {
     if (!selectedCategory) return news;
@@ -38,22 +32,6 @@ export function NewsFilter({
     });
   }, [news, selectedCategory]);
 
-  const handleLoadMore = async () => {
-    if (isLoading) return;
-
-    try {
-      setIsLoading(true);
-      // Calculate the offset based on the number of currently loaded posts
-      const currentOffset = news.length;
-      const data = await loadMorePosts(currentOffset);
-      setNews([...news, ...data.posts]);
-      setHasMore(data.pageInfo.hasNextPage);
-    } catch (error) {
-      console.error("Error loading more posts:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className="space-y-8">
@@ -64,7 +42,7 @@ export function NewsFilter({
       />
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {filteredNews.map((article, index) => (
+        {filteredNews.map((article) => (
           <NewsCard key={article.id} news={article} />
         ))}
 
@@ -75,29 +53,6 @@ export function NewsFilter({
           </div>
         )}
       </div>
-
-      {hasMore && (
-        <div className="flex justify-center pt-8">
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={handleLoadMore}
-            disabled={isLoading}
-            className="min-w-[200px]" // Removed custom background styles
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Đang tải...
-              </>
-            ) : (
-              "Xem thêm tin tức"
-            )}
-          </Button>
-        </div>
-      )}
-
-      {/* Removed inline style block */}
     </div>
   );
 }

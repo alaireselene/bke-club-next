@@ -111,6 +111,27 @@
   animation: slow-spin 12s linear infinite;
 }
 
+/* Keyframes for horizontal scrolling */
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Translate by half the width because we duplicated the content */
+    transform: translateX(-50%);
+  }
+}
+
+/* Utility for applying the scroll animation */
+.animate-scroll {
+  animation: scroll 60s linear infinite;
+}
+
+/* Utility to pause animation on hover */
+.hover\:pause-animation:hover {
+  animation-play-state: paused;
+}
+
 @keyframes grid-fade {
   0% {
     opacity: 0;
@@ -235,75 +256,52 @@
   --color-chalk-950: oklch(0.484 0.003 0);
 }
 
+/* :root variables likely used by Shadcn/ui - Mapped to Brand Colors */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0); /* Changed from red to white */
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --background: var(--color-chalk-100); /* White background */
+  --foreground: var(--color-charcoal-800); /* Dark gray text */
+  --card: var(--color-chalk-100); /* White card background */
+  --card-foreground: var(--color-charcoal-800); /* Dark gray card text */
+  --popover: var(--color-chalk-100); /* White popover background */
+  --popover-foreground: var(--color-charcoal-800); /* Dark gray popover text */
+
+  --primary: var(--color-cardinal-600); /* Cardinal Red */
+  --primary-foreground: var(--color-chalk-100); /* White text on primary */
+
+  --secondary: var(--color-navy-600); /* Navy Blue */
+  --secondary-foreground: var(--color-chalk-100); /* White text on secondary */
+
+  --accent: var(--color-sunflower-500); /* Sunflower Yellow */
+  --accent-foreground: var(--color-charcoal-800); /* Dark gray text on accent */
+
+  --muted: var(--color-charcoal-100); /* Light gray for muted backgrounds */
+  --muted-foreground: var(--color-charcoal-600); /* Medium gray for muted text */
+
+  --destructive: var(--color-crimson-600); /* Use Crimson for destructive actions */
+  --destructive-foreground: var(--color-chalk-100); /* White text on destructive */
+
+  --border: var(--color-charcoal-200); /* Light gray border */
+  --input: var(--color-charcoal-200); /* Light gray input border */
+  --ring: var(--color-navy-400); /* Navy focus ring */
+
+  /* Chart colors can remain or be mapped to brand palette if needed */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --radius: 0.625rem; /* Existing radius */
+
+  /* Sidebar specific variables - Mapped to Brand Colors */
+  --sidebar: var(--color-charcoal-50); /* Very light gray sidebar */
+  --sidebar-foreground: var(--color-charcoal-800); /* Dark gray text */
+  --sidebar-primary: var(--color-cardinal-600); /* Cardinal Red for primary elements */
+  --sidebar-primary-foreground: var(--color-chalk-100); /* White text */
+  --sidebar-accent: var(--color-navy-600); /* Navy Blue for accent elements */
+  --sidebar-accent-foreground: var(--color-chalk-100); /* White text */
+  --sidebar-border: var(--color-charcoal-200); /* Light gray border */
+  --sidebar-ring: var(--color-navy-400); /* Navy focus ring */
 }
 
 @theme inline {
@@ -350,6 +348,65 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-charcoal-800 font-sans; /* Use brand charcoal for base text */
+  }
+
+  /* Typography System */
+  h1 {
+    @apply font-sans text-3xl font-extrabold tracking-tight text-cardinal-600 sm:text-4xl md:text-5xl lg:text-6xl; /* Use brand Cardinal Red */
+  }
+
+  h2 {
+    @apply font-sans text-2xl font-bold text-cardinal-600 sm:text-3xl md:text-4xl; /* Use brand Cardinal Red */
+  }
+
+  h3 {
+    @apply font-sans text-xl font-bold text-cardinal-600 sm:text-2xl md:text-3xl; /* Use brand Cardinal Red */
+  }
+
+  h4 {
+    @apply font-sans text-lg font-bold text-cardinal-600 sm:text-xl; /* Use brand Cardinal Red */
+  }
+
+  p {
+    @apply text-base text-charcoal-800 sm:text-lg leading-relaxed; /* Use brand charcoal for paragraphs */
+  }
+
+  /* Brand Color Utilities */
+  .text-brand-primary {
+    @apply text-cardinal-600;
+  }
+
+  .text-brand-secondary {
+    @apply text-navy-600;
+  }
+
+  .text-brand-accent {
+    @apply text-sunflower-500;
+  }
+
+  .bg-brand-primary {
+    @apply bg-cardinal-600;
+  }
+
+  .bg-brand-secondary {
+    @apply bg-navy-600;
+  }
+
+  .bg-brand-accent {
+    @apply bg-sunflower-500;
+  }
+
+  /* Spacing System */
+  .section-spacing {
+    @apply py-8 sm:py-12 md:py-16 lg:py-20;
+  }
+
+  .content-spacing {
+    @apply space-y-4 sm:space-y-6 md:space-y-8;
+  }
+
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
   }
 }

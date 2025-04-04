@@ -1,18 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { X, Settings, ChevronDown, ChevronUp } from "lucide-react";
+import { X, Settings, ChevronDown, ChevronUp, Users } from "lucide-react";
 import { usePathname } from "next/navigation";
 // Remove School import from features/network
 import { useState, useEffect } from "react";
 import { useScrollLock } from "@/hooks/useScrollLock";
 
-// Define the expected simplified school type for navigation
-interface NavSchool {
-  id: number;
-  name: string;
-  slug: string;
-}
+import { NavSchool } from "../types"; // Import shared type
 
 interface Props {
   isOpen: boolean;
@@ -169,29 +164,47 @@ export function MobileMenu({
                     {schools
                       .filter((school) => school.name?.startsWith("Trường"))
                       .map((school) => (
-                        <div key={school.id} className="rounded-lg"> {/* Use id */}
-                          {/* Update toggleSchool to use id */}
+                        <div key={school.id} className="rounded-lg">
                           <button
-                            onClick={() =>
-                              toggleSchool(school.id.toString())
-                            }
+                            onClick={() => toggleSchool(school.id.toString())}
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
                             <span className="flex-1 text-left truncate">
                               {school.name}
                             </span>
-                            <div className="flex-shrink-0">
-                              {expandedSchools.has(
-                                school.id.toString()
-                              ) ? (
-                                <ChevronUp className="h-4 w-4" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4" />
+                            <div className="flex items-center gap-2">
+                              {school.clubs.length > 0 && (
+                                <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                                  {school.clubs.length} CLB
+                                </span>
                               )}
+                              <div className="flex-shrink-0">
+                                {expandedSchools.has(school.id.toString()) ? (
+                                  <ChevronUp className="h-4 w-4" />
+                                ) : (
+                                  <ChevronDown className="h-4 w-4" />
+                                )}
+                              </div>
                             </div>
                           </button>
-                          {/* Remove club expansion logic */}
-                          {/* {expandedSchools.has(school.id.toString()) && ( ... )} */}
+                          {expandedSchools.has(school.id.toString()) && school.clubs.length > 0 && (
+                            <div className="ml-4 mt-1 space-y-1 border-l border-slate-200">
+                              {school.clubs.map((club) => (
+                                <Link
+                                  key={club.id}
+                                  href={`/network/${club.slug}`}
+                                  onClick={handleClose}
+                                  className="flex items-center justify-between pl-4 pr-2 py-2 text-sm text-slate-600 hover:text-cardinal-600"
+                                >
+                                  <span className="truncate">{club.name}</span>
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                    <Users className="h-3.5 w-3.5" />
+                                    <span>{(club.members_count || club.members_count !== 0) ? club.members_count : "N/A"}</span>
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       ))}
                   </div>
@@ -216,29 +229,47 @@ export function MobileMenu({
                     {schools
                       .filter((school) => school.name?.startsWith("Khoa"))
                       .map((school) => (
-                        <div key={school.id} className="rounded-lg"> {/* Use id */}
-                          {/* Update toggleSchool to use id */}
+                        <div key={school.id} className="rounded-lg">
                           <button
-                            onClick={() =>
-                              toggleSchool(school.id.toString())
-                            }
+                            onClick={() => toggleSchool(school.id.toString())}
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
                             <span className="flex-1 text-left truncate">
                               {school.name}
                             </span>
-                            <div className="flex-shrink-0">
-                              {expandedSchools.has(
-                                school.id.toString()
-                              ) ? (
-                                <ChevronUp className="h-4 w-4" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4" />
+                            <div className="flex items-center gap-2">
+                              {school.clubs.length > 0 && (
+                                <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                                  {school.clubs.length} CLB
+                                </span>
                               )}
+                              <div className="flex-shrink-0">
+                                {expandedSchools.has(school.id.toString()) ? (
+                                  <ChevronUp className="h-4 w-4" />
+                                ) : (
+                                  <ChevronDown className="h-4 w-4" />
+                                )}
+                              </div>
                             </div>
                           </button>
-                          {/* Remove club expansion logic */}
-                          {/* {expandedSchools.has(school.id.toString()) && ( ... )} */}
+                          {expandedSchools.has(school.id.toString()) && school.clubs.length > 0 && (
+                            <div className="ml-4 mt-1 space-y-1 border-l border-slate-200">
+                              {school.clubs.map((club) => (
+                                <Link
+                                  key={club.id}
+                                  href={`/network/${club.slug}`}
+                                  onClick={handleClose}
+                                  className="flex items-center justify-between pl-4 pr-2 py-2 text-sm text-slate-600 hover:text-cardinal-600"
+                                >
+                                  <span className="truncate">{club.name}</span>
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                    <Users className="h-3.5 w-3.5" />
+                                    <span>{(club.members_count || club.members_count !== 0) ? club.members_count : "N/A"}</span>
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       ))}
                   </div>
@@ -269,29 +300,47 @@ export function MobileMenu({
                           !school.name?.startsWith("Khoa")
                       )
                       .map((school) => (
-                        <div key={school.id} className="rounded-lg"> {/* Use id */}
-                          {/* Update toggleSchool to use id */}
+                        <div key={school.id} className="rounded-lg">
                           <button
-                            onClick={() =>
-                              toggleSchool(school.id.toString())
-                            }
+                            onClick={() => toggleSchool(school.id.toString())}
                             className="flex w-full items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-slate-50/50 hover:text-cardinal-600"
                           >
                             <span className="flex-1 text-left truncate">
                               {school.name}
                             </span>
-                            <div className="flex-shrink-0">
-                              {expandedSchools.has(
-                                school.id.toString()
-                              ) ? (
-                                <ChevronUp className="h-4 w-4" />
-                              ) : (
-                                <ChevronDown className="h-4 w-4" />
+                            <div className="flex items-center gap-2">
+                              {school.clubs.length > 0 && (
+                                <span className="rounded bg-cardinal-100 px-2 py-0.5 text-xs font-medium text-cardinal-600">
+                                  {school.clubs.length} CLB
+                                </span>
                               )}
+                              <div className="flex-shrink-0">
+                                {expandedSchools.has(school.id.toString()) ? (
+                                  <ChevronUp className="h-4 w-4" />
+                                ) : (
+                                  <ChevronDown className="h-4 w-4" />
+                                )}
+                              </div>
                             </div>
                           </button>
-                          {/* Remove club expansion logic */}
-                          {/* {expandedSchools.has(school.id.toString()) && ( ... )} */}
+                          {expandedSchools.has(school.id.toString()) && school.clubs.length > 0 && (
+                            <div className="ml-4 mt-1 space-y-1 border-l border-slate-200">
+                              {school.clubs.map((club) => (
+                                <Link
+                                  key={club.id}
+                                  href={`/network/${club.slug}`}
+                                  onClick={handleClose}
+                                  className="flex items-center justify-between pl-4 pr-2 py-2 text-sm text-slate-600 hover:text-cardinal-600"
+                                >
+                                  <span className="truncate">{club.name}</span>
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                    <Users className="h-3.5 w-3.5" />
+                                    <span>{(club.members_count || club.members_count !== 0) ? club.members_count : "N/A"}</span>
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       ))}
                   </div>

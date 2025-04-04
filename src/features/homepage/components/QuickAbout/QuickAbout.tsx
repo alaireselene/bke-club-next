@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardAction } from "@/components/ui/card"; // Import Card components
-import { cn } from "@/lib/utils"; // Import cn if needed for Card usage
 
 export function QuickAbout() {
   return (

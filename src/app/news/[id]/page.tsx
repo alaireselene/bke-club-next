@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { directus, Post } from "@/lib/directus"; // Import directus client and Post type
+import { directus} from "@/lib/directus"; // Import directus client and Post type
 import { readItem } from "@directus/sdk"; // Import readItem function
 import type { News } from "@/features/news"; // Keep News type alias
 import { ChevronLeft } from "lucide-react";

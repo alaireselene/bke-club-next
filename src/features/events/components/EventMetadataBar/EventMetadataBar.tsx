@@ -4,7 +4,6 @@ import { Calendar, MapPin, Users, Globe } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card"; // Import Card
 import { formatDatetime } from "@/lib/utils/date";
 import type { EventMetadataBarProps } from "./types";
-import { cn } from "@/lib/utils"; // Import cn
 
 export function EventMetadataBar({
   startDate,

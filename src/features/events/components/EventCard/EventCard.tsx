@@ -66,7 +66,7 @@ export function EventCard({
           <div className="pt-4 space-y-2 border-t border-border"> {/* Use border-border */}
             {/* Date */}
             <div className="flex items-center text-sm text-muted-foreground"> {/* Use text-muted-foreground */}
-              <CalendarDays className="h-4 w-4 mr-2 text-cardinal-500" />
+              <CalendarDays className="h-4 w-4 mr-2 text-primary" /> {/* Use primary brand color */}
               <span>{startDate ? formatDate(startDate) : "Đang cập nhật"}</span>
             </div>
 
@@ -74,12 +74,12 @@ export function EventCard({
             <div className="flex items-center text-sm text-muted-foreground"> {/* Use text-muted-foreground */}
               {isOnline ? (
                 <>
-                  <Globe className="h-4 w-4 mr-2 text-cardinal-500" />
+                  <Globe className="h-4 w-4 mr-2 text-primary" /> {/* Use primary brand color */}
                   <span>Trực tuyến</span>
                 </>
               ) : (
                 <>
-                  <MapPin className="h-4 w-4 mr-2 text-cardinal-500" />
+                  <MapPin className="h-4 w-4 mr-2 text-primary" /> {/* Use primary brand color */}
                   <span>{location || "Đang cập nhật"}</span> {/* Use location */}
                 </>
               )}
@@ -88,7 +88,7 @@ export function EventCard({
             {/* Capacity */}
             {showCapacity && capacity && (
               <div className="flex items-center text-sm text-muted-foreground"> {/* Use text-muted-foreground */}
-                <Users className="h-4 w-4 mr-2 text-cardinal-500" />
+                <Users className="h-4 w-4 mr-2 text-primary" /> {/* Use primary brand color */}
                 <span>{capacity ?? 'N/A'} người tham dự</span> {/* Use capacity */}
               </div>
             )}

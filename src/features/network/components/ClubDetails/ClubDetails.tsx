@@ -94,7 +94,7 @@ export function ClubDetails({
             </div>
           )}
 
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">{club.name}</h1> {/* Use club.name, adjusted size */}
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-slate-100">{club.name}</h1> {/* Use club.name, adjusted size */}
 
           {/* Stats */}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm sm:text-base text-primary-foreground/90"> {/* Adjusted gap/size */}

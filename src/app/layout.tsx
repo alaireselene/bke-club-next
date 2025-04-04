@@ -3,7 +3,7 @@ import "./globals.css";
 import { Header } from "@/features/navbar/components";
 import { Footer } from "@/components/layout/Footer";
 // Remove Apollo client and query imports
-import { directus, School } from "@/lib/directus"; // Import directus client and School type
+import { Club, directus, School } from "@/lib/directus"; // Import directus client and School type
 import { readItems } from "@directus/sdk"; // Import readItems function
 import { Toaster } from "@/components/ui/sonner";
 // Remove ApolloWrapper import
@@ -40,31 +40,60 @@ export const metadata: Metadata = {
 
 async function getNavigationData() {
   try {
-    const schoolsData = await directus.request(readItems('school', {
-      fields: ['id', 'name', 'slug'], // Fetch only needed fields for header
-      limit: -1 // Fetch all
-    }));
-    const unsortedSchools = schoolsData as Pick<School, 'id' | 'name' | 'slug'>[];
+    // Fetch schools and clubs in parallel
+    const [schoolsData, clubsData] = await Promise.all([
+      directus.request(readItems('school', {
+        fields: ['*'],
+        limit: -1
+      })),
+      directus.request(readItems('club', {
+        fields: ['*'],
+        limit: -1
+      }))
+    ]);
 
-    // Apply sorting logic (Trường > Khoa > Other)
+    const unsortedSchools = schoolsData as School[];
+    const clubs = clubsData as Array<Club>;
+
+    // Group clubs by school_id
+    const clubsBySchool = clubs.reduce((acc, club) => {
+      const schoolId = typeof club.school_id === 'number' ? club.school_id : 0;
+      if (!acc[schoolId]) {
+        acc[schoolId] = [];
+      }
+      acc[schoolId].push(club);
+      return acc;
+    }, {} as Record<number, typeof clubs>);
+
+    // Add clubs to schools and apply sorting logic
     const schools = [
-      ...unsortedSchools.filter(
-        (school) => school.name?.startsWith("Trường") ?? false
-      ),
-      ...unsortedSchools.filter(
-        (school) => school.name?.startsWith("Khoa") ?? false
-      ),
-      ...unsortedSchools.filter(
-        (school) =>
+      ...unsortedSchools
+        .filter((school) => school.name?.startsWith("Trường") ?? false)
+        .map(school => ({
+          ...school,
+          clubs: clubsBySchool[school.id] || []
+        })),
+      ...unsortedSchools
+        .filter((school) => school.name?.startsWith("Khoa") ?? false)
+        .map(school => ({
+          ...school,
+          clubs: clubsBySchool[school.id] || []
+        })),
+      ...unsortedSchools
+        .filter((school) =>
           !(school.name?.startsWith("Trường") ?? false) &&
           !(school.name?.startsWith("Khoa") ?? false)
-      ),
+        )
+        .map(school => ({
+          ...school,
+          clubs: clubsBySchool[school.id] || []
+        }))
     ];
 
     return { schools };
   } catch (error) {
     console.error("Error fetching navigation data:", error);
-    return { schools: [] }; // Return empty array on error
+    return { schools: [] };
   }
 }
 

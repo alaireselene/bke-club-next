@@ -1,16 +1,21 @@
 "use client";
 
 // Removed: import { motion } from "motion/react";
-import { PartnerCard } from "../PartnerCard/PartnerCard";
+// Removed: import { PartnerCard } from "../PartnerCard/PartnerCard";
 import type { PartnersPreviewProps } from "./types";
 import Link from "next/link"; // Import Link
 import { Button } from "@/components/ui/button"; // Import Button
+import Image from "next/image"; // Import Next Image
 
 export function PartnersPreview({ partners }: PartnersPreviewProps) {
   // Filter logic might need adjustment based on actual data structure
-  const featuredPartners = partners
-    // .filter((partner) => partner.featuredImage) // Assuming 'logo' indicates it should be shown
-    .slice(0, 4);
+  // Filter partners that have a logo and construct the image URL
+  const partnersWithLogos = partners
+    .filter((partner) => partner.logo)
+    .map((partner) => ({
+      ...partner,
+      logoUrl: `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${partner.logo}`,
+    }));
 
   return (
     <section className="relative py-12 sm:py-16 overflow-hidden"> {/* Adjusted padding */}
@@ -79,27 +84,46 @@ export function PartnersPreview({ partners }: PartnersPreviewProps) {
         </div>
 
         {/* Partners Grid */}
-        {featuredPartners.length > 0 ? (
-          <div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"> {/* Removed fixed height, adjusted grid/gap */}
-              {featuredPartners.map((partner, index) => (
+        {/* Partners Logo Scroll */}
+        {partnersWithLogos.length > 0 ? (
+          <div className="relative mt-8 sm:mt-12"> {/* Added margin top */}
+            {/* Fade effect for edges */}
+            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+
+            {/* Auto-Scrolling container */}
+            {/* Outer div masks the overflow */}
+            <div className="overflow-hidden">
+              {/* Inner div contains duplicated logos and applies animation */}
+              {/* Added flex-nowrap and w-max to ensure container width includes all duplicated logos */}
+              <div className="flex flex-nowrap w-max animate-scroll space-x-12 sm:space-x-16 py-4 hover:pause-animation">
+                {/* Duplicate logos for seamless loop */}
+                {[...partnersWithLogos, ...partnersWithLogos].map((partner, index) => (
                   <div
-                    key={partner.id} // Use partner ID
-                    className="animate-fade-in opacity-0"
-                    style={{ animationDuration: '0.6s', animationDelay: `${0.2 + index * 0.1}s`, animationFillMode: 'forwards' }}
+                    // Use a unique key combining id and index for duplicates
+                    key={`${partner.id}-${index}`}
+                    className="flex-shrink-0" // Removed fade-in animation for smoother scroll
                   >
-                    <PartnerCard partner={partner} />
+                    <a
+                      href={partner.website_url || '#'} // Link to partner website if available
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block transition-transform hover:scale-105" // Keep hover scale
+                      title={partner.name} // Add partner name as title
+                    >
+                      <Image
+                        src={partner.logoUrl}
+                        alt={`${partner.name} logo`}
+                        width={120} // Adjust width as needed
+                        height={60} // Adjust height as needed
+                        // Removed grayscale, kept object-contain and transitions
+                        className="h-12 sm:h-16 w-auto object-contain transition-transform duration-300"
+                      />
+                    </a>
                   </div>
                 ))}
+              </div>
             </div>
-            {partners.length > 4 && (
-              <p
-                className="text-center mt-8 text-muted-foreground animate-fade-in opacity-0"
-                style={{ animationDuration: '0.6s', animationDelay: '0.8s', animationFillMode: 'forwards' }}
-              >
-                Và {partners.length - 4} đối tác khác
-              </p>
-            )}
           </div>
         ) : (
           <div

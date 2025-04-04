@@ -16,12 +16,12 @@ export function NavigationMenu({ currentLang, onToggleLanguage }: Props) {
 
   return (
     <nav className="hidden md:block">
-      <div className="flex items-center space-x-6 rounded-full bg-white/10 px-6 py-2 backdrop-blur-md">
+      <div className="flex items-center space-x-6 rounded-full bg-white/10 container-padding backdrop-blur-md">
         {/* Base Links */}
         <Link
           href="/calendar"
-          className={`flex items-center gap-2 transition-all duration-200 hover:text-cardinal-400 ${
-            pathname === "/calendar" ? "text-cardinal-500" : "text-chalk-100"
+          className={`flex items-center gap-2 transition-all duration-200 hover:text-brand-primary/80 ${
+            pathname === "/calendar" ? "text-brand-primary" : "text-chalk-100"
           }`}
         >
           <Calendar className="h-4 w-4" />
@@ -29,8 +29,8 @@ export function NavigationMenu({ currentLang, onToggleLanguage }: Props) {
         </Link>
         <Link
           href="/contact"
-          className={`flex items-center gap-2 transition-all duration-200 hover:text-cardinal-400 ${
-            pathname === "/contact" ? "text-cardinal-500" : "text-chalk-100"
+          className={`flex items-center gap-2 transition-all duration-200 hover:text-brand-primary/80 ${
+            pathname === "/contact" ? "text-brand-primary" : "text-chalk-100"
           }`}
         >
           <Mail className="h-4 w-4" />
@@ -41,8 +41,8 @@ export function NavigationMenu({ currentLang, onToggleLanguage }: Props) {
         {isAdmin && (
           <Link
             href="/admin"
-            className={`flex items-center gap-2 transition-all duration-200 hover:text-cardinal-400 ${
-              pathname === "/admin" ? "text-cardinal-500" : "text-chalk-100"
+            className={`flex items-center gap-2 transition-all duration-200 hover:text-brand-primary/80 ${
+              pathname === "/admin" ? "text-brand-primary" : "text-chalk-100"
             }`}
           >
             <Settings className="h-4 w-4" />
@@ -53,7 +53,7 @@ export function NavigationMenu({ currentLang, onToggleLanguage }: Props) {
         {/* Language Toggle */}
         <button
           onClick={onToggleLanguage}
-          className="flex items-center gap-2 text-chalk-100 transition-all duration-200 hover:text-cardinal-400"
+          className="flex items-center gap-2 text-chalk-100 transition-all duration-200 hover:text-brand-primary/80"
         >
           <Languages className="h-4 w-4" />
           <span className="font-medium">{currentLang}</span>

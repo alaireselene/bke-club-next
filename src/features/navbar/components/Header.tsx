@@ -10,12 +10,7 @@ import { DesktopMenu } from "./DesktopMenu";
 // but define the expected props locally for clarity.
 // import type { School as DirectusSchool } from "@/lib/directus";
 
-// Define the expected shape for schools passed to the Header
-interface NavSchool {
-  id: number;
-  name: string;
-  slug: string;
-}
+import { NavSchool } from "../types"; // Import shared type
 
 type Props = {
   schools: NavSchool[]; // Expect an array of the simplified NavSchool type

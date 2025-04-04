@@ -9,7 +9,6 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button"; // Import Button
 import type { FeaturedNewsProps, CategoryType } from "./types";
 import { News } from "../../types";
-import { cn } from "@/lib/utils"; // Import cn
 
 const categories = [
   { slug: "scholarship", name: "Học bổng - Trao đổi" },

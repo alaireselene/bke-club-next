@@ -59,7 +59,7 @@ async function getHomePageData() {
       fields: ['id', 'members_count'] // Only fetch fields needed for stats
     })),
     directus.request(readItems('partner', {
-      fields: ['*'] // Fetch needed fields for PartnersPreview
+      fields: ['*'], // Fetch needed fields for PartnersPreview
     })),
   ]);
 
