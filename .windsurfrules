@@ -1,0 +1,140 @@
+
+## Overview
+
+- Purpose: Centralized platform for HUST research club activities, events, and resources
+- Core Features: Dynamic homepage, news, schedules, resource sharing, Vietnamese support
+
+## Tech Stack
+
+- Core: Next.js 14 App Router, TypeScript 5.x, Directus SDK
+- Cloud: Vercel (frontend), Directus (backend), Cloudinary (images)
+- Styling: Tailwind CSS 4.x, DaisyUI, lucide-react icons
+
+## Development Approach
+
+- Progressive: Build in stages, pause after key components for review
+- Scope: Implement only what's requested; clarify ambiguity with minimal viable solutions
+- Communication: Summarize completed work, classify changes (Small/Medium/Large), outline plans for Large changes
+
+## Architecture
+
+- Patterns: Service (logic), Factory (objects), Observer (updates), Strategy (algorithms), Adapter (integration), Facade (simplicity)
+- Principles: YAGNI (avoid unnecessary features), KISS (keep solutions simple)
+
+## Business Logic
+
+- CMS: Directus handles all content management (clubs, users, events, resources, posts)
+
+## Next.js Patterns
+
+- Data Fetching: Use Directus SDK with Server/Client components
+- Components: Build with Server/Client component pattern
+- State Management: React Context
+- Middleware: Handle auth and routing with Next.js middleware
+
+## Complex Implementation Tactics
+
+- Break Down Components: Split large features into smaller components (max 200 lines each)
+- GraphQL Integration: Use fragments and type-safe queries
+- Incremental Builds: Start with static data, add dynamic features later
+- Facade Pattern: Use Apollo hooks to simplify data access
+- Type Safety: Generate TypeScript types from GraphQL schema
+- Mock Data: Test with WordPress staging environment
+- Documentation: Document GraphQL queries and component usage
+- Refactor Early: Keep code simple and maintainable
+
+## Code Guidelines
+
+- Use TypeScript with strict typing
+- Follow Next.js app router conventions
+- Keep components <200 lines
+- Apply SOLID principles and DI
+- Write self-documenting code with usage examples
+- Separate business logic from UI
+- Follow YAGNI and KISS to avoid over-engineering
+
+## Security
+- Sanitize and validate content with DOMPurify
+
+## Data Fetching
+- Use Directus SDK for data fetching
+- Handle loading and error states
+
+## Performance
+
+- Optimize Directus queries
+- Use React Suspense for loading states
+- Configure proper Directus caching
+
+## Feature Implementation
+
+### Structure
+
+```
+src/features/[feature-name]/
+├── components/     # Feature-specific components
+├── hooks/         # Custom hooks for data fetching
+├── types.ts       # TypeScript types/interfaces
+└── index.ts       # Public API exports
+```
+
+### Guidelines
+
+- Feature Independence: Each feature should be self-contained and reusable
+- Data Flow: Use Directus SDK for data fetching
+- Component Organization:
+  - Keep components under 200 lines
+  - Split into smaller components when needed
+  - Use composition over inheritance
+- Type Safety:
+  - Define interfaces in types.ts
+  - Generate types from Directus schema
+  - Use strict TypeScript checks
+- State Management:
+  - Use custom hooks for data fetching
+  - Implement proper loading states
+  - Handle errors gracefully
+- Testing:
+  - Unit test components
+  - Mock Directus responses
+- Documentation:
+  - Document public API in index.ts
+  - Include usage examples
+  - Document edge cases
+
+### Integration
+
+- Route Setup: Create corresponding route in src/app/
+- Data Fetching: Use Directus SDK with proper caching
+- Component Usage: Import from feature's public API
+- Error Handling: Implement proper error boundaries
+- Loading States: Use Suspense and loading.tsx
+- SEO: Implement proper metadata
+
+# UI Design
+
+CSS file will be put in [globals.css](mdc:src/app/globals.css). It use Tailwind v4 syntax. 
+
+## General theme
+- Theme: Modern, minimalist design with bold visual storytelling
+- Colors: Cardinal Red (#CE1628), Navy Blue (#003366), Sunflower Yellow (#F3C108), Charcoal Gray (#232020)
+- Typography: Bold sans-serif for headings, clean sans-serif for body, emphasis on contrast and hierarchy
+- Layout: Full-width sections, dynamic grid system, immersive imagery, data visualization cards, scroll-based content reveals
+
+## Specific TailwindCSS rules:
+- Use Tailwind utilities with DaisyUI components
+- Implement full-width hero sections with dynamic typography
+- Design interactive data visualization cards
+- Create scroll-based content reveals and transitions
+- Maintain bold typography hierarchy with institutional colors
+- Use full-width imagery and parallax effects
+- Design mobile-first with responsive scaling
+- Implement infographic elements for statistics
+- Theme Lucide icons with institutional colors
+
+## UI Components
+
+- Build with DaisyUI components
+- Ensure accessibility (ARIA)
+- Implement loading states with Suspense
+- Instead of reinvent the wheel, just use shadcn components

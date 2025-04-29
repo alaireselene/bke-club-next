@@ -73,10 +73,6 @@ export default function StructurePage() {
               Danh sách Ban Điều hành
             </h3>
             <ul className="space-y-2 text-gray-700">
-              {/* <li>
-                <span className="font-bold">PGS.TS. Huỳnh Đăng Chính</span> -
-                Chủ tịch Mạng lưới CLB Sinh viên NCKH (Phụ trách chung)
-              </li> */}
               <li>
                 <span className="font-bold">PGS.TS. Lương Xuân Điển</span> - Phó
                 Chủ tịch Thường trực Mạng lưới CLB Sinh viên NCKH (Phụ trách

@@ -47,37 +47,37 @@ export function QuickAbout() {
             </div>
 
             {/* Quick Links using Card component */}
-            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6"> {/* Adjusted gap */}
-              <Link href="/about/overview" className="block group">
-                <Card className="h-full"> {/* Use Card, ensure full height */}
-                  <CardHeader className="pb-2"> {/* Adjust padding */}
-                    <CardTitle className="text-lg sm:text-xl text-secondary"> {/* Adjusted size and color */}
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+              <Link href="/about/overview" className="block group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl">
+                <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+                  <CardHeader className="pb-2 flex-row items-center gap-3 p-6">
+                    <CardTitle className="text-lg sm:text-xl font-bold leading-tight group-hover:text-primary transition-colors">
                       Tổng quan
                     </CardTitle>
                     <CardAction>
-                      <ArrowUpRight className="h-5 w-5 text-secondary transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      <ArrowUpRight className="h-5 w-5 text-secondary transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary group-focus-within:text-primary" />
                     </CardAction>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-sm sm:text-base text-muted-foreground"> {/* Adjusted size */}
+                  <CardContent className="px-6 pb-6 pt-0">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                       Tìm hiểu về lịch sử, sứ mệnh và tầm nhìn của mạng lưới
                     </p>
                   </CardContent>
                 </Card>
               </Link>
 
-              <Link href="/about/structure" className="block group">
-                <Card className="h-full"> {/* Use Card, ensure full height */}
-                  <CardHeader className="pb-2"> {/* Adjust padding */}
-                    <CardTitle className="text-lg sm:text-xl text-secondary"> {/* Adjusted size and color */}
+              <Link href="/about/structure" className="block group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl">
+                <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+                  <CardHeader className="pb-2 flex-row items-center gap-3 p-6">
+                    <CardTitle className="text-lg sm:text-xl font-bold leading-tight group-hover:text-primary transition-colors">
                       Cơ cấu tổ chức
                     </CardTitle>
                     <CardAction>
-                      <ArrowUpRight className="h-5 w-5 text-secondary transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      <ArrowUpRight className="h-5 w-5 text-secondary transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-primary group-focus-within:text-primary" />
                     </CardAction>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-sm sm:text-base text-muted-foreground"> {/* Adjusted size */}
+                  <CardContent className="px-6 pb-6 pt-0">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                       Khám phá cấu trúc và các đơn vị thành viên của mạng lưới
                     </p>
                   </CardContent>

@@ -50,6 +50,7 @@ export interface Event extends BaseEntity {
   organizer_logo_url?: string;
   sponsor?: 'json';
   register_url?: string;
+  featured_image?: UUID;
 }
 
 export interface Resource extends BaseEntity {
@@ -84,4 +85,6 @@ export interface MySchema {
 }
 
 // Create and export the Directus client with rest() composable
-export const directus = createDirectus<MySchema>(process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000").with(rest());
+export const directus = createDirectus<MySchema>(process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000").with(rest({
+  onRequest: (options) => ({ ...options, cache: 'no-store' }),
+}));

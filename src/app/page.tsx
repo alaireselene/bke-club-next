@@ -101,24 +101,31 @@ export default async function HomePage() {
     await getHomePageData();
 
   return (
-    <main>
-      <Hero stats={stats} />
+    <main className="bg-white">
+      {/* Each section uses standardized container and spacing */}
+      <section className="section-container">
+        <Hero stats={stats} />
+      </section>
 
-      {/* Quick About Section */}
-      <QuickAbout />
+      <section className="section-container">
+        <QuickAbout />
+      </section>
 
-      {/* Research Areas */}
-      <ResearchAreas />
+      <section className="section-container">
+        <ResearchAreas />
+      </section>
 
-      {/* Featured News */}
-      {/* Cast to feature types until components are updated */}
-      <FeaturedNews news={featuredNews as News[]} />
+      <section className="section-container">
+        <FeaturedNews news={featuredNews as News[]} />
+      </section>
 
-      {/* Partners Section */}
-      <PartnersPreview partners={partners as FeaturePartner[]} />
+      <section className="section-container">
+        <PartnersPreview partners={partners as FeaturePartner[]} />
+      </section>
 
-      {/* Featured Events */}
-      <FeaturedEvents events={upcomingEvents as FeatureEvent[]} />
+      <section className="section-container">
+        <FeaturedEvents events={upcomingEvents as FeatureEvent[]} />
+      </section>
     </main>
   );
 }
