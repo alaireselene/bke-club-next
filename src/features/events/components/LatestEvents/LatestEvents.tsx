@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { EventCard } from "../EventCard/EventCard";
+import { EventCard } from "@/features/events";
 import { CategoryTabs } from "@/components/shared/CategoryTabs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -14,7 +14,7 @@ const categories = [
   { slug: "research-event", name: "Nghiên cứu" },
 ];
 
-export function FeaturedEvents({ events }: FeaturedEventsProps) {
+export function LatestEvents({ events }: FeaturedEventsProps) {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
     null
   );
@@ -35,9 +35,6 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
           return false; // Exclude if categories JSON is invalid
         }
       });
-
-  const heroEvent = filteredEvents[0];
-  const smallEvents = filteredEvents.slice(1, 5);
 
   return (
     <section className="relative py-12 sm:py-16 overflow-hidden"> {/* Adjusted padding */}
@@ -76,33 +73,10 @@ export function FeaturedEvents({ events }: FeaturedEventsProps) {
         </div>
 
         {filteredEvents.length > 0 ? (
-          <div key="events" className="grid gap-6 sm:gap-8 lg:grid-cols-12"> {/* Removed fixed height, adjusted gap */}
-            {/* Hero Event */}
-            {heroEvent && (
-              <div className="lg:col-span-7"> {/* Removed h-full */}
-                <EventCard event={heroEvent} />
-              </div>
-            )}
-
-            {/* Small Events Grid */}
-            {smallEvents.length > 0 && (
-              <div className="grid grid-rows-2 gap-6 sm:gap-8 lg:col-span-5"> {/* Adjusted gap */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8"> {/* Stack on smallest, adjusted gap */}
-                  {smallEvents.slice(0, 2).map((event) => (
-                    <div key={event.id}> {/* Use id, removed h-full */}
-                      <EventCard event={event} />
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8"> {/* Stack on smallest, adjusted gap */}
-                  {smallEvents.slice(2, 4).map((event) => (
-                    <div key={event.id}> {/* Use id, removed h-full */}
-                      <EventCard event={event} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {filteredEvents.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
           </div>
         ) : (
           <div

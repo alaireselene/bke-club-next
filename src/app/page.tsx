@@ -7,8 +7,8 @@ import { readItems } from "@directus/sdk"; // Import readItems function
 // Remove GraphQL query imports
 
 import { Hero } from "@/features/homepage/components/Hero/Hero";
-import { FeaturedNews } from "@/features/news/components/FeaturedNews/FeaturedNews";
-import { FeaturedEvents } from "@/features/events/components/FeaturedEvents/FeaturedEvents";
+import { LatestNews } from "@/features/news/components/LatestNews/LatestNews";
+import { LatestEvents } from "@/features/events/components/LatestEvents/LatestEvents";
 import { ResearchAreas } from "@/features/homepage/components/ResearchAreas/ResearchAreas";
 import { QuickAbout } from "@/features/homepage/components/QuickAbout/QuickAbout";
 import { PartnersPreview } from "@/features/partners/components/PartnersPreview";
@@ -116,7 +116,7 @@ export default async function HomePage() {
       </section>
 
       <section className="section-container">
-        <FeaturedNews news={featuredNews as News[]} />
+        <LatestNews news={featuredNews as News[]} />
       </section>
 
       <section className="section-container">
@@ -124,7 +124,7 @@ export default async function HomePage() {
       </section>
 
       <section className="section-container">
-        <FeaturedEvents events={upcomingEvents as FeatureEvent[]} />
+        <LatestEvents events={upcomingEvents as FeatureEvent[]} />
       </section>
     </main>
   );

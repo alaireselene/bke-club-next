@@ -31,6 +31,7 @@ export interface Club extends BaseEntity {
 
 export interface Post extends BaseEntity {
   title: string;
+  featured: boolean;
   content: string;
   categories: 'json';
   preview_image?: UUID;
@@ -38,6 +39,7 @@ export interface Post extends BaseEntity {
 
 export interface Event extends BaseEntity {
   title: string;
+  featured: boolean;
   categories: 'json';
   description: string;
   event_start: 'datetime';

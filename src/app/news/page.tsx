@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { directus, Post } from "@/lib/directus"; // Import directus client and Post type
 import { readItems } from "@directus/sdk"; // Import readItems function
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
+import { FeaturedNews } from "@/features/news/components/FeaturedNews";
 import { NewsFilter } from "@/features/news/components/NewsFilter";
 import { getCategorySlug, getCategoryDisplayName } from "@/features/news/utils/categoryUtils"; // Import shared categories and helpers
 
@@ -52,6 +53,8 @@ async function getNewsData() {
 
 export default async function NewsPage() {
   const { news, categories } = await getNewsData();
+  const featuredPosts = news.filter((p) => p.featured);
+  const otherPosts    = news.filter((p) => !p.featured);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-base-200/20 to-transparent">
@@ -70,9 +73,12 @@ export default async function NewsPage() {
         <div className="relative">
           <div className="absolute inset-x-0 -top-16 -bottom-16 bg-base-200/20 -skew-y-3" />
           <div className="relative">
+            {featuredPosts.length > 0 && (
+              <FeaturedNews news={news} />
+            )}
             <NewsFilter
               categories={categories}
-              news={news}
+              news={otherPosts}
             />
           </div>
         </div>
@@ -80,4 +86,3 @@ export default async function NewsPage() {
     </main>
   );
 }
-
