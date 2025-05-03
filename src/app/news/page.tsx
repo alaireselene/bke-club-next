@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Tin tức và thông báo mới nhất từ Mạng lưới",
 };
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 60;
 
 // Remove GraphQL specific interfaces
 

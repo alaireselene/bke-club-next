@@ -60,10 +60,10 @@ export function NewsCard({ news }: { news: News }) {
         className={`group relative h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg ${imageUrl ? '' : 'bg-card'} bg-cover bg-center ${hasBgImage ? 'text-white' : ''}`}
       >
         {news.featured && (
-          <Star className="absolute top-2 right-2 h-5 w-5 text-yellow-400" />
+          <Star className="absolute top-2 right-2 h-5 w-5" color="yellow" fill="yellow" />
         )}
         <CardContent className="flex flex-col flex-grow gap-4 p-6 sm:p-8">
-          <span className={`inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold ${hasBgImage ? 'text-white' : 'text-primary'} mb-2`}>
+          <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${hasBgImage ? 'text-white border-white border-2' : 'text-primary bg-primary/10'} mb-2`}>
             {getCategoryDisplayName(mainCategoryName)}
           </span>
           <h3 className={`text-lg sm:text-xl font-bold leading-tight line-clamp-2 transition-colors ${hasBgImage ? 'text-white group-hover:text-white' : 'text-black group-hover:text-primary'}`}>

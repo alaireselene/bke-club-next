@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils/date";
 import { createExcerpt } from "@/lib/utils/contentModify";
+import { getCategoryDisplayName } from "../../utils/categoryUtils";
 
 import type { EventCardProps } from "./types";
 
@@ -32,6 +33,7 @@ export function EventCard({
   const excerpt = createExcerpt(description);
   const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:3000";
   const imageUrl = featured_image ? `${directusUrl}/assets/${featured_image}` : null;
+  const mainCategory = categories && categories.length > 0 ? categories[0] : null;
 
   return (
     <Link
@@ -54,9 +56,10 @@ export function EventCard({
         )}
         <CardContent className="flex flex-col flex-grow gap-4 p-6 sm:p-8">
           {/* Badge for event type/category if present */}
-          {categories && (
-            <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-2">
-              {categories[0]}
+          { mainCategory && ( // Check if mainCategory exists
+              <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-2">
+              {/* Use the display name function */}
+                {getCategoryDisplayName(mainCategory)}
             </span>
           )}
           <h3 className="text-lg sm:text-xl font-bold leading-tight line-clamp-2 group-hover:text-primary transition-colors">

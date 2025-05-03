@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { directus, Event } from "@/lib/directus"; // Import directus client and Event type
 import { readItems } from "@directus/sdk"; // Import readItems function
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
-import { EventCard } from "@/features/events/components/EventCard/EventCard";
-import { PastEvents } from "@/features/events/components/PastEvents/PastEvents";
+import { EventFilter } from "@/features/events/components/EventFilter";
+import { getCategorySlug, getCategoryDisplayName } from "@/features/events/utils/categoryUtils"; // Import shared categories and helpers
 import { Suspense } from "react";
 // Event type is already updated in features/events/types.ts
 import { parseISO, isBefore } from "date-fns";
@@ -17,28 +17,49 @@ export const revalidate = 60; // Revalidate every hour
 
 // Remove GraphQL specific EventsData interface
 
-async function getEventsData(limit = 20) { // Fetch more initially for splitting
+async function getEventsData() { // Fetch more initially for splitting
   try {
     const eventsData = await directus.request(readItems('event', {
       fields: ['*'], // Fetch all fields needed by EventCard and splitting logic
-      sort: ['event_start'], // Sort ascending by start date
-      limit: limit,
-      // We might need more complex filtering/sorting later if we want *all* upcoming
-      // and then paginate past events separately. For now, fetch a mixed batch.
+      sort: ['-event_start'], // Sort ascending by start date
     }));
+    
+    const events = eventsData as Event[];
+    
+    // Extract unique category identifiers (could be names or slugs) from the fetched events
+    const allCategoryIdentifiers = events.flatMap(event => {
+      try {
+        const parsedCategories = typeof event.categories === 'string' ? JSON.parse(event.categories) : event.categories;
+        return Array.isArray(parsedCategories) ? parsedCategories : [];
+      } catch (e) {
+        console.error("Error parsing categories for event:", event.id, e);
+        return [];
+      }
+    });
+    const uniqueIdentifiers = [...new Set(allCategoryIdentifiers)];
+
+    // Map unique identifiers to consistent { name, slug } objects using the utility
+    const uniqueCategories = uniqueIdentifiers.map(identifier => {
+      const name = getCategoryDisplayName(identifier); // Get consistent display name
+      const slug = getCategorySlug(identifier);       // Get consistent slug
+      return { name, slug };
+    }).filter((cat, index, self) => // Ensure uniqueness based on slug after mapping
+      index === self.findIndex((c) => c.slug === cat.slug)
+    );
+    
     return {
-      events: eventsData as Event[],
+      events: events,
+      categories: uniqueCategories,
       // No pageInfo equivalent directly, pagination handled differently
     };
   } catch (error) {
     console.error("Error fetching events from Directus:", error);
-    return { events: [] };
+    return { events: [], categories: [] };
   }
 }
 
 export default async function EventsPage() {
-  const initialFetchLimit = 20; // Match the limit in getEventsData
-  const { events } = await getEventsData(initialFetchLimit);
+  const { events, categories } = await getEventsData();
 
   const upcomingEvents = events.filter((event) => {
     // Use direct event_start field
@@ -78,24 +99,12 @@ export default async function EventsPage() {
         </div>
 
         <div className="space-y-16">
-          {/* Upcoming Events */}
+          {/* Upcoming Events with Category Filter */}
           <Suspense fallback={<div>Đang tải...</div>}>
             <section>
               <h2 className="text-2xl font-bold mb-8">Sự kiện sắp diễn ra</h2>
               {upcomingEvents.length > 0 ? (
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                  {upcomingEvents.map((event, index) => (
-                    <div
-                      key={event.id} // Use id
-                      className="transform transition-all duration-300 hover:scale-[1.02] opacity-0 motion-safe:animate-[fadeIn_0.5s_ease-out_forwards]"
-                      style={{
-                        animationDelay: `${index * 100}ms`,
-                      }}
-                    >
-                      <EventCard event={event} />
-                    </div>
-                  ))}
-                </div>
+                <></>
               ) : (
                 <div className="text-center py-16 text-base-content/60 bg-white/50 rounded-xl backdrop-blur-sm border border-slate-200/60">
                   <div className="text-5xl mb-4">🎉</div>
@@ -109,21 +118,25 @@ export default async function EventsPage() {
             </section>
           </Suspense>
 
-          {/* Past Events */}
-          {pastEvents.length > 0 && (
-            <Suspense fallback={<div>Đang tải...</div>}>
-              <PastEvents
-                initialEvents={pastEvents}
-                // Pass initial past events. Pagination props need adjustment
-                // based on how PastEvents will be refactored (e.g., pass total fetched count or initial offset)
-                // For now, remove cursor/hasMore props derived from GraphQL pageInfo
-                // We might need to calculate if more past events *could* exist based on initial fetch
-                // Estimate initialHasMore based on whether the initial fetch returned the limit
-                initialHasMore={events.length === initialFetchLimit}
-                // Remove initialCursor prop
-              />
-            </Suspense>
-          )}
+          {/* Past Events with Category Filter */}
+          <Suspense fallback={<div>Đang tải...</div>}>
+            <section>
+              <h2 className="text-2xl font-bold mb-8">Danh sách sự kiện</h2>
+              {pastEvents.length > 0 ? (
+                  <EventFilter
+                      categories={categories}
+                      events={events}
+                  />
+              ) : (
+                <div className="text-center py-16 text-base-content/60 bg-white/50 rounded-xl backdrop-blur-sm border border-slate-200/60">
+                  <div className="text-5xl mb-4">🎉</div>
+                  <p>
+                    Danh sách trống.
+                  </p>
+                </div>
+              )}
+            </section>
+          </Suspense>
         </div>
       </div>
     </main>
