@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Club, directus, School } from "@/lib/directus"; // Import directus client and School type
 import { readItems } from "@directus/sdk"; // Import readItems function
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/react"
 // Remove ApolloWrapper import
 
 // Revalidate all pages every 60 seconds
@@ -127,6 +128,7 @@ export default async function RootLayout({
           <main className="mt-28 flex-grow pb-20 transition-all duration-300 sm:mt-32">
             <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
               {children}
+              <Analytics />
             </div>
           </main>
 
