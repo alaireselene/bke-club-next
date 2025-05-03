@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/utils/date";
 import { createExcerpt } from "@/lib/utils/contentModify";
-import { getCategoryDisplayName } from "../../utils/categoryUtils";
+import { getCategoryDisplayName } from "@/features/events/utils/categoryUtils";
 
 import type { EventCardProps } from "./types";
 
