@@ -44,3 +44,8 @@ next-env.d.ts
 # lock file
 bun.lock
 pnpm-lock.yaml
+
+# AI IDE
+.cursor
+.vscode
+.windsurfrules
