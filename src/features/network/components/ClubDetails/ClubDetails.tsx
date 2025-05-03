@@ -117,21 +117,21 @@ export function ClubDetails({
       </div>
 
       {/* Main content grid - optimized for two sections */}
-      <div className="grid gap-6 sm:gap-8 lg:grid-cols-12"> {/* Adjusted gap */}
+      <div className="grid gap-6 sm:gap-8 lg:grid-cols-12">
         {/* Leadership Section - takes 4/12 columns on large screens */}
         <Card
           className={cn(
-            `lg:col-span-4 h-fit animate-fade-in opacity-0` // Use Card, h-fit
+            "lg:col-span-4 h-fit animate-fade-in opacity-0"
           )}
           style={{ animationDuration: '0.7s', animationDelay: '0.3s', animationFillMode: 'forwards' }}
         >
-          <CardHeader>
+          <CardHeader className="flex-row items-center justify-between space-y-0 p-6 pb-2">
             <CardTitle className="flex items-center text-lg sm:text-xl"> {/* Adjusted size */}
               <Award className="h-5 w-5 mr-2 text-primary" /> {/* Use theme color */}
               Ban điều hành
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-5"> {/* Adjusted spacing */}
+          <CardContent className="space-y-5 pb-6"> {/* Adjusted spacing */}
             {/* President */}
             <div className="flex">
               <div className="w-1 mr-4 sm:mr-5 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div> {/* Use theme color */}
@@ -162,17 +162,17 @@ export function ClubDetails({
         {/* Description - takes 8/12 columns on large screens */}
         <Card
           className={cn(
-            `lg:col-span-8 animate-fade-in opacity-0` // Use Card
+            "lg:col-span-8 animate-fade-in opacity-0"
           )}
           style={{ animationDuration: '0.7s', animationDelay: '0.5s', animationFillMode: 'forwards' }}
         >
-          <CardHeader>
+          <CardHeader className="flex-row items-center justify-between space-y-0 p-6 pb-2">
             <CardTitle className="flex items-center text-lg sm:text-xl"> {/* Adjusted size */}
               <BookOpen className="h-5 w-5 mr-2 text-primary" /> {/* Use theme color */}
               Giới thiệu
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-5 pb-6">
             <div className="prose prose-base max-w-none prose-headings:text-primary prose-headings:font-semibold prose-p:text-muted-foreground prose-a:text-primary hover:prose-a:underline prose-img:rounded-lg prose-img:shadow-md prose-strong:text-foreground prose-ul:text-muted-foreground prose-ol:text-muted-foreground dark:prose-invert"> {/* Adjusted prose colors */}
               {/* Use club.description, assuming HTML */}
               {club.description ? (

@@ -180,32 +180,45 @@ export function ResearchAreas() {
         </div>
 
         {/* Research Areas Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"> {/* Adjusted grid and gap */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {researchAreas.map((area) => {
             const Icon = icons[area.icon as keyof typeof icons];
-            const iconColorClasses = colorMap[area.color] || "bg-muted/10 text-muted-foreground"; // Fallback color
+            const iconColorClasses = colorMap[area.color] || "bg-muted/10 text-muted-foreground";
             return (
-              <Card key={area.title} className="h-full flex flex-col"> {/* Use Card, ensure full height */}
-                <CardHeader className="flex flex-row items-start gap-4 space-y-0"> {/* Use flex for icon layout */}
-                  <div className={cn("inline-flex items-center justify-center w-10 h-10 rounded-lg", iconColorClasses)}> {/* Adjusted size/rounding */}
-                    {Icon ? <Icon className="w-5 h-5" /> : null} {/* Adjusted size */}
+              <Card
+                key={area.title}
+                className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200"
+                tabIndex={0}
+              >
+                <CardHeader className="flex flex-row items-start gap-4 space-y-0 p-6 pb-2">
+                  <div
+                    className={cn(
+                      "inline-flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 group-hover:scale-105 group-focus-within:scale-105",
+                      iconColorClasses
+                    )}
+                  >
+                    {Icon ? <Icon className="w-6 h-6" /> : null}
                   </div>
                   <div className="flex-1">
-                    <CardTitle className="text-lg">{area.title}</CardTitle> {/* Adjusted size */}
-                    <p className="text-sm text-muted-foreground pt-1">{area.description}</p> {/* Use p tag */}
+                    <CardTitle className="text-lg sm:text-xl font-bold leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                      {area.title}
+                    </CardTitle>
+                    <p className="text-sm sm:text-base text-muted-foreground pt-1">
+                      {area.description}
+                    </p>
                   </div>
                 </CardHeader>
-                <CardContent className="flex-grow pt-2"> {/* Use flex-grow, adjust padding */}
+                <CardContent className="flex-grow pt-2 px-6 pb-6">
                   {/* Schools List */}
-                  <div className="space-y-1.5 pt-2 border-t border-border"> {/* Adjust spacing and add border */}
+                  <div className="space-y-1.5 pt-2 border-t border-border">
                     {area.schools.map((school) => (
                       <div
                         key={school.name}
-                        className="flex items-center justify-between text-xs" // Adjusted size
+                        className="flex items-center justify-between text-xs sm:text-sm"
                       >
-                        <span className="text-muted-foreground">{school.name}</span>
+                        <span className="text-muted-foreground line-clamp-1">{school.name}</span>
                         {school.code && (
-                          <span className="font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded"> {/* Adjusted styles */}
+                          <span className="font-mono text-primary bg-primary/10 px-2 py-0.5 rounded text-xs sm:text-sm">
                             {school.code}
                           </span>
                         )}

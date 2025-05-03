@@ -7,8 +7,8 @@ import { readItems } from "@directus/sdk"; // Import readItems function
 // Remove GraphQL query imports
 
 import { Hero } from "@/features/homepage/components/Hero/Hero";
-import { FeaturedNews } from "@/features/news/components/FeaturedNews/FeaturedNews";
-import { FeaturedEvents } from "@/features/events/components/FeaturedEvents/FeaturedEvents";
+import { LatestNews } from "@/features/news/components/LatestNews/LatestNews";
+import { LatestEvents } from "@/features/events/components/LatestEvents/LatestEvents";
 import { ResearchAreas } from "@/features/homepage/components/ResearchAreas/ResearchAreas";
 import { QuickAbout } from "@/features/homepage/components/QuickAbout/QuickAbout";
 import { PartnersPreview } from "@/features/partners/components/PartnersPreview";
@@ -101,24 +101,31 @@ export default async function HomePage() {
     await getHomePageData();
 
   return (
-    <main>
-      <Hero stats={stats} />
+    <main className="bg-white">
+      {/* Each section uses standardized container and spacing */}
+      <section className="section-container">
+        <Hero stats={stats} />
+      </section>
 
-      {/* Quick About Section */}
-      <QuickAbout />
+      <section className="section-container">
+        <QuickAbout />
+      </section>
 
-      {/* Research Areas */}
-      <ResearchAreas />
+      <section className="section-container">
+        <ResearchAreas />
+      </section>
 
-      {/* Featured News */}
-      {/* Cast to feature types until components are updated */}
-      <FeaturedNews news={featuredNews as News[]} />
+      <section className="section-container">
+        <LatestNews news={featuredNews as News[]} />
+      </section>
 
-      {/* Partners Section */}
-      <PartnersPreview partners={partners as FeaturePartner[]} />
+      <section className="section-container">
+        <PartnersPreview partners={partners as FeaturePartner[]} />
+      </section>
 
-      {/* Featured Events */}
-      <FeaturedEvents events={upcomingEvents as FeatureEvent[]} />
+      <section className="section-container">
+        <LatestEvents events={upcomingEvents as FeatureEvent[]} />
+      </section>
     </main>
   );
 }

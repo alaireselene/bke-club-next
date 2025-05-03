@@ -1,3 +1,5 @@
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
 export const metadata = {
   title: "Tổng quan - Mạng lưới CLB Sinh viên NCKH",
   description:
@@ -117,86 +119,92 @@ export default function OverviewPage() {
           Giá trị cốt lõi
         </h2>
         <p> Mạng lưới hoạt động dựa trên các nguyên tắc </p>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold text-cardinal-600 mb-3">
-              Tiên phong
-            </h3>
-            <ul>
-              <li>
-                Dẫn đầu trong nghiên cứu khoa học sinh viên, ứng dụng công nghệ
-                và đổi mới sáng tạo để giải quyết các vấn đề thực tiễn trong
-                cuộc sống.
-              </li>
-              <li>
-                Chủ động khai phá những hướng đi mới, giải quyết các thách thức
-                khoa học và công nghệ, thúc đẩy sự phát triển bền vững.
-              </li>
-            </ul>
-          </div>
-
-          <div className="rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold text-cardinal-600 mb-3">
-              Sáng tạo
-            </h3>
-            <ul>
-              <li>
-                Không ngừng đổi mới tư duy, phương pháp và cách tiếp cận trong
-                nghiên cứu.
-              </li>
-              <li>
-                Khuyến khích các ý tưởng đột phá, tư duy phản biện và tinh thần
-                khởi nghiệp trong nghiên cứu khoa học.
-              </li>
-            </ul>
-          </div>
-
-          <div className="rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold text-cardinal-600 mb-3">
-              Đột phá
-            </h3>
-            <ul>
-              <li>
-                Dám nghĩ, dám làm, thử nghiệm các ý tưởng tiên phong trong hoạt
-                động nghiên cứu.
-              </li>
-              <li>
-                Đề xuất các ý tưởng mang tính cách mạng, tạo ra những bước tiến
-                vượt bậc trong khoa học và đổi mới sáng tạo.
-              </li>
-            </ul>
-          </div>
-
-          <div className="rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold text-cardinal-600 mb-3">
-              Kiên định
-            </h3>
-            <ul>
-              <li>
-                Kiên trì, bền bỉ và không bỏ cuộc trong quá trình nghiên cứu.
-              </li>
-              <li>
-                Sẵn sàng đối mặt với thách thức, không ngại khó khăn trong hành
-                trình khám phá tri thức khoa học và công nghệ.
-              </li>
-            </ul>
-          </div>
-
-          <div className="rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <h3 className="text-xl font-semibold text-cardinal-600 mb-3">
-              Tiếp nối - Sáng tạo - Trách nhiệm
-            </h3>
-            <ul>
-              <li>
-                Kế thừa và phát triển các thành tựu khoa học - công nghệ, tạo
-                nền tảng cho những đổi mới đột phá.
-              </li>
-              <li>
-                Đề cao tinh thần dấn thân, cống hiến tri thức vì sự phát triển
-                của đất nước.
-              </li>
-            </ul>
-          </div>
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+            <CardHeader className="pb-2 p-6">
+              <CardTitle className="text-xl font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                Tiên phong
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-6 pb-6 pt-0">
+              <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                <li>
+                  Dẫn đầu trong nghiên cứu khoa học sinh viên, ứng dụng công nghệ và đổi mới sáng tạo để giải quyết các vấn đề thực tiễn trong cuộc sống.
+                </li>
+                <li>
+                  Chủ động khai phá những hướng đi mới, giải quyết các thách thức khoa học và công nghệ, thúc đẩy sự phát triển bền vững.
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+            <CardHeader className="pb-2 p-6">
+              <CardTitle className="text-xl font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                Sáng tạo
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-6 pb-6 pt-0">
+              <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                <li>
+                  Không ngừng đổi mới tư duy, phương pháp và cách tiếp cận trong nghiên cứu.
+                </li>
+                <li>
+                  Khuyến khích các ý tưởng đột phá, tư duy phản biện và tinh thần khởi nghiệp trong nghiên cứu khoa học.
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+            <CardHeader className="pb-2 p-6">
+              <CardTitle className="text-xl font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                Đột phá
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-6 pb-6 pt-0">
+              <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                <li>
+                  Dám nghĩ, dám làm, thử nghiệm các ý tưởng tiên phong trong hoạt động nghiên cứu.
+                </li>
+                <li>
+                  Đề xuất các ý tưởng mang tính cách mạng, tạo ra những bước tiến vượt bậc trong khoa học và đổi mới sáng tạo.
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+            <CardHeader className="pb-2 p-6">
+              <CardTitle className="text-xl font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                Kiên định
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-6 pb-6 pt-0">
+              <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                <li>
+                  Kiên trì, bền bỉ và không bỏ cuộc trong quá trình nghiên cứu.
+                </li>
+                <li>
+                  Sẵn sàng đối mặt với thách thức, không ngại khó khăn trong hành trình khám phá tri thức khoa học và công nghệ.
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+          <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+            <CardHeader className="pb-2 p-6">
+              <CardTitle className="text-xl font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                Tiếp nối - Sáng tạo - Trách nhiệm
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-6 pb-6 pt-0">
+              <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                <li>
+                  Kế thừa và phát triển các thành tựu khoa học - công nghệ, tạo nền tảng cho những đổi mới đột phá.
+                </li>
+                <li>
+                  Đề cao tinh thần dấn thân, cống hiến tri thức vì sự phát triển của đất nước.
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -234,92 +242,94 @@ export default function OverviewPage() {
             chiến lược trọng tâm:
           </p>
 
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
-                Đẩy mạnh đào tạo và nghiên cứu về công nghệ số
-              </h3>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>
-                  Đào tạo các kỹ năng nghiên cứu khoa học và các kỹ năng công bố
-                  các ấn phẩm khoa học
-                </li>
-                <li>
-                  Tổ chức các khóa học về trí tuệ nhân tạo (AI), dữ liệu lớn
-                  (Big Data), Internet vạn vật (IoT) và an ninh mạng.
-                </li>
-                <li>
-                  Hướng dẫn sinh viên tiếp cận các công nghệ tiên tiến, tham gia
-                  các dự án nghiên cứu về chuyển đổi số.
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
-                Tăng cường trao đổi sinh viên, công bố khoa học và tham gia
-                seminar
-              </h3>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>
-                  Khuyến khích sinh viên viết bài báo khoa học, công bố trên các
-                  tạp chí uy tín.
-                </li>
-                <li>
-                  Hỗ trợ sinh viên tham gia hội nghị khoa học trong và ngoài
-                  nước nhằm học hỏi và mở rộng mạng lưới hợp tác.
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
-                Thúc đẩy hợp tác giữa sinh viên và doanh nghiệp
-              </h3>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>
-                  Phối hợp với các tập đoàn công nghệ để triển khai chương trình
-                  thực tập sinh, thực tập kỹ thuật, thực tập tốt nghiệp, trao
-                  đổi sinh viên; và thực hiện các đề tài nghiên cứu ứng dụng.
-                </li>
-                <li>
-                  Kết nối sinh viên với các chuyên gia và cố vấn trong ngành để
-                  hỗ trợ định hướng nghiên cứu.
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
-                Hỗ trợ khởi nghiệp đổi mới sáng tạo
-              </h3>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>
-                  Xây dựng chương trình ươm tạo khởi nghiệp dành cho sinh viên.
-                </li>
-                <li>
-                  Tạo cơ chế hỗ trợ tài chính và kết nối với các quỹ đầu tư,
-                  giúp sinh viên hiện thực hóa ý tưởng nghiên cứu thành sản phẩm
-                  thương mại.
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-semibold text-cardinal-600 mb-2">
-                Phát triển cơ sở vật chất và tài nguyên
-              </h3>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>
-                  Phát triển và cập nhật các học liệu và hướng dẫn cách sử dụng
-                  các phần mềm
-                </li>
-                <li>
-                  Hình thành trung tâm chế tạo phục vụ các đề tài và cuộc thi
-                  NCKH & ĐMST
-                </li>
-              </ul>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+              <CardHeader className="pb-2 p-6">
+                <CardTitle className="text-lg font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                  Đẩy mạnh đào tạo và nghiên cứu về công nghệ số
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-6 pb-6 pt-0">
+                <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                  <li>
+                    Đào tạo các kỹ năng nghiên cứu khoa học và các kỹ năng công bố các ấn phẩm khoa học
+                  </li>
+                  <li>
+                    Tổ chức các khóa học về trí tuệ nhân tạo (AI), dữ liệu lớn (Big Data), Internet vạn vật (IoT) và an ninh mạng.
+                  </li>
+                  <li>
+                    Hướng dẫn sinh viên tiếp cận các công nghệ tiên tiến, tham gia các dự án nghiên cứu về chuyển đổi số.
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+              <CardHeader className="pb-2 p-6">
+                <CardTitle className="text-lg font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                  Tăng cường trao đổi sinh viên, công bố khoa học và tham gia seminar
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-6 pb-6 pt-0">
+                <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                  <li>
+                    Khuyến khích sinh viên viết bài báo khoa học, công bố trên các tạp chí uy tín.
+                  </li>
+                  <li>
+                    Hỗ trợ sinh viên tham gia hội nghị khoa học trong và ngoài nước nhằm học hỏi và mở rộng mạng lưới hợp tác.
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+              <CardHeader className="pb-2 p-6">
+                <CardTitle className="text-lg font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                  Thúc đẩy hợp tác giữa sinh viên và doanh nghiệp
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-6 pb-6 pt-0">
+                <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                  <li>
+                    Phối hợp với các tập đoàn công nghệ để triển khai chương trình thực tập sinh, thực tập kỹ thuật, thực tập tốt nghiệp, trao đổi sinh viên; và thực hiện các đề tài nghiên cứu ứng dụng.
+                  </li>
+                  <li>
+                    Kết nối sinh viên với các chuyên gia và cố vấn trong ngành để hỗ trợ định hướng nghiên cứu.
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            {/* Hỗ trợ khởi nghiệp đổi mới sáng tạo */}
+            <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+              <CardHeader className="pb-2 p-6">
+                <CardTitle className="text-lg font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                  Hỗ trợ khởi nghiệp đổi mới sáng tạo
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-6 pb-6 pt-0">
+                <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                  <li>
+                    Tạo cơ chế hỗ trợ tài chính và kết nối với các quỹ đầu tư, giúp sinh viên hiện thực hóa ý tưởng nghiên cứu thành sản phẩm thương mại.
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            {/* Phát triển cơ sở vật chất và tài nguyên */}
+            <Card className="group h-full flex flex-col overflow-hidden transition-shadow hover:shadow-lg focus-within:shadow-lg bg-card border border-border hover:border-primary/30 focus-within:border-primary/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-xl duration-200">
+              <CardHeader className="pb-2 p-6">
+                <CardTitle className="text-lg font-bold text-cardinal-600 group-hover:text-primary transition-colors">
+                  Phát triển cơ sở vật chất và tài nguyên
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-6 pb-6 pt-0">
+                <ul className="list-disc pl-4 space-y-2 text-muted-foreground">
+                  <li>
+                    Phát triển và cập nhật các học liệu và hướng dẫn cách sử dụng các phần mềm
+                  </li>
+                  <li>
+                    Hình thành trung tâm chế tạo phục vụ các đề tài và cuộc thi NCKH & ĐMST
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
