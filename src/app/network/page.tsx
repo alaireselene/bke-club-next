@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  searchParams: { school?: string };
+  searchParams: Promise<{ school?: string }>;
 }
 
 // Revalidate cache every hour
@@ -51,7 +51,8 @@ async function getNetworkData(): Promise<{ schools: SchoolWithClubs[] }> {
   }
 }
 
-export default async function NetworkPage({ searchParams }: Props) {
+export default async function NetworkPage(props: Props) {
+  const searchParams = await props.searchParams;
   const { schools: unsortedSchoolsWithClubs } = await getNetworkData();
 
   // Sort schools in the same order as DesktopMenu:

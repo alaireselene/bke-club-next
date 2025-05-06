@@ -11,7 +11,7 @@ import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt uti
 
 // Assuming the directory is renamed from [slug] to [id]
 interface Props {
-  params: { id: string }; // Expect 'id' instead of 'slug'
+  params: Promise<{ id: string }>; // Expect 'id' instead of 'slug'
 }
 
 // Helper function to fetch event data
@@ -27,7 +27,8 @@ async function getEventData(id: string): Promise<Event | null> {
   }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const event = await getEventData(params.id);
 
   if (!event) {
@@ -45,7 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function EventPage({ params }: Props) {
+export default async function EventPage(props: Props) {
+  const params = await props.params;
   try {
     const event = await getEventData(params.id);
 
@@ -224,27 +226,26 @@ export default async function EventPage({ params }: Props) {
                           className="flex items-center gap-3 rounded-lg bg-slate-50 p-3"
                         >
                           {sponsor.logoUrl && ( // Assuming logoUrl field in JSON
-                            <Image
+                            (<Image
                               src={sponsor.logoUrl}
                               alt={sponsor.name}
                               width={32}
                               height={32}
                               className="h-8 w-auto object-contain"
-                            />
+                            />)
                           )}
                           <div>
                             <p className="font-medium text-slate-900">
                               {sponsor.name}
                             </p>
                             {sponsor.website && ( // Assuming website field in JSON
-                              <a
+                              (<a
                                 href={sponsor.website}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-sm text-cardinal-600 hover:text-cardinal-500"
-                              >
-                                Trang web
-                              </a>
+                              >Trang web
+                                                              </a>)
                             )}
                           </div>
                         </div>

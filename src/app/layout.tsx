@@ -8,6 +8,7 @@ import {Toaster} from "@/components/ui/sonner";
 import {Analytics} from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import Head from "next/head";
+import { manrope, newsreader } from "./fonts";
 
 export const revalidate = 60;
 
@@ -126,7 +127,7 @@ export default async function RootLayout({
             <Header schools={schools}/>
 
             {/* Main Content */}
-            <main className="mt-28 flex-grow pb-20 transition-all duration-300 sm:mt-32">
+            <main className={`${manrope.variable} ${newsreader.variable} mt-28 flex-grow pb-20 transition-all duration-300 sm:mt-32`}>
                 <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
                     {children}
                     <Analytics/>

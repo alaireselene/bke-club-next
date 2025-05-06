@@ -9,7 +9,7 @@ import { createExcerpt } from "@/lib/utils/contentModify"; // Import excerpt uti
 
 // Assuming the directory is renamed from [slug] to [id]
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Remove GraphQL specific ClubData interface
@@ -36,7 +36,8 @@ async function getClubData(slug: string): Promise<Club | null> {
   }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const club = await getClubData(params.slug);
 
   if (!club) {
@@ -55,7 +56,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ClubPage({ params }: Props) {
+export default async function ClubPage(props: Props) {
+  const params = await props.params;
   const club = await getClubData(params.slug);
 
   if (!club) {

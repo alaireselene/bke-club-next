@@ -141,12 +141,12 @@ export function LatestNews({ news }: FeaturedNewsProps) {
           style={{ animationDuration: '0.6s', animationDelay: '0.8s', animationFillMode: 'forwards' }}
         >
           {/* Replaced custom Link with standard Button */}
-          <Link href="/news" passHref legacyBehavior>
+          <Link href="/news" passHref>
             <Button size="lg" variant="default" asChild className="transition-transform hover:scale-105">
-              <a>
+              <span>
                 Xem tất cả tin tức
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+              </span>
             </Button>
           </Link>
         </div>

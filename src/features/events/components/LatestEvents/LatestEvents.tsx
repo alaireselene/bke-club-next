@@ -90,12 +90,12 @@ export function LatestEvents({ events }: FeaturedEventsProps) {
 
         <div className="mt-12 sm:mt-16 text-center"> {/* Adjusted margin */}
           {/* Replaced custom Link with standard Button */}
-          <Link href="/events" passHref legacyBehavior>
+          <Link href="/events" passHref>
             <Button size="lg" asChild>
-              <a>
+              <span>
                 Xem tất cả sự kiện
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+              </span>
             </Button>
           </Link>
         </div>

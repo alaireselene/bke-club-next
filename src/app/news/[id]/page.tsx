@@ -12,7 +12,7 @@ import { getCategoryDisplayName } from "@/features/news/utils/categoryUtils"; //
 
 // Assuming the directory is renamed from [slug] to [id]
 interface Props {
-  params: { id: string }; // Expect 'id' instead of 'slug'
+  params: Promise<{ id: string }>; // Expect 'id' instead of 'slug'
 }
 
 // Remove GraphQL specific NewsData interface
@@ -30,7 +30,8 @@ async function getPostData(id: string): Promise<News | null> {
   }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const post = await getPostData(params.id);
 
   if (!post) {
@@ -53,7 +54,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function NewsPage({ params }: Props) {
+export default async function NewsPage(props: Props) {
+  const params = await props.params;
   const post = await getPostData(params.id);
 
   if (!post) {
@@ -83,7 +85,7 @@ export default async function NewsPage({ params }: Props) {
     <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Featured Image */}
       {imageUrl && ( // Use constructed image URL
-        <div className="mb-8">
+        (<div className="mb-8">
           <Image
             src={imageUrl}
             alt={post.title}
@@ -92,16 +94,15 @@ export default async function NewsPage({ params }: Props) {
             className="h-[400px] w-full rounded-lg object-cover shadow-lg"
             priority
           />
-        </div>
+        </div>)
       )}
-
       {/* Header */}
       <header className="mb-12 text-center">
         <div className="mb-4 flex items-center justify-center gap-2 text-sm text-slate-500">
           {mainCategoryName && ( // Use parsed category name
-            <span className="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-800">
+            (<span className="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-800">
               {getCategoryDisplayName(mainCategoryName)} {/* Use helper */}
-            </span>
+            </span>)
           )}
           <time dateTime={toISOString(publishDate)}>
             {formatDate(publishDate)}
@@ -109,13 +110,11 @@ export default async function NewsPage({ params }: Props) {
         </div>
         <h1 className="mb-4 font-sans text-4xl text-slate-900">{post.title}</h1>
       </header>
-
       {/* Content */}
       <div className="prose prose-slate prose-headings:text-slate-900 prose-a:text-teal-600 hover:prose-a:text-teal-500 prose-strong:text-slate-900 mx-auto">
         {/* Assuming content is HTML */}
         <div dangerouslySetInnerHTML={{ __html: post.content || "" }} />
       </div>
-
       {/* Navigation */}
       <div className="mt-12 border-t border-slate-200 pt-8">
         <Link
