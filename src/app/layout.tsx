@@ -7,7 +7,6 @@ import {readItems} from "@directus/sdk"; // Import readItems function
 import {Toaster} from "@/components/ui/sonner";
 import {Analytics} from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import Head from "next/head";
 import { manrope, newsreader } from "./fonts";
 
 export const revalidate = 60;
@@ -36,6 +35,12 @@ export const metadata: Metadata = {
         email: false,
         address: false,
         telephone: false,
+    },
+    viewport: {
+        width: "device-width",
+        initialScale: 1,
+        maximumScale: 1,
+        userScalable: false,
     },
 };
 
@@ -107,17 +112,6 @@ export default async function RootLayout({
 
     return (
         <html lang="vi">
-        <Head>
-            <link
-                rel="preconnect"
-                href="https://fonts.googleapis.com"
-                crossOrigin="anonymous"
-            />
-            <meta
-                name="viewport"
-                content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-            />
-        </Head>
         <body
             className="bg-gradient-to-br from-white via-navy-50/10 to-cardinal-50/10 antialiased selection:bg-cardinal-600/10 selection:text-cardinal-900">
         <div
@@ -127,8 +121,8 @@ export default async function RootLayout({
             <Header schools={schools}/>
 
             {/* Main Content */}
-            <main className={`${manrope.variable} ${newsreader.variable} mt-28 flex-grow pb-20 transition-all duration-300 sm:mt-32`}>
-                <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+            <main className={`${manrope.variable} ${newsreader.variable} flex-grow transition-all duration-300`}>
+                <div className="w-full">
                     {children}
                     <Analytics/>
                     <SpeedInsights />

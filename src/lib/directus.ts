@@ -75,6 +75,13 @@ export interface Facility extends BaseEntity {
   description?: string;
 }
 
+export interface FeaturedLink extends BaseEntity {
+  title: string;
+  description: string;
+  url: string;
+  image: UUID;
+}
+
 // Define the Directus schema
 export interface MySchema {
   school: School[];
@@ -84,6 +91,7 @@ export interface MySchema {
   resource: Resource[];
   partner: Partner[];
   facility: Facility[];
+  featured_link: FeaturedLink[];
 }
 
 // Create and export the Directus client with rest() composable
