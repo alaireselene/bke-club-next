@@ -139,6 +139,9 @@ export default function StructurePage() {
           </h3>
           <ul className="space-y-2 text-gray-700">
             <li>
+              TS. Trần Việt Hùng, nhà sáng lập Got It, Inc., thành viên Tổ tư vấn của Ủy ban Quốc gia đổi mới Giáo dục - Đào tạo của Thủ tướng giai đoạn 2016 - 2021
+            </li>
+            <li>
               PGS.TS. Nguyễn Bình Minh - Viện trưởng Viện Khoa học và Kinh tế số
             </li>
           </ul>
