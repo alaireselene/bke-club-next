@@ -142,7 +142,10 @@ export default function StructurePage() {
               TS. Trần Việt Hùng, nhà sáng lập Got It, Inc., thành viên Tổ tư vấn của Ủy ban Quốc gia đổi mới Giáo dục - Đào tạo của Thủ tướng giai đoạn 2016 - 2021
             </li>
             <li>
-              PGS.TS. Nguyễn Bình Minh - Viện trưởng Viện Khoa học và Kinh tế số
+              PGS. TS. Nguyễn Bình Minh - Viện trưởng Viện Công nghệ và Kinh tế số, Đại học Bách khoa Hà Nội
+            </li>
+            <li>
+              ThS. NCS. Trần Trọng Việt, Chủ tịch Công ty Cổ phần Đầu tư CETECH
             </li>
           </ul>
         </div>
